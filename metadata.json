@@ -1,0 +1,5 @@
+{
+  "name": "Overlay",
+  "description": "A scalable, configurable mobile overlay for daily prizes with bouncy animations.",
+  "requestFramePermissions": []
+}
