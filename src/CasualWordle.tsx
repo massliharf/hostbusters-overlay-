@@ -1396,7 +1396,12 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                transition={{ duration: 0.8, ease: "easeOut" }}
              >
                 {/* INNER WRAPPER for correct relative bounding of absolutely positioned elements */}
-                <div className="relative flex gap-1.5 sm:gap-[7px]">
+                <motion.div 
+                   className="relative flex"
+                   initial={{ gap: 6 }}
+                   animate={{ gap: (endState === 'win' && rIdx === currentRow) ? 0 : 6 }}
+                   transition={{ duration: 0.6, ease: "backOut", delay: (endState === 'win' && rIdx === currentRow) ? 1.4 : 0 }}
+                >
                    <AnimatePresence>
                       {showVictoryCard && rIdx === currentRow && (
                         <>
@@ -1489,28 +1494,41 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                 const isDance = animatingTiles[`${rIdx}-${cIdx}`] === 'dance';
                 
                 // Base CSS
-                let tileClass = "w-[min(12vw,50px)] h-[min(12vw,50px)] sm:w-[48px] sm:h-[48px] flex flex-none items-center justify-center text-[28px] font-black rounded-[8px] uppercase select-none overflow-hidden ";
-                if (tState === 'correct') tileClass += "bg-[#4ade80] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.15)] ";
-                else if (tState === 'present') tileClass += "bg-[#fbbf24] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.15)] ";
-                else if (tState === 'absent') tileClass += "bg-[#cbd5e1] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.1)] ";
+                let tileClass = "w-[min(12vw,50px)] h-[min(12vw,50px)] sm:w-[48px] sm:h-[48px] flex flex-none items-center justify-center text-[28px] font-black uppercase select-none overflow-hidden ";
+                if (tState === 'correct') tileClass += "bg-[#4ade80] text-[#111827] border-none ";
+                else if (tState === 'present') tileClass += "bg-[#fbbf24] text-[#111827] border-none ";
+                else if (tState === 'absent') tileClass += "bg-[#cbd5e1] text-[#111827] border-none ";
                 else if (tState === 'question') tileClass += "bg-white text-[#111827] border-[2px] border-[#cbd5e1] "; 
                 else if (isFilled) tileClass += "bg-[#f8fafc] text-[#111827] border-[2px] border-[#cbd5e1] "; 
                 else tileClass += "bg-white border-[2px] border-[#cbd5e1] text-transparent ";
                 
+                const isWinningRow = endState === 'win' && rIdx === currentRow;
+
                 return (
                   <motion.div 
                     key={cIdx} 
                     id={`wb-tile-${rIdx}-${cIdx}`} 
                     className={`${tileClass} relative z-10 origin-center`}
+                    initial={{ borderRadius: 8 }}
                     animate={{
                       y: isDance ? [0, -15, 0] : isFlip ? [0, -10, 0] : 0,
                       rotateX: isFlip ? [0, 90, 0] : 0,
                       x: isShake ? [0, -4, 4, -4, 4, 0] : 0,
                       scale: isFlip ? [1, 1.15, 1] : 1,
+                      borderRadius: isWinningRow 
+                          ? (cIdx === 0 ? "24px 0px 0px 24px" : cIdx === 4 ? "0px 24px 24px 0px" : "0px") 
+                          : "8px",
+                      boxShadow: isWinningRow 
+                          ? "inset 0px 0px 0px rgba(0,0,0,0)"
+                          : (tState === 'correct' || tState === 'present' ? "inset 0px -3px 0px rgba(0,0,0,0.15)" : "none")
                     }}
                     transition={{ 
-                      duration: isDance ? 0.5 : isFlip ? 0.4 : isShake ? 0.3 : 0.1,
-                      ease: isDance ? "easeInOut" : isFlip ? "easeOut" : "linear"
+                      borderRadius: { duration: 0.6, ease: "backOut", delay: isWinningRow ? 1.4 : 0 },
+                      boxShadow: { duration: 0.6, ease: "linear", delay: isWinningRow ? 1.4 : 0 },
+                      default: {
+                        duration: isDance ? 0.5 : isFlip ? 0.4 : isShake ? 0.3 : 0.1,
+                        ease: isDance ? "easeInOut" : isFlip ? "easeOut" : "linear"
+                      }
                     }}
                   >
                     {isPop ? <motion.span animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.1 }} className="relative z-10">{char}</motion.span>
@@ -1528,32 +1546,31 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                         />
                       )}
                     </AnimatePresence>
-                  </motion.div>
-                      {floatXPText.filter(f => f.row === rIdx && f.col === cIdx).map(f => (
-                        <motion.div
-                          key={f.id}
-                          initial={{ opacity: 0, y: 15, scale: 0.5 }}
-                          animate={{ opacity: 1, y: -30, scale: 1 }}
-                          exit={{ opacity: 0, y: -30, scale: 0.8 }}
-                          transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="absolute -top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
-                        >
-                          <div className="relative bg-[#111827] text-white font-black italic text-[20px] tracking-wider px-3.5 py-1 rounded-[14px] rounded-bl-sm shadow-xl flex items-center justify-center">
-                            {f.text}
-                            {/* Downward triangle tail */}
-                            <div className="absolute -bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-[#111827]" />
-                            {/* The XP Badge overlap */}
-                            <div className="absolute -top-2 -right-3 bg-[#1e8dff] text-white rounded-full w-8 h-8 flex items-center justify-center font-black italic text-[12px] shadow-md border-[2px] border-transparent">
-                              XP
-                            </div>
+
+                    {floatXPText.filter(f => f.row === rIdx && f.col === cIdx).map(f => (
+                      <motion.div
+                        key={f.id}
+                        initial={{ opacity: 0, y: 15, scale: 0.5 }}
+                        animate={{ opacity: 1, y: -30, scale: 1 }}
+                        exit={{ opacity: 0, y: -30, scale: 0.8 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="absolute -top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                      >
+                        <div className="relative bg-[#111827] text-white font-black italic text-[20px] tracking-wider px-3.5 py-1 rounded-[14px] rounded-bl-sm shadow-xl flex items-center justify-center">
+                          {f.text}
+                          {/* Downward triangle tail */}
+                          <div className="absolute -bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-l-transparent border-r-transparent border-t-[#111827]" />
+                          {/* The XP Badge overlap */}
+                          <div className="absolute -top-2 -right-3 bg-[#1e8dff] text-white rounded-full w-8 h-8 flex items-center justify-center font-black italic text-[12px] shadow-md border-[2px] border-transparent">
+                            XP
                           </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    ))}
                   </motion.div>
                 );
               })}
-                </div>
+                </motion.div>
              </motion.div>
           ))}
         </div>
