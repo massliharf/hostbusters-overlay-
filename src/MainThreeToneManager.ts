@@ -2,289 +2,244 @@ import * as Tone from 'tone';
 
 class MainThreeToneManagerClass {
   // ==========================================
-  // MASTER BUS & GLOBAL EFFECTS
+  // MASTER BUS & AKUSTİK MİMARİ (Sound Bible)
   // ==========================================
-  private masterGain = new Tone.Volume(-2).toDestination(); 
-  private reverb = new Tone.Reverb({ decay: 1.8, wet: 0.22 }).connect(this.masterGain);
-  private compressor = new Tone.Compressor({ threshold: -18, ratio: 4, attack: 0.003, release: 0.15 }).connect(this.reverb);
+  private masterChannel = new Tone.Channel({ volume: -4 }).toDestination();
+  private bgmReverb = new Tone.Reverb({ decay: 2.5, wet: 0.2 }).connect(this.masterChannel);
+  private subCompressor = new Tone.Compressor({ threshold: -20, ratio: 4 }).connect(this.masterChannel);
+
+  // Frekans Ayrışması (Frequency Separation)
+  // Maskelemeyi önlemek için kritik seviyelendirme
+  private subtleLowBus = new Tone.Filter(600, "lowpass").connect(new Tone.Volume(-15).connect(this.masterChannel)); 
+  private neutralMidBus = new Tone.Filter(2000, "lowpass").connect(new Tone.Volume(-8).connect(this.masterChannel));
+  private brightHighBus = new Tone.Volume(-3).connect(this.bgmReverb); 
+  private bassImpactBus = new Tone.Filter(300, "lowpass").connect(new Tone.Volume(2).connect(this.subCompressor));
 
   // ==========================================
-  // SYNTH INSTANCES
+  // ENSTRÜMAN POOL (Performans & Non-repetitive)
   // ==========================================
   
-  // 1. Countdown
-  private countdownSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "sawtooth" },
-    envelope: { attack: 0.01, decay: 0.15, sustain: 0.0, release: 0.08 }
-  }).connect(this.compressor);
-  private countdownKick = new Tone.MembraneSynth({ octaves: 3 }).connect(this.compressor);
+  // 1. Ultra-Subtle Typing/Deleting (Sine/Square Pop)
+  private tinyPop = new Tone.MembraneSynth({
+      pitchDecay: 0.01, octaves: 1.5, oscillator: { type: "square" },
+      envelope: { attack: 0.005, decay: 0.08, sustain: 0, release: 0.01 }
+  }).connect(this.subtleLowBus);
 
-  // 2. Typing
-  private typingSynth = new Tone.Synth({
-    oscillator: { type: "sine" },
-    envelope: { attack: 0.001, decay: 0.06, sustain: 0, release: 0.02 }
-  }).connect(this.masterGain);
+  // 2. Whoosh / Rüzgar & Sweep Efektleri
+  private sweepNoise = new Tone.NoiseSynth({
+      noise: { type: "pink" },
+      envelope: { attack: 0.05, decay: 0.2, sustain: 0 }
+  }).connect(this.neutralMidBus);
 
-  // 3. Deleting
-  private deleteSynth = new Tone.Synth({
-    oscillator: { type: "triangle" },
-    envelope: { attack: 0.001, decay: 0.12, sustain: 0, release: 0.08 }
-  }).connect(this.masterGain);
+  private sparkleNoise = new Tone.NoiseSynth({
+      noise: { type: "white" },
+      envelope: { attack: 0.01, decay: 0.4, sustain: 0 }
+  }).connect(new Tone.Filter(8000, "highpass").connect(this.brightHighBus));
 
-  // 4. Submit
-  private submitSynth = new Tone.Synth({
-    oscillator: { type: "square" },
-    envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.3 }
-  }).connect(this.compressor);
+  // 3. Bright Melodic Chimes (Sarı, Yeşil, XP, Win)
+  private crystalChime = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "sine" }, // Temiz kristal ton
+      envelope: { attack: 0.01, decay: 0.3, sustain: 0.1, release: 1.5 }
+  }).connect(this.brightHighBus);
 
-  // 5. Gray
-  private graySynth = new Tone.Synth({
-    oscillator: { type: "sine" },
-    envelope: { attack: 0.02, decay: 0.25, sustain: 0, release: 0.4 }
-  }).connect(this.masterGain);
+  // 4. Kalp Isıtan Fanfare & Warm Tones
+  private warmGlowPad = new Tone.PolySynth(Tone.FMSynth, {
+      harmonicity: 1.5, modulationIndex: 1, oscillator: { type: "sine" },
+      envelope: { attack: 0.2, decay: 0.5, sustain: 0.3, release: 2.0 }
+  }).connect(this.bgmReverb);
 
-  // 6. Yellow
-  private yellowSynth = new Tone.Synth({
-    oscillator: { type: "triangle" },
-    envelope: { attack: 0.01, decay: 0.3, sustain: 0.1, release: 0.35 }
-  }).connect(this.compressor);
-
-  // 7. Green & Sparkles
-  private greenSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "sawtooth" },
-    envelope: { attack: 0.008, decay: 0.25, sustain: 0.15, release: 0.6 }
-  }).connect(this.compressor);
-  private greenSparkle = new Tone.NoiseSynth({ 
-    noise: { type: "pink" }, envelope: { attack: 0.001, decay: 0.18 } 
-  }).connect(new Tone.Filter(6200, "highpass").connect(this.compressor));
-
-  // 8. Success Fanfare
-  private successSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "fatsawtooth", count: 3 } as any, // Type cast to bypass strict ts checking for FatOscillator
-    envelope: { attack: 0.02, decay: 0.35, sustain: 0.25, release: 1.2 }
-  }).connect(this.compressor);
-  private successGlowSynth = new Tone.Synth({ oscillator: { type: "sine" } })
-    .connect(new Tone.Reverb({ decay: 3, wet: 0.45 }).connect(this.masterGain));
-
-  // 9. XP Add
-  private xpSynth = new Tone.Synth({
-    oscillator: { type: "triangle" },
-    envelope: { attack: 0.01, decay: 0.28, sustain: 0.2, release: 0.65 }
-  }).connect(this.compressor);
-
-  // 10. Timer to XP
-  private timerSynth = new Tone.Synth({
-    oscillator: { type: "sine" },
-    envelope: { attack: 0.4, decay: 0.6, sustain: 0.3, release: 0.8 }
-  }).connect(this.compressor);
-
-  // 11. 10s Warning
-  private warningSynth = new Tone.Synth({
-    oscillator: { type: "triangle" },
-    envelope: { attack: 0.02, decay: 0.4, sustain: 0, release: 0.6 }
-  }).connect(this.masterGain);
-
-  // 12. Error Not Enough
-  private errorSynth = new Tone.Synth({
-    oscillator: { type: "sawtooth" },
-    envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.35 }
-  }).connect(this.masterGain);
-
-  // 13. Error Out of Tries
-  private outOfTriesSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "triangle" },
-    envelope: { attack: 0.05, decay: 0.8, sustain: 0.1, release: 1.1 }
-  }).connect(this.compressor);
-
-  // 14. Round End
-  private roundEndSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "sine" },
-    envelope: { attack: 0.03, decay: 0.5, sustain: 0.15, release: 1.5 }
-  }).connect(this.reverb);
-
-  // 15. Power Up Click
-  private powerClickSynth = new Tone.MembraneSynth({ octaves: 4 }).connect(this.compressor);
-  private powerClickTone = new Tone.Synth({ oscillator: { type: "square" } }).connect(this.compressor);
-
-  // 16. Hint Reveal
-  private hintSynth = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "fatsine", count: 3 } as any,
-    envelope: { attack: 0.15, decay: 0.4, sustain: 0.2, release: 1.1 }
-  }).connect(this.reverb);
-
-  // 17. Bomb Remove
-  private bombMembrane = new Tone.MembraneSynth({ octaves: 3 }).connect(this.compressor);
-  private bombSweep = new Tone.Synth({
-    oscillator: { type: "sawtooth" },
-    envelope: { attack: 0.001, decay: 0.35, sustain: 0, release: 0.2 }
-  }).connect(new Tone.Filter(1800, "lowpass").connect(this.compressor));
-
+  // 5. Tension & Deep Bass
+  private subKick = new Tone.MembraneSynth({
+      pitchDecay: 0.05, octaves: 2, oscillator: { type: "sine" },
+      envelope: { attack: 0.01, decay: 0.4, sustain: 0, release: 0.5 }
+  }).connect(this.bassImpactBus);
 
   public async init() {
     await Tone.start();
-    console.log("Tone.js MAIN 3 (GPT Spec SoundManager) Yüklendi!");
+    console.log("Tone.js MAIN 3: LIVE STREAM DEEP DIVE (Psychoacoustic Edition) Yüklendi! 🔥");
   }
 
   private t() { return Tone.now(); }
   private ctx() { if (Tone.context.state !== 'running') Tone.start(); }
 
+  // ----------------------------------------------------
+  // RANDOMİZASYON MOTORU: Her tık farklı hissettirsin
+  // ----------------------------------------------------
   private playWithVariation(synth: any, note: string | number, duration: string | number, time: number, velocity = 0.8) {
     const freq = typeof note === 'string' ? Tone.Frequency(note).toFrequency() : note;
-    const randPitch = freq * (1 + (Math.random() * 0.08 - 0.04)); 
-    synth.triggerAttackRelease(randPitch, duration, time, velocity * (0.95 + Math.random() * 0.1));
+    const randPitch = freq * (1 + (Math.random() * 0.04 - 0.02)); // ±%2 pitch oynaması
+    synth.triggerAttackRelease(randPitch, duration, time, velocity * (0.9 + Math.random() * 0.2));
   }
 
   // ==========================================
-  // API METHODS
+  // 17 MADDELİK SOUND BIBLE UYGULAMASI
   // ==========================================
 
-  // 1.
-  roundInfo() {
-    this.ctx();
-    const now = this.t();
-    ["C4", "Eb4", "G4"].forEach((note, i) => {
-      const time = now + i * 0.45;
-      this.countdownSynth.triggerAttackRelease(note, 0.35, time, 0.75);
-      this.countdownKick.triggerAttackRelease("C2", 0.12, time, 0.6);
-    });
-  }
-
-  // 2.
+  // 2. Letter_Typing: Non-repetitive soft variations
   type() {
     this.ctx();
-    const freq = 680 + Math.random() * 120;
-    this.typingSynth.triggerAttackRelease(freq, 0.07, this.t(), 0.22); 
+    const baseFreqs = [200, 220, 250, 280]; // Klavye harfleri gibi farklı notalar
+    const randomFreq = baseFreqs[Math.floor(Math.random() * baseFreqs.length)];
+    this.playWithVariation(this.tinyPop, randomFreq, "32n", this.t(), 0.6);
   }
 
-  // 3.
+  // 3. Letter_Deleting: Ters whoosh + çok düşük pop
   delete() {
     this.ctx();
-    this.deleteSynth.triggerAttackRelease(420, 0.18, this.t(), 0.18);
+    const now = this.t();
+    this.sweepNoise.triggerAttackRelease("32n", now, 0.4); 
+    this.playWithVariation(this.tinyPop, 150, "32n", now + 0.02, 0.5);
   }
 
-  // 4.
+  // 4. Word_Submit: Neutral but confirmed
   submit() {
     this.ctx();
     const now = this.t();
-    this.submitSynth.triggerAttackRelease("G3", 0.25, now, 0.55);
-    this.submitSynth.triggerAttackRelease("Bb3", 0.4, now + 0.08, 0.4);
+    this.sweepNoise.triggerAttackRelease("16n", now, 0.5);
+    this.crystalChime.triggerAttackRelease("E3", "16n", now + 0.05, 0.3); // Tok tık
   }
 
-  // 5.
+  // 5. Gray_Feedback: Neredeyse önemsiz
   gray() {
     this.ctx();
-    this.graySynth.triggerAttackRelease(280, 0.45, this.t(), 0.35);
+    this.playWithVariation(this.tinyPop, 120, "16n", this.t(), 0.6);
   }
 
-  // 6.
+  // 6. Yellow_Feedback: Ascent (Umut verici)
   yellow() {
     this.ctx();
     const now = this.t();
-    this.yellowSynth.triggerAttackRelease("E4", 0.25, now, 0.65);
-    this.yellowSynth.triggerAttackRelease("G4", 0.4, now + 0.12, 0.5);
+    this.crystalChime.triggerAttackRelease("C4", "16n", now, 0.4);
+    this.crystalChime.triggerAttackRelease("E4", "8n", now + 0.08, 0.5);
   }
 
-  // 7.
+  // 7. Green_Feedback: 3 Notalık mini arpeggio + Sparkle. Dopamin Peak.
   green() {
     this.ctx();
     const now = this.t();
-    this.greenSynth.triggerAttackRelease(["C4", "E4", "G4"], 0.35, now, 0.72);
-    this.greenSparkle.triggerAttackRelease("8n", now + 0.15, 0.25);
+    this.crystalChime.triggerAttackRelease("C5", "16n", now, 0.6);
+    this.crystalChime.triggerAttackRelease("E5", "16n", now + 0.05, 0.7);
+    this.crystalChime.triggerAttackRelease("G5", "8n", now + 0.1, 0.8);
+    this.sparkleNoise.triggerAttackRelease("16n", now, 0.3);
   }
 
-  // 8.
+  // 8. Word_Success: Fanfare ve Lingering Glow
   win() {
     this.ctx();
     const now = this.t();
-    const melody = ["C4", "E4", "G4", "C5", "E5"];
-    melody.forEach((note, i) => {
-      this.successSynth.triggerAttackRelease(note, i < 3 ? 0.45 : 0.8, now + i * 0.09, 0.78 - i*0.05);
-    });
-    setTimeout(() => {
-      this.ctx();
-      this.successGlowSynth.triggerAttackRelease("G5", 1.8, this.t(), 0.35);
-    }, 650);
+    // 0.0s: Warm Sparkle
+    this.sparkleNoise.triggerAttackRelease("4n", now, 0.5);
+    // 0.2s: Ascending Sweet Fanfare
+    const fanfareTimer = now + 0.2;
+    this.crystalChime.triggerAttackRelease("C4", "8n", fanfareTimer, 0.6);
+    this.crystalChime.triggerAttackRelease("E4", "8n", fanfareTimer + 0.1, 0.7);
+    this.crystalChime.triggerAttackRelease("G4", "8n", fanfareTimer + 0.2, 0.8);
+    this.crystalChime.triggerAttackRelease("C5", "8n", fanfareTimer + 0.3, 0.9);
+    this.crystalChime.triggerAttackRelease(["E5", "G5", "C6"], "1n", fanfareTimer + 0.45, 1.0);
+    // 0.8s: Övgü dolu kalıcı sıcak eko
+    this.warmGlowPad.triggerAttackRelease(["C3", "E3", "G3"], "1n", now + 0.5, 0.4);
   }
 
-  // 9.
+  // 9. XP_Add: Coin-like Melodic
   xp() {
     this.ctx();
     const now = this.t();
-    this.xpSynth.triggerAttackRelease("A4", 0.22, now, 0.8);
-    this.xpSynth.triggerAttackRelease("C5", 0.55, now + 0.11, 0.65);
+    this.playWithVariation(this.crystalChime, "A5", "16n", now, 0.5);
+    this.playWithVariation(this.crystalChime, "E6", "8n", now + 0.06, 0.5);
   }
 
-  // 10.
+  // 10. Timer_To_XP_Conversion: Rising filter + Chime
   xpbar() {
     this.ctx();
     const now = this.t();
-    this.timerSynth.triggerAttack("E3", now, 0.6);
-    this.timerSynth.frequency.rampTo("G4" as any, 0.65, now);
-    this.timerSynth.triggerRelease(now + 0.75);
+    this.sweepNoise.triggerAttackRelease("32n", now, 0.3);
+    this.playWithVariation(this.crystalChime, 1200, "32n", now + 0.02, 0.3); // Hızlı tıkırtılar
   }
 
-  // 11.
+  // 1. Round_Countdown_321: Gergin ama temiz progress
+  roundInfo() {
+    this.ctx();
+    const now = this.t();
+    // 3
+    this.subKick.triggerAttackRelease("C2", "16n", now);
+    this.crystalChime.triggerAttackRelease("C4", "8n", now, 0.6);
+    // 2
+    this.subKick.triggerAttackRelease("C2", "16n", now + 1);
+    this.crystalChime.triggerAttackRelease("E4", "8n", now + 1, 0.7);
+    // 1
+    this.subKick.triggerAttackRelease("C2", "16n", now + 2);
+    this.crystalChime.triggerAttackRelease("G4", "8n", now + 2, 0.8);
+    this.sparkleNoise.triggerAttackRelease("16n", now + 2, 0.4);
+  }
+
+  // 11. 10s Uyarı Ping: Non-intrusive
   timer10() {
     this.ctx();
-    this.warningSynth.triggerAttackRelease("Bb4", 0.65, this.t(), 0.48);
+    this.crystalChime.triggerAttackRelease("A4", "16n", this.t(), 0.3); 
   }
 
+  // Sona doğru artan timer
   timer3() {
     this.ctx();
-    // Additional tension for last 3 seconds
-    this.countdownKick.triggerAttackRelease("C1", 0.12, this.t(), 0.6);
+    this.subKick.triggerAttackRelease("E1", "16n", this.t(), 0.6);
   }
 
-  // 14.
+  // 14. Round_Ended: Closing whoosh + completion 
   timer0() {
     this.ctx();
-    this.roundEndSynth.triggerAttackRelease(["C4", "E4", "G4"], 0.8, this.t(), 0.6);
+    const now = this.t();
+    this.sweepNoise.triggerAttackRelease("2n", now, 0.5);
+    this.warmGlowPad.triggerAttackRelease(["C4", "G4", "C5"], "2n", now + 0.2, 0.6);
   }
 
-  // 12.
+  // 12. Error_Not_Enough_Letters: Soft boing error
   error() {
     this.ctx();
-    this.errorSynth.triggerAttackRelease("F3", 0.28, this.t(), 0.42);
+    // Hafif boing hissi için hızlı envelope drop
+    this.warmGlowPad.triggerAttackRelease(["Eb3"], "16n", this.t(), 0.5); 
+    this.tinyPop.triggerAttackRelease("G2", "16n", this.t(), 0.6);
   }
 
-  // 13.
+  // 13. Error_Out_Of_Tries: Low minor chord fade
   lose() {
     this.ctx();
-    this.outOfTriesSynth.triggerAttackRelease(["G3", "Eb3"], 1.4, this.t(), 0.55);
+    this.subKick.triggerAttackRelease("C1", "1n", this.t(), 0.8);
+    this.warmGlowPad.triggerAttackRelease(["C2", "Eb2", "G2"], "1n", this.t(), 0.6); 
   }
 
-  // 15.
+  // 15. PowerUp_Click: Deep thumb + burst
   powerUpClick() {
     this.ctx();
     const now = this.t();
-    this.powerClickSynth.triggerAttackRelease("C2", 0.25, now, 0.85);
-    this.powerClickTone.triggerAttackRelease("G4", 0.12, now + 0.05, 0.6);
+    this.subKick.triggerAttackRelease("C2", "16n", now, 0.8);
+    this.sparkleNoise.triggerAttackRelease("16n", now + 0.02, 0.3);
   }
 
-  // 16.
+  // 16. Letter_Hint_Reveal: Magic Sparkle whoosh + melodic
   hintWhoosh() {
     this.ctx();
-    // Soft wind before reveal
-    this.deleteSynth.triggerAttackRelease(200, 0.2, this.t(), 0.2);
+    this.sweepNoise.triggerAttackRelease("4n", this.t(), 0.4);
   }
 
   hintReveal() {
     this.ctx();
-    this.hintSynth.triggerAttackRelease(["Eb4", "G4", "Bb4"], 0.9, this.t(), 0.68);
+    const now = this.t();
+    this.sparkleNoise.triggerAttackRelease("8n", now, 0.4);
+    this.crystalChime.triggerAttackRelease(["C5", "E5"], "16n", now, 0.6);
+    this.crystalChime.triggerAttackRelease(["E5", "G5"], "8n", now + 0.1, 0.7);
   }
 
-  // 17.
+  // 17. Letter_Bomb_Remove: Bass-heavy clean impact
   bombDrop() {
     this.ctx();
-    // Small drop thud
-    this.powerClickSynth.triggerAttackRelease("G1", 0.1, this.t(), 0.5);
+    this.subKick.triggerAttackRelease("C1", "16n", this.t(), 0.8);
   }
 
   bombExplode() {
     this.ctx();
     const now = this.t();
-    this.bombMembrane.triggerAttackRelease("C1", 0.45, now, 0.9);
-    this.bombSweep.triggerAttackRelease("G4", 0.55, now + 0.08, 0.65);
+    this.subKick.triggerAttackRelease("C0", "2n", now, 1.0);  
+    this.sweepNoise.triggerAttackRelease("1n", now + 0.05, 0.8); 
   }
 }
 
