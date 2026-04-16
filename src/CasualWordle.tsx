@@ -6,7 +6,7 @@ export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'ac
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
-let currentTheme: AudioTheme = 'soft-ui';
+let currentTheme: AudioTheme = 'wordle-dopamine';
 
 export function setTheme(theme: AudioTheme) {
   currentTheme = theme;
@@ -613,7 +613,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   const [keyboardState, setKeyboardState] = useState<Record<string, KeyState>>({});
   
   // HUD
-  const [activeAudioTheme, setActiveAudioTheme] = useState<AudioTheme>('soft-ui');
+  const [activeAudioTheme, setActiveAudioTheme] = useState<AudioTheme>('wordle-dopamine');
   const [hintsLeft, setHintsLeft] = useState(1);
   const [bombsLeft, setBombsLeft] = useState(1);
   const [totalXP, setTotalXP] = useState(0); 
