@@ -9,9 +9,10 @@ import { HybridToneManager } from './HybridToneManager';
 import { GeoToneManager } from './GeoToneManager';
 import { GeoEnergeticToneManager } from './GeoEnergeticToneManager';
 import { PerfectGeoToneManager } from './PerfectGeoToneManager';
+import { PremiumGeoToneManager } from './PremiumGeoToneManager';
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3';
+export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -308,6 +309,7 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 
 const SFX = {
   roundInfo: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.roundInfo(); return; }
@@ -322,6 +324,7 @@ const SFX = {
     SFX.timer10();
   },
   type: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.type(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.type(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.type(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.type(); return; }
@@ -346,6 +349,7 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer10(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer10(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer10(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.timer10(); return; }
@@ -369,6 +373,7 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer3(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer3(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer3(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.timer3(); return; }
@@ -392,6 +397,7 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer0(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer0(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer0(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.timer0(); return; }
@@ -415,6 +421,7 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.delete(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.delete(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.delete(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.delete(); return; }
@@ -439,6 +446,7 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.submit(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.submit(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.submit(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.submit(); return; }
@@ -463,6 +471,7 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.gray(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.gray(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.gray(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.gray(); return; }
@@ -487,6 +496,7 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.yellow(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.yellow(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.yellow(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.yellow(); return; }
@@ -511,6 +521,7 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.green(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.green(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.green(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.green(); return; }
@@ -535,6 +546,7 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.xp(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.xp(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.xp(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.xp(); return; }
@@ -559,6 +571,7 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.win(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.win(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.win(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.win(); return; }
@@ -631,6 +644,7 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.xpbar(); return; }
@@ -655,6 +669,7 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.hintWhoosh(); return; }
@@ -673,6 +688,7 @@ const SFX = {
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.hintReveal(); return; }
@@ -698,6 +714,7 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.bombDrop(); return; }
@@ -716,6 +733,7 @@ const SFX = {
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.bombExplode(); return; }
@@ -741,6 +759,7 @@ const SFX = {
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
   },
   lose: () => {
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.lose(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.lose(); return; }
     if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.lose(); return; }
     if(currentTheme === 'streamer-geo') { GeoToneManager.lose(); return; }
@@ -1476,7 +1495,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3'] as AudioTheme[]).map((theme, index) => (
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
@@ -1489,9 +1508,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'streamer-geo') { GeoToneManager.init(); }
                       if (theme === 'streamer-geo-v2') { GeoEnergeticToneManager.init(); }
                       if (theme === 'streamer-geo-v3') { PerfectGeoToneManager.init(); }
+                      if (theme === 'streamer-geo-v4') { PremiumGeoToneManager.init(); }
                       setActiveAudioTheme(theme);
                   }}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
                   OPT {index + 1}
               </button>
