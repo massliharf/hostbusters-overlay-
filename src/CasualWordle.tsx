@@ -1333,7 +1333,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
       {/* GAME GRID */}
       <motion.div 
-         className="grow w-full flex flex-col items-center justify-center mb-8 mt-4 z-0 relative origin-center max-[400px]:scale-[0.85] max-[360px]:scale-[0.75] transition-transform"
+         className="grow w-full flex flex-col items-center justify-center mb-8 mt-4 z-0 relative origin-top max-[400px]:scale-[0.85] max-[360px]:scale-[0.75] [@media(max-height:750px)]:scale-[0.85] [@media(max-height:650px)]:scale-[0.75] transition-transform"
          animate={{ y: showVictoryCard ? Math.max(0, (2 - currentRow) * 55 + 60) : 0 }}
          transition={{ duration: 0.8, ease: "circOut" }}
       >
@@ -1538,7 +1538,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       {/* KEYBOARD */}
       <motion.div 
          animate={{ opacity: showVictoryCard || endState === 'timeout' ? 0 : 1 }}
-         className="w-full shrink-0 flex flex-col items-center pb-6 px-1.5 z-10 space-y-4 origin-bottom max-[400px]:scale-[0.90] max-[360px]:scale-[0.85] transition-transform"
+         className="w-full shrink-0 flex flex-col items-center pb-6 px-1.5 z-10 space-y-4 origin-bottom max-[400px]:scale-[0.90] max-[360px]:scale-[0.85] [@media(max-height:750px)]:scale-[0.90] [@media(max-height:650px)]:scale-[0.80] [@media(max-height:650px)]:pb-2 transition-transform"
       >
         {/* QWERTY Cluster (Strict 136px height bound limit) */}
         <div className="flex flex-col gap-[6px] w-full max-w-[400px]">
