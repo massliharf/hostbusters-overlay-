@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playable Casual Wordle</title>
+  <style>
+    :root {
+      --bg: #111827;
+      --text: #F3F4F6;
+      --btn-bg: #374151;
+      --btn-hover: #4B5563;
+      --gray: #6B7280;
+      --yellow: #EAB308;
+      --green: #22C55E;
+      --orange: #F97316;
+      --bomb: #EF4444;
+      --blue: #3B82F6;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0px 20px 40px;
+      margin: 0;
+      touch-action: manipulation;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 900;
+      margin: 20px 0 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #E5E7EB;
+    }
+    
+    /* XP Bar */
+    #xp-bar-wrap { width: 100%; max-width: 360px; margin-bottom: 24px; margin-top: 10px; }
+    #xp-label { font-size: 14px; color: #9CA3AF; margin-bottom: 6px; display: flex; justify-content: space-between; font-weight: 800; text-transform: uppercase;}
+    #xp-bar-bg { width: 100%; height: 12px; border-radius: 6px; background: #1F2937; border: 1px solid #374151; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);}
+    #xp-bar-fill { height: 100%; width: 0%; background: var(--blue); border-radius: 6px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(59,130,246,0.5); }
+    
+    #msg { min-height: 24px; font-size: 15px; font-weight: 800; color: var(--gray); text-align: center; margin-bottom: 12px; }
+
+    /* Grid */
+    #grid {
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 6px;
+      width: 100%;
+      max-width: 280px;
+      margin-bottom: 30px;
+    }
+    .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .tile {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      border: 2px solid #374151;
+      border-radius: 10px;
+      color: var(--text);
+      background: #1F2937;
+      text-transform: uppercase;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .tile.filled { border-color: #6B7280; transform: scale(1.05); }
+    .tile.correct { background: var(--green); border-color: var(--green); color: #fff; }
+    .tile.present { background: var(--yellow); border-color: var(--yellow); color: #fff; }
+    .tile.absent { background: var(--gray); border-color: var(--gray); color: #fff; }
+    .tile.pop { animation: pop 0.1s ease; }
+    .tile.shake { animation: shake 0.3s ease; }
+    
+    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+
+    .xp-float {
+      position: fixed; font-size: 15px; font-weight: 900; color: var(--blue); pointer-events: none;
+      animation: floatUp 0.9s ease forwards; z-index: 99; text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-40px) scale(1.2); } }
+
+    /* Keyboard */
+    .keyboard {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      max-width: 360px;
+    }
+    .kb-row { display: flex; justify-content: center; gap: 5px; }
+    .key {
+      height: 52px; flex: 1; max-width: 36px; background: var(--btn-bg); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
+      color: var(--text); cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none; box-shadow: 0 3px 0 #1F2937;
+    }
+    .key:active { transform: translateY(3px); box-shadow: 0 0px 0 #1F2937; }
+    .key.wide { min-width: 48px; font-size: 18px; }
+    
+    /* Key States */
+    .key.correct { background: var(--green); color: #fff; box-shadow: 0 3px 0 #14532D; }
+    .key.present { background: var(--yellow); color: #fff; box-shadow: 0 3px 0 #422006; }
+    .key.absent { background: #1F2937; color: #6B7280; box-shadow: 0 3px 0 #111827; opacity: 0.8;}
+    
+    /* Powerups Keyboard Impact */
+    .key.orange { background: var(--orange); color: white; transform: scale(1.1) translateY(-2px); box-shadow: 0 5px 0 #9A3412, 0 8px 16px rgba(249,115,22,0.4); z-index: 10; border: 2px solid white; }
+    .key.destroyed { background: #111827; color: #1F2937; opacity: 0.15; transform: scale(0.9); box-shadow: none; pointer-events: none;}
+
+    /* Action Bar (Powerups + Submit) */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      width: 100%;
+      max-width: 360px;
+      align-items: stretch;
+    }
+    .powerup-btn {
+      width: 60px; height: 60px; border-radius: 16px; font-size: 26px; background: #1F2937;
+      border: 3px solid #374151; box-shadow: 0 5px 0 #111827; cursor: pointer; position: relative;
+      transition: transform 0.1s, box-shadow 0.1s;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .powerup-btn:active { transform: translateY(5px); box-shadow: 0 0px 0 #111827; }
+    .powerup-btn:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; transform: translateY(5px); box-shadow: 0 0px 0 #111827; }
+    .powerup-badge {
+      position: absolute; bottom: -6px; right: -6px; background: #111827; border: 2px solid #374151;
+      color: white; font-size: 11px; font-weight: 900; width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    
+    .submit-btn {
+      border: none;
+      flex-grow: 1;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 800;
+      color: white;
+      background: var(--blue);
+      box-shadow: 0 5px 0 #1E3A8A;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .submit-btn:active { transform: translateY(5px); box-shadow: 0 0px 0 #1E3A8A; }
+    .submit-btn:hover { background: #2563EB; }
+  </style>
+</head>
+<body>
+
+  <h1>Wordle</h1>
+  
+  <div id="xp-bar-wrap">
+    <div id="xp-label"><span>XP</span><span id="xp-num">0</span></div>
+    <div id="xp-bar-bg"><div id="xp-bar-fill"></div></div>
+  </div>
+  
+  <div id="msg"></div>
+  
+  <div id="grid"></div>
+  
+  <div class="keyboard" id="keyboard"></div>
+
+  <div class="action-bar">
+    <button class="powerup-btn" id="btn-hint" onclick="triggerHint()">
+      🔍<div class="powerup-badge" id="hint-badge">1</div>
+    </button>
+    <button class="powerup-btn" id="btn-bomb" onclick="triggerBomb()">
+      💣<div class="powerup-badge" id="bomb-badge">1</div>
+    </button>
+    <button class="submit-btn" onclick="submitRow()">
+      SUBMIT
+    </button>
+  </div>
+
+<script>
+// --- AUDIO SYNTHESIS (SOFT, CASUAL VIBE) ---
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playTone(freq, duration, vol, type = 'sine') {
+  initAudio();
+  const t = audioCtx.currentTime;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+  o.type = type; o.frequency.setValueAtTime(freq, t);
+  filter.type = 'lowpass'; filter.frequency.setValueAtTime(freq * 1.5, t); 
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+  o.connect(filter); filter.connect(g); g.connect(audioCtx.destination);
+  o.start(t); o.stop(t + duration);
+}
+
+function playSoftNoise(duration, vol) {
+  initAudio();
+  const t = audioCtx.currentTime;
+  const bufferSize = audioCtx.sampleRate * duration;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+  const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(400, t); filter.frequency.exponentialRampToValueAtTime(100, t + duration);
+  const g = audioCtx.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+  noise.connect(filter); filter.connect(g); g.connect(audioCtx.destination);
+  noise.start(t);
+}
+
+const SFX = {
+  type: () => { playTone(400, 0.1, 0.15, 'sine'); playTone(800, 0.05, 0.05, 'sine'); },
+  delete: () => { playTone(250, 0.1, 0.2, 'sine'); },
+  submit: () => {
+    setTimeout(() => playTone(300, 0.15, 0.1, 'sine'), 0);
+    setTimeout(() => playTone(400, 0.15, 0.1, 'sine'), 60);
+    setTimeout(() => playTone(500, 0.3, 0.15, 'sine'), 120);
+  },
+  gray: () => { playTone(150, 0.2, 0.3, 'sine'); },
+  yellow: () => { playTone(440, 0.4, 0.2, 'sine'); playTone(660, 0.3, 0.05, 'sine'); },
+  green: () => { playTone(523.25, 0.5, 0.25, 'sine'); playTone(1046.5, 0.4, 0.08, 'sine'); },
+  xp: () => { playTone(1200, 0.2, 0.05, 'sine'); setTimeout(() => playTone(1500, 0.3, 0.05, 'sine'), 50); },
+  win: () => {
+    const chord = [261.63, 329.63, 392.00, 523.25];
+    chord.forEach((freq, i) => { setTimeout(() => playTone(freq, 0.4, 0.2, 'sine'), i * 100); });
+    setTimeout(() => { playTone(1046.5, 1.0, 0.15, 'sine'); playTone(1569.75, 1.0, 0.05, 'sine'); }, 400);
+  },
+  xpbar: () => {
+    initAudio(); const t = audioCtx.currentTime; const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(300, t); o.frequency.exponentialRampToValueAtTime(800, t + 0.4); 
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.2, t + 0.05); g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+0.4);
+  },
+  hintWhoosh: () => {
+    initAudio(); const t = audioCtx.currentTime; const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(600, t); o.frequency.exponentialRampToValueAtTime(200, t + 0.3); 
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.1, t + 0.1); g.gain.linearRampToValueAtTime(0, t + 0.3);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+0.3);
+  },
+  hintReveal: () => { playTone(800, 0.6, 0.2, 'sine'); playTone(1200, 0.4, 0.1, 'sine'); },
+  bombDrop: () => {
+    initAudio(); const t = audioCtx.currentTime; const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(800, t); o.frequency.exponentialRampToValueAtTime(200, t + 0.3); 
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.15, t + 0.05); g.gain.linearRampToValueAtTime(0, t + 0.3);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+0.3);
+  },
+  bombExplode: () => { playSoftNoise(0.3, 0.5); playTone(80, 0.3, 0.5, 'sine'); }
+};
+
+function playSFX(name) { if (SFX[name]) SFX[name](); }
+
+// --- WORDLE GAME LOGIC ---
+const WORDS = ["crane","slate","audio","plant","light","tiger","frost","brave","cloud","drink","flame","globe","heart","index","jazzy","knack","lemon","mount","nerve","oxide","pixel","quest","river","solar","trust","ultra","vivid","width","xenon","yacht","blaze","chalk","diver","elder","fable","grind","hinge","inlet","joker","lance","march","novel","ounce","prism","quirk","radar","siren","token","umbra","venom","waltz"];
+let answer = "", grid = [], currentRow = 0, currentCol = 0, gameOver = false, totalXP = 0, maxXP = 200;
+let typedLetters = [];
+let hintsLeft = 1;
+let bombsLeft = 1;
+
+function startGame() {
+  answer = WORDS[Math.floor(Math.random() * WORDS.length)];
+  currentRow = 0; currentCol = 0; gameOver = false; typedLetters = [];
+  hintsLeft = 1; bombsLeft = 1;
+  document.getElementById('hint-badge').textContent = hintsLeft;
+  document.getElementById('bomb-badge').textContent = bombsLeft;
+  document.getElementById('btn-hint').disabled = false;
+  document.getElementById('btn-bomb').disabled = false;
+  buildGrid(); buildKB(); setMsg('');
+}
+
+function buildGrid() {
+  const g = document.getElementById('grid'); g.innerHTML = ''; grid = [];
+  for (let r = 0; r < 6; r++) {
+    const row = document.createElement('div'); row.className = 'row';
+    const rowArr = [];
+    for (let c = 0; c < 5; c++) {
+      const tile = document.createElement('div'); tile.className = 'tile';
+      row.appendChild(tile); rowArr.push(tile);
+    }
+    g.appendChild(row); grid.push(rowArr);
+  }
+}
+
+const kbLayout = [
+  ['q','w','e','r','t','y','u','i','o','p'],
+  ['a','s','d','f','g','h','j','k','l'],
+  ['z','x','c','v','b','n','m','⌫'] // Enter moved to submit button
+];
+
+function buildKB() {
+  const kb = document.getElementById('keyboard'); kb.innerHTML = '';
+  kbLayout.forEach(r => {
+    const row = document.createElement('div'); row.className = 'kb-row';
+    r.forEach(k => {
+      const btn = document.createElement('div');
+      btn.className = 'key' + (k.length > 1 ? ' wide' : '');
+      const char = k === '⌫' ? '⌫' : a => null;
+      btn.innerHTML = k === '⌫' ? '&#9003;' : k.toUpperCase();
+      btn.dataset.key = k;
+      btn.addEventListener('mousedown', e => { e.preventDefault(); handleKey(k); });
+      btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(k); }, {passive: false});
+      row.appendChild(btn);
+    });
+    kb.appendChild(row);
+  });
+}
+
+function setMsg(t, color) {
+  const m = document.getElementById('msg');
+  m.textContent = t; m.style.color = color || 'var(--gray)';
+}
+
+function handleKey(k) {
+  if (gameOver) return;
+  if (k === 'Enter') {
+    submitRow();
+  } else if (k === '⌫' || k === 'Backspace') {
+    if (currentCol > 0) {
+      currentCol--; typedLetters.pop();
+      const tile = grid[currentRow][currentCol];
+      tile.textContent = ''; tile.classList.remove('filled');
+      playSFX('delete');
+    }
+  } else if (/^[a-zA-Z]$/.test(k) && k.length === 1) {
+    if (currentCol < 5) {
+      const tile = grid[currentRow][currentCol];
+      tile.textContent = k.toUpperCase(); tile.classList.add('filled');
+      void tile.offsetWidth;
+      tile.classList.add('pop');
+      tile.addEventListener('animationend', () => tile.classList.remove('pop'), {once: true});
+      typedLetters.push(k.toLowerCase()); currentCol++;
+      playSFX('type');
+    }
+  }
+}
+
+function submitRow() {
+  if (gameOver) return;
+  if (currentCol < 5) {
+    grid[currentRow].forEach(t => { t.classList.add('shake'); t.addEventListener('animationend', () => t.classList.remove('shake'), {once: true}); });
+    setMsg('Not enough letters'); return;
+  }
+  const guess = typedLetters.slice(-5);
+  playSFX('submit'); setMsg('');
+  
+  const result = Array(5).fill('absent');
+  const answerLeft = answer.split('');
+  for(let i=0; i<5; i++) { if(guess[i] === answerLeft[i]) { result[i] = 'correct'; answerLeft[i] = null; } }
+  for(let i=0; i<5; i++) { if(result[i] === 'correct') continue; const idx = answerLeft.indexOf(guess[i]); if(idx !== -1) { result[i] = 'present'; answerLeft[idx] = null; } }
+  
+  setTimeout(() => {
+    let letterXP = 0;
+    
+    // Reveal tiles sequentially
+    result.forEach((state, i) => {
+      const delay = i * 150;
+      setTimeout(() => {
+        const tile = grid[currentRow][i];
+        tile.classList.add(state);
+        playSFX(state);
+        
+        if (state === 'correct') {
+          const xpGain = 100;
+          letterXP += xpGain;
+          setTimeout(() => {
+            playSFX('xp'); showXPFloat(tile, '+' + xpGain);
+          }, 80);
+        }
+      }, delay);
+    });
+
+    // Apply to keyboard & final processing
+    setTimeout(() => {
+      result.forEach((state, i) => {
+        const letter = guess[i];
+        const keyEl = document.querySelector(`.key[data-key="${letter}"]`);
+        if (keyEl && !keyEl.classList.contains('destroyed')) {
+          const cur = keyEl.dataset.state || '';
+          keyEl.classList.remove('orange'); // removing hint orange if it's there
+          if (cur !== 'correct') {
+            if (state === 'correct') { keyEl.dataset.state = 'correct'; keyEl.className = 'key correct'; }
+            else if (state === 'present' && cur !== 'present') { keyEl.dataset.state = 'present'; keyEl.className = 'key present'; }
+            else if (state === 'absent' && !cur) { keyEl.dataset.state = 'absent'; keyEl.className = 'key absent'; }
+          }
+        }
+      });
+
+      const won = result.every(s => s === 'correct');
+      if (won) {
+        const baseXP = 500;
+        const total = letterXP + baseXP;
+        setTimeout(() => {
+          playSFX('win');
+          setTimeout(() => { addXP(total); }, 500);
+          setMsg('BRILLIANT! +' + total + ' XP 🎉', 'var(--green)');
+        }, 300);
+        gameOver = true;
+      } else {
+        if (letterXP > 0) setTimeout(() => addXP(letterXP), 200);
+        currentRow++; currentCol = 0; typedLetters = [];
+        if (currentRow >= 6) { setMsg('Answer: ' + answer.toUpperCase(), 'var(--bomb)'); gameOver = true; }
+      }
+    }, result.length * 150 + 100);
+  }, 50);
+}
+
+function showXPFloat(tile, text) {
+  const rect = tile.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'xp-float'; el.textContent = text;
+  el.style.left = (rect.left + rect.width / 2 - 16) + 'px';
+  el.style.top = (rect.top - 10 + window.scrollY) + 'px';
+  document.body.appendChild(el);
+  el.addEventListener('animationend', () => el.remove());
+}
+
+function addXP(amount) {
+  let target = totalXP + amount;
+  let counter = totalXP;
+  // Animate the number
+  let iv = setInterval(() => {
+    counter += Math.ceil((target - counter) / 4);
+    if(counter >= target) { counter = target; clearInterval(iv); }
+    document.getElementById('xp-num').textContent = counter;
+  }, 30);
+  
+  totalXP = target;
+  const pct = Math.min((totalXP / maxXP) * 100, 100);
+  document.getElementById('xp-bar-fill').style.width = pct + '%';
+  playSFX('xpbar');
+  if (totalXP >= maxXP) maxXP += 2000;
+}
+
+// Powerups
+function triggerHint() {
+  if (hintsLeft <= 0 || gameOver) return;
+  hintsLeft--; document.getElementById('hint-badge').textContent = hintsLeft;
+  document.getElementById('btn-hint').disabled = true;
+  playSFX('hintWhoosh');
+  
+  setTimeout(() => {
+    playSFX('hintReveal');
+    const answerArr = answer.split('');
+    const answerEls = Array.from(document.querySelectorAll('.key')).filter(el => 
+      answerArr.includes(el.dataset.key) && !el.classList.contains('orange') && !el.classList.contains('correct')
+    );
+    if(answerEls.length > 0) {
+      const target = answerEls[Math.floor(Math.random() * answerEls.length)];
+      target.className = 'key orange'; 
+      target.dataset.state = 'orange';
+    }
+  }, 300);
+}
+
+function triggerBomb() {
+  if (bombsLeft <= 0 || gameOver) return;
+  bombsLeft--; document.getElementById('bomb-badge').textContent = bombsLeft;
+  document.getElementById('btn-bomb').disabled = true;
+  playSFX('bombDrop');
+  
+  setTimeout(() => {
+    const answerArr = answer.split('');
+    const wrongEls = Array.from(document.querySelectorAll('.key')).filter(el => 
+      /^[a-z]$/.test(el.dataset.key) && !answerArr.includes(el.dataset.key) && !el.classList.contains('destroyed') && !el.classList.contains('absent') && !el.classList.contains('orange')
+    );
+    let targets = [];
+    const count = Math.min(4, wrongEls.length);
+    for(let i=0; i<count; i++) {
+        const rIndex = Math.floor(Math.random() * wrongEls.length);
+        targets.push(wrongEls[rIndex]);
+        wrongEls.splice(rIndex, 1);
+    }
+    targets.forEach((keyEl, idx) => {
+      setTimeout(() => {
+        playSFX('bombExplode');
+        keyEl.className = 'key destroyed';
+        keyEl.dataset.state = 'destroyed';
+      }, idx * 120); 
+    });
+  }, 300);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === 'Enter') handleKey('Enter');
+  else if (e.key === 'Backspace') handleKey('⌫');
+  else if (/^[a-z]$/i.test(e.key) && e.key.length === 1) handleKey(e.key.toLowerCase());
+});
+
+startGame();
+</script>
+
+</body>
+</html>

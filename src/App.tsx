@@ -6,11 +6,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Zap, Crown, Users } from 'lucide-react';
+import CasualWordle from './CasualWordle';
 
 // --- Types & Mock Data ---
 type HostbustersState = 'idle' | 'opening' | 'intro' | 'clash' | 'result' | 'winners';
 type RoundWinnersState = 'idle' | 'show';
-type AdminTab = 'hostbusters' | 'round_winners' | 'prize_pool';
+type AdminTab = 'hostbusters' | 'round_winners' | 'prize_pool' | 'wordle';
 type RoundWinnersStage = 'header' | 'expanding' | 'revealing' | 'distributing' | 'celebrating' | 'done';
 
 const ROUND_WINNERS_DATA_BASE = [
@@ -104,6 +105,16 @@ export default function App() {
             }`}
           >
             Prize Pool
+          </button>
+          <button
+            onClick={() => setAdminTab('wordle')}
+            className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
+              adminTab === 'wordle'
+                ? 'bg-white text-gray-900'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Wordle
           </button>
         </div>
 
@@ -228,6 +239,23 @@ export default function App() {
                 Hide
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Wordle controls */}
+        {adminTab === 'wordle' && (
+          <div className="flex flex-col items-center gap-2.5">
+            <div className="flex items-center gap-2">
+              <a
+                href="#/wordle"
+                target="_blank"
+                rel="noreferrer"
+                className="px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/40 transition-all font-sans no-underline"
+              >
+                🔗 Open Wordle Subpage
+              </a>
+            </div>
+            <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Wordle now has its own routing.</p>
           </div>
         )}
       </div>
