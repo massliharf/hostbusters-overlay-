@@ -349,7 +349,7 @@ const SFX = {
     if(currentTheme === 'asmr-glass') { [1500, 2000, 2500, 3000].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.6, 0.2), i*80)); return; }
     if(currentTheme === 'asmr-synth') { [400, 500, 600, 800].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.8, 0.3), i*80)); return; }
     if(currentTheme === 'asmr-click') { [800, 1000, 1200, 1600].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.5, 0.15), i*80)); return; }
-    if(currentTheme === 'asmr-minimal') { [400, 600].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.5, 0.2), i*100)); return; }
+    if(currentTheme === 'asmr-minimal') { [300, 400, 600, 800].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.6, 0.3), i*80)); return; }
     if(currentTheme === 'premium') { [261.63, 329.63, 392.00, 523.25].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.8, 0.15), i*80)); return; }
     if(currentTheme === 'assets') { playAsset('win'); return; }
     const chord = [261.63, 329.63, 392.00, 523.25];
