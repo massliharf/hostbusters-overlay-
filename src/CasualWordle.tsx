@@ -295,7 +295,7 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(80, 'triangle', 0.1, 0.1); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(80, 'sine', 0.04, 0.08); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.05, 0.08); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.1, 0.1); return; }
     if(currentTheme === 'asmr-click') { playSoftADSR(300, 'triangle', 0.05, 0.05); return; }
@@ -305,7 +305,7 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.08); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.03, 0.05); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.06, 0.06); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.1, 0.08); return; }
     if(currentTheme === 'asmr-click') { playSoftADSR(200, 'triangle', 0.05, 0.08); return; }
