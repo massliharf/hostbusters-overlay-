@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal';
+export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui';
 let audioCtx: AudioContext | null = null;
+let masterGain: GainNode | null = null;
+let compressor: DynamicsCompressorNode | null = null;
 let currentTheme: AudioTheme = 'asmr-wood';
 
 export function setTheme(theme: AudioTheme) {
@@ -14,6 +16,19 @@ function initAudio() {
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     audioCtx = new AudioContextClass();
+    
+    compressor = audioCtx.createDynamicsCompressor();
+    compressor.threshold.setValueAtTime(-24, audioCtx.currentTime);
+    compressor.knee.setValueAtTime(30, audioCtx.currentTime);
+    compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
+    compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+    compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
+    
+    masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+    
+    masterGain.connect(compressor);
+    compressor.connect(audioCtx.destination);
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
@@ -54,7 +69,7 @@ function playSampledNote(targetFreq: number, duration: number, vol: number) {
       gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
       
       src.connect(gain);
-      gain.connect(audioCtx.destination);
+      gain.connect(masterGain || audioCtx.destination);
       src.start(t);
       src.stop(t + duration);
       return true;
@@ -149,7 +164,7 @@ function playAdvancedTone(freq: number, duration: number, vol: number) {
 
   o.connect(filter);
   filter.connect(g);
-  g.connect(audioCtx.destination);
+  g.connect(masterGain || audioCtx.destination);
   o.start(t);
   o.stop(t + duration);
 }
@@ -175,7 +190,7 @@ function playSoftADSR(freq: number, type: OscillatorType, duration: number, vol:
 
   o.connect(f);
   f.connect(g);
-  g.connect(audioCtx.destination);
+  g.connect(masterGain || audioCtx.destination);
   o.start(t);
   o.stop(t + duration + 0.1);
 }
@@ -200,7 +215,7 @@ function playSoftSweep(fStart: number, fEnd: number, duration: number, vol: numb
 
   o.connect(f);
   f.connect(g);
-  g.connect(audioCtx.destination);
+  g.connect(masterGain || audioCtx.destination);
   o.start(t);
   o.stop(t + duration + 0.1);
 }
@@ -236,7 +251,7 @@ function playSoftNoise(duration: number, vol: number) {
 
   noise.connect(filter);
   filter.connect(g);
-  g.connect(audioCtx.destination);
+  g.connect(masterGain || audioCtx.destination);
   noise.start(t);
 }
 
@@ -246,8 +261,46 @@ function playAsset(name: string) {
   audio.play().catch(e => console.error("Asset play blocked", e));
 }
 
+// === FOREST SFX THEME EXPERIMENTAL IMPLEMENTATION ===
+function fCtx() { initAudio(); return audioCtx ? audioCtx.currentTime : 0; }
+
+function gOsc(freq: number, type: OscillatorType, start: number, dur: number, vol: number, opts: any = {}) {
+  initAudio(); if (!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.connect(g); g.connect(masterGain || audioCtx.destination);
+  o.type = type; o.frequency.setValueAtTime(freq, start);
+  if (opts.freqEnd) o.frequency.exponentialRampToValueAtTime(opts.freqEnd, start + dur);
+  g.gain.setValueAtTime(0, start);
+  g.gain.linearRampToValueAtTime(vol, Math.max(start, start + (opts.attack || 0.01)));
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  o.start(start); o.stop(start + dur + 0.08);
+}
+
+function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
+  initAudio(); if (!audioCtx) return;
+  const n = Math.ceil(audioCtx.sampleRate * dur);
+  const buf = audioCtx.createBuffer(1, n, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1);
+  const src = audioCtx.createBufferSource(); src.buffer = buf;
+  const filt = audioCtx.createBiquadFilter();
+  filt.type = opts.type || 'bandpass';
+  filt.frequency.setValueAtTime(opts.freq || 800, start);
+  filt.Q.setValueAtTime(opts.Q || 2, start);
+  const g = audioCtx.createGain();
+  src.connect(filt); filt.connect(g); g.connect(masterGain || audioCtx.destination);
+  g.gain.setValueAtTime(0, start);
+  g.gain.linearRampToValueAtTime(vol, Math.max(start, start + (opts.attack || 0.02)));
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  src.start(start); src.stop(start + dur + 0.08);
+}
+// ======================================================
+
 const SFX = {
   type: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(Math.random()*20+300, 'sine', t, .03, .2, { attack:.005 }); gNoise(t, .015, .05, { type:'bandpass', freq:1200, Q:1 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .06, .20, { attack:.002, freqEnd:180 }); gNoise(t, .03, .20, { type:'bandpass', freq:800, Q:2, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.02, 0.02); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.02, 0.03); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.03, 0.05); return; }
@@ -259,6 +312,8 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(150, 'sine', t, .4, .2, { attack:.05, freqEnd:100 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .25, .12, { attack:.05, freqEnd:200 }); gNoise(t, .30, .22, { type:'bandpass', freq:600, Q:2, attack:.08 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.3); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.1, 0.1); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(300, 200, 0.15, 0.3); return; }
@@ -269,6 +324,8 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .3, .15, { attack:.02 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .15, .15, { attack:.02, freqEnd:300 }); gNoise(t, .15, .2, { type:'bandpass', freq:800, Q:2, attack:.02 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(600, 'sine', 0.1, 0.2); triggerHaptic(50); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
@@ -279,6 +336,8 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .5, .2, { attack:.05 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .4, .25, { attack:.02, freqEnd:100 }); gNoise(t, .3, .25, { type:'bandpass', freq:400, Q:1.5, attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'sine', 0.2, 0.4); triggerHaptic([200, 100, 200]); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(1200, 'sine', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(800, 'sine', 0.3, 0.5); triggerHaptic([200, 100, 200]); return; }
@@ -289,6 +348,8 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .08, .04, { type:'bandpass', freq:400, Q:0.5, attack:.02 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .20, .18, { type:'bandpass', freq:400, Q:1.5, attack:.06 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.02, 0.03); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.04, 0.05); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.05, 0.05); return; }
@@ -300,6 +361,8 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .2, .1, { attack:.05 }); gOsc(600, 'sine', t+.08, .3, .15, { attack:.05 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .1, .25, { attack:.005, freqEnd:100 }); gNoise(t, .05, .25, { type:'bandpass', freq:600, Q:1.5, attack:.002 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(80, 'sine', 0.04, 0.08); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.05, 0.08); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.1, 0.1); return; }
@@ -311,6 +374,8 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(100, 'sine', t, .05, .3, { attack:.005, freqEnd:80 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(100, 'sine', t, .18, .28, { attack:.003, freqEnd:60 }); gNoise(t, .05, .25, { type:'lowpass', freq:200, Q:1, attack:.002 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.03, 0.05); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.06, 0.06); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.1, 0.08); return; }
@@ -322,6 +387,8 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(350, 'sine', t, .4, .15, { attack:.01 }); gOsc(700, 'triangle', t, .2, .05, { attack:.01 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .35, .18, { attack:.008 }); gNoise(t, .08, .12, { type:'bandpass', freq:1200, Q:2, attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'triangle', 0.3, 0.2); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(1200, 'sine', 0.3, 0.15); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(300, 'sine', 0.3, 0.2); return; }
@@ -333,6 +400,8 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .5, .15, { attack:.01 }); gOsc(1760, 'sine', t, .6, .05, { attack:.01 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, .45, .22, { attack:.006 }); gOsc(660, 'sine', t+.02, .35, .14, { attack:.006 }); gOsc(880, 'sine', t+.04, .25, .07, { attack:.006 }); gNoise(t, .03, .20, { type:'highpass', freq:2000, Q:.8, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(600, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'triangle', 0.6, 0.2), 40); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.5, 0.2); setTimeout(() => playSoftADSR(2500, 'sine', 0.6, 0.2), 40); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(500, 'sine', 0.5, 0.3); setTimeout(() => playSoftADSR(750, 'sine', 0.6, 0.3), 40); return; }
@@ -344,6 +413,8 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(1200, 'sine', t, .1, .05); gOsc(1500, 'sine', t+.05, .1, .05); gOsc(2000, 'sine', t+.1, .2, .05); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .40, .18, { attack:.005 }); gOsc(1100, 'sine', t+.04, .30, .10, { attack:.005 }); gNoise(t, .03, .15, { type:'highpass', freq:4000, Q:1, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(1000, 'triangle', 0.4, 0.1); setTimeout(() => playSoftADSR(1300, 'triangle', 0.5, 0.1), 40); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(3000, 'sine', 0.3, 0.1); setTimeout(() => playSoftADSR(3500, 'sine', 0.4, 0.1), 40); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(800, 'sine', 0.4, 0.15); setTimeout(() => playSoftADSR(1000, 'sine', 0.5, 0.15), 40); return; }
@@ -355,6 +426,8 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, 1.5, .1, { attack:.2 }); gOsc(550, 'sine', t+.1, 1.5, .08, { attack:.2 }); gOsc(660, 'sine', t+.2, 1.5, .08, { attack:.2 }); gOsc(880, 'sine', t+.3, 2.0, .05, { attack:.3 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ [220, 330, 440, 550, 660, 880].forEach((f, i) => { gOsc(f, 'sine', t+i*.1, .6, .18, { attack:.02 }); gNoise(t+i*.1, .04, .15, { type:'highpass', freq:2000, Q:1, attack:.002 }); }); } return; }
     if(currentTheme === 'asmr-wood') { 
         [
           { f: 261.63, t: 0 }, { f: 329.63, t: 150 }, { f: 392.00, t: 300 }, { f: 523.25, t: 450 },
@@ -414,6 +487,8 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .1, .05, { type:'highpass', freq:2000, Q:1 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .05, .15, { attack:.002, freqEnd:350 }); gNoise(t, .02, .1, { type:'bandpass', freq:1000, Q:2, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.1, 0.1); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.03, 0.06); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(200, 'sine', 0.1, 0.15); return; }
@@ -425,11 +500,15 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, 1.0, .1, { type:'bandpass', freq:1500, Q:0.5, attack:.3 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t) gNoise(t, .30, .2, { type:'bandpass', freq:400, Q:1, attack:.1 }); return; }
     if(['asmr-wood', 'asmr-glass', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'premium'].includes(currentTheme)) { playSoftNoise(0.03, 0.05); return; }
     if(currentTheme === 'assets') { playAsset('hint'); return; }
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .5, .1, { attack:.1 }); gOsc(1200, 'sine', t+.2, .8, .1, { attack:.1 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .3, .18, { attack:.01 }); gOsc(880, 'sine', t+.05, .4, .15, { attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(1000, 'triangle', 0.6, 0.2), 50); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(2500, 'sine', 0.4, 0.3); setTimeout(() => playSoftADSR(3000, 'sine', 0.3, 0.2), 50); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(600, 'sine', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'sine', 0.6, 0.2), 50); return; }
@@ -442,11 +521,15 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .6, .1, { type:'bandpass', freq:600, Q:1, attack:.2 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(150, 'sine', t, .4, .2, { attack:.05, freqEnd:50 }); } return; }
     if(['asmr-wood', 'asmr-glass', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'premium'].includes(currentTheme)) { playSoftNoise(0.03, 0.05); return; }
     if(currentTheme === 'assets') { playAsset('bomb_drop'); return; }
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .8, .15, { type:'lowpass', freq:400, Q:0.5, attack:.02 }); gOsc(80, 'sine', t, .4, .1, { attack:.02, freqEnd:50 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .3, .35, { type:'lowpass', freq:250, Q:0.5, attack:.01 }); gOsc(100, 'sine', t, .25, .2, { attack:.01, freqEnd:60 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.3, 0.1); playSoftNoise(0.02, 0.05); return; }
     if(currentTheme === 'asmr-glass') { playSoftADSR(180, 'sine', 0.2, 0.1); playSoftNoise(0.04, 0.05); return; }
     if(currentTheme === 'asmr-synth') { playSoftADSR(100, 'sine', 0.3, 0.1); return; }
@@ -457,6 +540,10 @@ const SFX = {
     if(currentTheme === 'premium') { playSoftADSR(100, 'sine', 0.2, 0.1); playSoftNoise(0.03, 0.08); return; }
     if(currentTheme === 'assets') { playAsset('bomb_explode'); return; }
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
+  },
+  lose: () => {
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .4, .15, { attack:.1 }); gOsc(250, 'sine', t+.3, .6, .15, { attack:.1, freqEnd:220 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .25, .30, { type:'lowpass', freq:300, Q:1, attack:.01 }); gOsc(140, 'sine', t, .20, .18, { attack:.01, freqEnd:80 }); } return; }
   }
 };
 
@@ -690,6 +777,22 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
     setTimerXPText(null);
     isSubmittingRef.current = false;
     setIntroStage('init');
+  };
+
+  const resetBoard = () => {
+    setGrid(Array(6).fill(null).map(() => Array(5).fill({ char: '', state: null })));
+    setCurrentRow(0);
+    setCurrentCol(0);
+    setTypedLetters([]);
+    setGameOver(false);
+    setEndState('playing');
+    setAnimatingTiles({});
+    setKeyboardState({});
+    setShowVictoryCard(false);
+    setHintsLeft(1);
+    setBombsLeft(1);
+    setTimeLeft(30);
+    isSubmittingRef.current = false;
   };
 
   // --- Core Actions ---
@@ -985,6 +1088,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   // --- Flight Animations ---
   const triggerHint = () => {
     if (hintsLeft <= 0 || gameOver) return;
+    playSFX('type');
     
     const answerArr = answer.split('');
     const unrevealedLetters = answerArr.filter(char => keyboardState[char] !== 'orange' && keyboardState[char] !== 'correct');
@@ -1021,6 +1125,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
   const triggerBomb = () => {
     if (bombsLeft <= 0 || gameOver) return;
+    playSFX('type');
     
     const possibleTargets = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
       .filter(char => !answer.split('').includes(char) && keyboardState[char] !== 'destroyed' && keyboardState[char] !== 'orange');
@@ -1161,13 +1266,13 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure'] as AudioTheme[]).map((theme, index) => (
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => setActiveAudioTheme(theme)}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${theme !== 'soft-ui' ? 'hidden' : ''} ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
-                  OPT {index + 1}
+                  {theme === 'soft-ui' ? 'SOFT UI' : `OPT ${index + 1}`}
               </button>
           ))}
         </div>
@@ -1193,9 +1298,14 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         )}
         
         {!onClose && (
-          <button onClick={fastReset} className="bg-[#111827] pointer-events-auto text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
-            RESET ROUND
-          </button>
+          <div className="flex gap-2 pointer-events-auto">
+            <button onClick={resetBoard} className="bg-orange-500 text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-transparent hover:bg-orange-600 active:scale-95 transition-all">
+              RESET BOARD
+            </button>
+            <button onClick={fastReset} className="bg-[#111827] text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
+              RESET ROUND
+            </button>
+          </div>
         )}
 
         {/* DEV CHEAT: Show Answer */}
@@ -1397,10 +1507,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
              >
                 {/* INNER WRAPPER for correct relative bounding of absolutely positioned elements */}
                 <motion.div 
-                   className="relative flex"
-                   initial={{ gap: 6 }}
-                   animate={{ gap: (endState === 'win' && rIdx === currentRow) ? 0 : 6 }}
-                   transition={{ duration: 0.6, ease: "backOut", delay: (endState === 'win' && rIdx === currentRow) ? 1.4 : 0 }}
+                   className="relative flex gap-[6px]"
                 >
                    <AnimatePresence>
                       {showVictoryCard && rIdx === currentRow && (
@@ -1422,27 +1529,27 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                         >
                            {endState === 'win' && (
                              <>
-                                <div className="text-[52px] font-emoji leading-none mb-2 drop-shadow-xl">🔥</div>
-                                <h2 className="text-[#111827] font-black text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">You got it!</h2>
-                                <p className="text-[#64748b] text-[18px] font-semibold tracking-tight whitespace-nowrap">You cracked the code</p>
+                                <div className="text-[42px] sm:text-[52px] font-emoji leading-none mb-1 sm:mb-2 drop-shadow-xl">🔥</div>
+                                <h2 className="text-[#111827] font-black text-[24px] sm:text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">You got it!</h2>
+                                <p className="text-[#64748b] text-[14px] sm:text-[18px] font-semibold tracking-tight whitespace-nowrap">You cracked the code</p>
                              </>
                            )}
                            {endState === 'tries' && (
                              <>
-                                <div className="text-[52px] font-emoji leading-none mb-2 drop-shadow-xl">😬</div>
-                                <h2 className="text-[#111827] font-black text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">So close!</h2>
-                                <p className="text-[#64748b] text-[18px] font-semibold tracking-tight whitespace-nowrap">Better luck next round.</p>
+                                <div className="text-[42px] sm:text-[52px] font-emoji leading-none mb-1 sm:mb-2 drop-shadow-xl">😬</div>
+                                <h2 className="text-[#111827] font-black text-[24px] sm:text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">So close!</h2>
+                                <p className="text-[#64748b] text-[14px] sm:text-[18px] font-semibold tracking-tight whitespace-nowrap">Better luck next round.</p>
                              </>
                            )}
                            {endState === 'timeout' && (
                              <>
-                                <div className="text-[52px] font-emoji leading-none mb-2 drop-shadow-xl">⏰</div>
-                                <h2 className="text-[#111827] font-black text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">Time’s up!</h2>
-                                <p className="text-[#64748b] text-[18px] font-semibold tracking-tight whitespace-nowrap">Ran out of time on this one.</p>
+                                <div className="text-[42px] sm:text-[52px] font-emoji leading-none mb-1 sm:mb-2 drop-shadow-xl">⏰</div>
+                                <h2 className="text-[#111827] font-black text-[24px] sm:text-[32px] tracking-tight leading-tight mt-1 whitespace-nowrap">Time’s up!</h2>
+                                <p className="text-[#64748b] text-[14px] sm:text-[18px] font-semibold tracking-tight whitespace-nowrap">Ran out of time on this one.</p>
                              </>
                            )}
 
-                           <div className="bg-[#1e293b] text-white text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-6 relative z-10 translate-y-[1px]">
+                           <div className="bg-[#1e293b] text-white text-[11px] sm:text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-4 sm:mt-6 relative z-10 translate-y-[1px]">
                               {endState === 'win' ? 'THE WORD' : 'THE WORD WAS'}
                            </div>
                         </motion.div>
@@ -1452,9 +1559,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                            initial={{ opacity: 0, y: -10 }}
                            animate={{ opacity: 1, y: 0 }}
                            transition={{ duration: 0.4, delay: 0.2 }}
-                           className="absolute top-[100%] mt-12 flex flex-col items-center w-full pointer-events-none"
+                           className="absolute top-[100%] mt-6 sm:mt-12 flex flex-col items-center w-full pointer-events-none"
                         >
-                           <p className="text-[#64748b] text-[17px] font-semibold tracking-tight mb-1 whitespace-nowrap">
+                           <p className="text-[#64748b] text-[14px] sm:text-[17px] font-semibold tracking-tight mb-1 whitespace-nowrap">
                               {timeLeft === 0 ? "Round ending..." : "Waiting for others to finish"}
                            </p>
                            {timeLeft > 0 && (
@@ -1502,7 +1609,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                 else if (isFilled) tileClass += "bg-[#f8fafc] text-[#111827] border-[2px] border-[#cbd5e1] "; 
                 else tileClass += "bg-white border-[2px] border-[#cbd5e1] text-transparent ";
                 
-                const isWinningRow = endState === 'win' && rIdx === currentRow;
+                const mergeWin = showVictoryCard && endState === 'win' && rIdx === currentRow;
 
                 return (
                   <motion.div 
@@ -1513,18 +1620,15 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                     animate={{
                       y: isDance ? [0, -15, 0] : isFlip ? [0, -10, 0] : 0,
                       rotateX: isFlip ? [0, 90, 0] : 0,
-                      x: isShake ? [0, -4, 4, -4, 4, 0] : 0,
+                      x: isShake ? [0, -4, 4, -4, 4, 0] : (mergeWin ? (2 - cIdx) * 6 : 0),
                       scale: isFlip ? [1, 1.15, 1] : 1,
-                      borderRadius: isWinningRow 
-                          ? (cIdx === 0 ? "24px 0px 0px 24px" : cIdx === 4 ? "0px 24px 24px 0px" : "0px") 
+                      borderRadius: mergeWin 
+                          ? (cIdx === 0 ? "8px 0px 0px 8px" : cIdx === 4 ? "0px 8px 8px 0px" : "0px") 
                           : "8px",
-                      boxShadow: isWinningRow 
-                          ? "inset 0px 0px 0px rgba(0,0,0,0)"
-                          : (tState === 'correct' || tState === 'present' ? "inset 0px -3px 0px rgba(0,0,0,0.15)" : "none")
+                      boxShadow: (tState === 'correct' || tState === 'present') ? "inset 0px -3px 0px rgba(0,0,0,0.15)" : "none"
                     }}
                     transition={{ 
-                      borderRadius: { duration: 0.6, ease: "backOut", delay: isWinningRow ? 1.4 : 0 },
-                      boxShadow: { duration: 0.6, ease: "linear", delay: isWinningRow ? 1.4 : 0 },
+                      borderRadius: { duration: 0.8, ease: "easeInOut" },
                       default: {
                         duration: isDance ? 0.5 : isFlip ? 0.4 : isShake ? 0.3 : 0.1,
                         ease: isDance ? "easeInOut" : isFlip ? "easeOut" : "linear"
