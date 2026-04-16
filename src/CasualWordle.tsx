@@ -651,7 +651,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
     setBombsLeft(1);
     setTimerXPText(null);
     isSubmittingRef.current = false;
-    setIntroStage('playing'); // bypass intro
+    setIntroStage('init');
   };
 
   // --- Core Actions ---
