@@ -1,45 +1,54 @@
 import * as Tone from 'tone';
 
 class ToneManagerClass {
-  
-  // Master Gain
-  private masterGain = new Tone.Gain(0.8).toDestination();
+  // Master Channels
+  private masterGain = new Tone.Gain(0.7).toDestination();
+  private lowpass = new Tone.Filter(3000, "lowpass").connect(this.masterGain);
+  private uiLowpass = new Tone.Filter(2000, "lowpass").connect(this.masterGain);
 
-  // 1. Çok kısa, tiz ve yumuşak arayüz tıklamaları için (Harf yazma vb.)
-  private uiSynth = new Tone.Synth({
-      oscillator: { type: "sine" },
-      envelope: { attack: 0.01, decay: 0.05, sustain: 0, release: 0.01 }
+  // 1. ORGANIC TAP (Kalem ucu, tahta tıkklaması) - Harf yazma
+  private tapSynth = new Tone.MembraneSynth({
+    pitchDecay: 0.008,
+    octaves: 1.5,
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.05 }
+  }).connect(this.uiLowpass);
+
+  // 2. TOK VE KALIN CLICK (Submit) - Tahta boşluk
+  private thudSynth = new Tone.MembraneSynth({
+    pitchDecay: 0.02,
+    octaves: 2,
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.001, decay: 0.15, sustain: 0, release: 0.1 }
+  }).connect(this.uiLowpass);
+
+  // 3. KALIMBA / MARIMBA BENZERİ (Sarı, Yeşil, Wordle Başarı Hissi) - FM Sentezi
+  private marimbaSynth = new Tone.PolySynth(Tone.FMSynth, {
+    harmonicity: 3.5,
+    modulationIndex: 1.5,
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.005, decay: 0.2, sustain: 0.1, release: 0.8 },
+    modulation: { type: "triangle" },
+    modulationEnvelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 }
   }).connect(this.masterGain);
 
-  // 2. Tok ve kısa arayüz sesleri için (Submit, Gri harf)
-  private thudSynth = new Tone.Synth({
-      oscillator: { type: "triangle" },
-      envelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 }
-  }).connect(this.masterGain);
+  // 4. SUB BASS (Zamanlayıcı, Bomba) - Sinematik Atmosfer
+  private subSynth = new Tone.MembraneSynth({
+    pitchDecay: 0.05,
+    octaves: 3,
+    oscillator: { type: "sine" },
+    envelope: { attack: 0.01, decay: 0.6, sustain: 0, release: 1.5 }
+  }).connect(this.lowpass);
 
-  // 3. Melodik, yumuşak zil sesleri için (Sarı, Yeşil harf)
-  private chimeSynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "triangle" },
-      envelope: { attack: 0.02, decay: 0.3, sustain: 0.1, release: 1 }
-  }).connect(this.masterGain);
-
-  // 4. Derin basslar ve kalp atışı/bomba sesleri için
-  private bassSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.05,
-      octaves: 4,
-      oscillator: { type: "sine" },
-      envelope: { attack: 0.01, decay: 0.4, sustain: 0.01, release: 1.2 }
-  }).connect(this.masterGain);
-
-  // 5. Silme işlemi için rüzgar/fısıltı benzeri ses (Noise)
-  private noiseSynth = new Tone.NoiseSynth({
-      noise: { type: "pink" },
-      envelope: { attack: 0.01, decay: 0.1, sustain: 0 }
-  }).connect(this.masterGain);
+  // 5. SWIPE / PAPER NOISE (Silme işlemi)
+  private paperSweep = new Tone.NoiseSynth({
+    noise: { type: "white" },
+    envelope: { attack: 0.01, decay: 0.08, sustain: 0 }
+  }).connect(new Tone.Filter(1500, "lowpass").connect(this.masterGain));
 
   public async init() {
     await Tone.start();
-    console.log("Tone.js Yüklendi ve Hazır!");
+    console.log("Tone.js Modern Wordle Mode Hazır!");
   }
 
   public setVolume(val: number) {
@@ -47,6 +56,7 @@ class ToneManagerClass {
   }
 
   private t() { return Tone.now(); }
+  private ctx() { if (Tone.context.state !== 'running') Tone.start(); }
 
   // ============================================
   // TRIGGERS (Oyun Statelerine Göre)
@@ -54,91 +64,113 @@ class ToneManagerClass {
 
   // Core
   type() {
-    if (Tone.context.state !== 'running') Tone.start();
-    this.uiSynth.triggerAttackRelease("C6", "32n", this.t());
+    this.ctx();
+    this.tapSynth.triggerAttackRelease("C4", "32n", this.t());
   }
   
   delete() {
-    if (Tone.context.state !== 'running') Tone.start();
-    this.noiseSynth.triggerAttackRelease("32n", this.t());
+    this.ctx();
+    this.paperSweep.triggerAttackRelease("32n", this.t());
   }
   
   submit() {
-    if (Tone.context.state !== 'running') Tone.start();
-    this.thudSynth.triggerAttackRelease("G2", "16n", this.t());
+    this.ctx();
+    this.thudSynth.triggerAttackRelease("C2", "16n", this.t());
   }
 
   // Feedback
   gray() {
-    this.thudSynth.triggerAttackRelease("C2", "16n", this.t());
+    this.ctx();
+    // Sessiz, derinden gelen, "boş" hissi veren bir thud
+    this.thudSynth.triggerAttackRelease("G1", "16n", this.t());
   }
 
   yellow() {
-    this.chimeSynth.triggerAttackRelease("E4", "8n", this.t());
+    this.ctx();
+    // Ilık ve biraz pozitif (Minörden majöre geçiş hissi - Marimba)
+    this.marimbaSynth.triggerAttackRelease("E4", "8n", this.t());
   }
 
   green() {
-    this.chimeSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n", this.t());
+    this.ctx();
+    // Tamamen doğru, aşırı parlak tatmin edici Majör akor (Marimba)
+    this.marimbaSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n", this.t());
   }
 
   // Rewards
   win() {
-    this.chimeSynth.triggerAttackRelease(["C4", "E4", "G4", "C5"], "2n", this.t());
+    this.ctx();
+    // Duolingo tarzı başarı jingle'ı (Tatlı bir yükseliş arpeji)
+    const time = this.t();
+    this.marimbaSynth.triggerAttackRelease("C4", "16n", time);
+    this.marimbaSynth.triggerAttackRelease("E4", "16n", time + 0.1);
+    this.marimbaSynth.triggerAttackRelease("G4", "16n", time + 0.2);
+    this.marimbaSynth.triggerAttackRelease(["C4", "E4", "G4", "C5"], "2n", time + 0.35);
   }
 
   xp() {
-    this.uiSynth.triggerAttackRelease("G5", "32n", this.t());
+    this.ctx();
+    // XP baloncuk pıt pıt sesleri
+    this.tapSynth.triggerAttackRelease("G5", "32n", this.t());
   }
 
   xpbar() {
+    this.ctx();
     const time = this.t();
-    this.uiSynth.triggerAttackRelease("C5", "16n", time);
-    this.uiSynth.triggerAttackRelease("E5", "16n", time + 0.1);
-    this.uiSynth.triggerAttackRelease("G5", "16n", time + 0.2);
+    this.tapSynth.triggerAttackRelease("C5", "16n", time);
+    this.tapSynth.triggerAttackRelease("E5", "16n", time + 0.05);
+    this.tapSynth.triggerAttackRelease("G5", "16n", time + 0.1);
   }
 
   // Time & Tension & End
   roundInfo() {
-    this.bassSynth.triggerAttackRelease("C1", "4n", this.t());
+    this.ctx();
+    this.subSynth.triggerAttackRelease("C1", "4n", this.t());
   }
 
   timer10() {
-    this.bassSynth.triggerAttackRelease("C1", "32n", this.t());
+    this.ctx();
+    this.subSynth.triggerAttackRelease("C1", "32n", this.t());
   }
 
   timer3() {
-    this.bassSynth.triggerAttackRelease("C1", "4n", this.t());
+    this.ctx();
+    this.subSynth.triggerAttackRelease("C1", "4n", this.t());
   }
 
   timer0() {
-    this.uiSynth.triggerAttackRelease("C6", "8n", this.t());
+    this.ctx();
+    this.marimbaSynth.triggerAttackRelease("C6", "16n", this.t());
   }
 
   lose() {
-    // Out of tries
-    this.thudSynth.triggerAttackRelease("C2", "2n", this.t());
-    // Round end
-    this.chimeSynth.triggerAttackRelease(["A3", "C4", "E4"], "1n", this.t() + 0.2);
+    this.ctx();
+    // Olumsuz, düşen sesler.
+    const time = this.t();
+    this.thudSynth.triggerAttackRelease("D2", "2n", time);
+    this.marimbaSynth.triggerAttackRelease(["A3", "C4", "D4"], "1n", time + 0.15);
   }
 
   // Power-Uplar
   hintWhoosh() {
-    if (Tone.context.state !== 'running') Tone.start();
-    this.uiSynth.triggerAttackRelease("C5", "16n", this.t());
+    this.ctx();
+    this.tapSynth.triggerAttackRelease("C6", "32n", this.t());
   }
 
   hintReveal() {
-    this.chimeSynth.triggerAttackRelease(["G4", "B4", "D5"], "4n", this.t());
+    this.ctx();
+    this.marimbaSynth.triggerAttackRelease(["G4", "B4", "D5"], "4n", this.t());
   }
 
   bombDrop() {
-    if (Tone.context.state !== 'running') Tone.start();
-    this.uiSynth.triggerAttackRelease("C5", "16n", this.t());
+    this.ctx();
+    this.thudSynth.triggerAttackRelease("C3", "16n", this.t());
   }
 
   bombExplode() {
-    this.bassSynth.triggerAttackRelease("C0", "2n", this.t());
-    this.noiseSynth.triggerAttackRelease("8n", this.t());
+    this.ctx();
+    this.subSynth.triggerAttackRelease("C0", "2n", this.t());
+    this.paperSweep.triggerAttackRelease("8n", this.t());
   }
 }
 
