@@ -80,6 +80,11 @@ class MainGeoToneManagerClass {
     this.pinDrop.triggerAttackRelease("E2", "16n", this.t()); // Gri (Uzak kıta, pes boğuk tık)
   }
 
+  error() {
+    this.ctx();
+    this.stampThud.triggerAttackRelease("C1", "16n", this.t()); 
+  }
+
   yellow() {
     this.ctx();
     this.compassChime.triggerAttackRelease("E4", "8n", this.t()); // Sarı (Biraz olumlu, tek çınlama)

@@ -438,6 +438,12 @@ const SFX = {
     if(currentTheme === 'premium') { playSoftADSR(1046.50, 'sine', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
     playAdvancedTone(100, 0.5, 0.4);
   },
+  error: () => {
+    if(currentTheme === 'main-2') { MainTwoToneManager.error(); return; }
+    if(currentTheme === 'main-geo') { MainGeoToneManager.error(); return; }
+    playAdvancedTone(100, 0.1, 0.2); 
+    setTimeout(() => playAdvancedTone(80, 0.1, 0.2), 100);
+  },
   delete: () => { 
     if(currentTheme === 'main-2') { MainTwoToneManager.delete(); return; }
     if(currentTheme === 'main-geo') { MainGeoToneManager.delete(); return; }
@@ -1139,6 +1145,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       triggerHaptic([50, 50, 50]); // ERROR SHAKE!
       setTimeout(() => setAnimatingTiles(prev => { const nv = { ...prev }; for(let i=0; i<5; i++) delete nv[`${currentRow}-${i}`]; return nv; }), 300);
       setMsg('NOT ENOUGH LETTERS'); setTimeout(() => setMsg(''), 1500);
+      playSFX('error');
       return;
     }
 

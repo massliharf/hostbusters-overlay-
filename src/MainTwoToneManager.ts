@@ -92,6 +92,13 @@ class MainTwoToneManagerClass {
     this.hollowThud.triggerAttackRelease("C2", "16n", this.t()); // Boş
   }
 
+  error() {
+    this.ctx();
+    // KIsa, rahatsız etmeyen tok bir hata uyarısı
+    this.heavyLock.triggerAttackRelease("C1", "32n", this.t()); 
+    this.tensionPulse.triggerAttackRelease("C2", "32n", this.t());
+  }
+
   yellow() {
     this.ctx();
     this.glassKeys.triggerAttackRelease(["E4", "B4"], "8n", this.t()); // Umut verici, yarım akor
