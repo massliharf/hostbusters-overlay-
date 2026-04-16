@@ -6,9 +6,10 @@ import { RoyalToneManager } from './RoyalToneManager';
 import { ProminentToneManager } from './ProminentToneManager';
 import { MutedToneManager } from './MutedToneManager';
 import { HybridToneManager } from './HybridToneManager';
+import { GeoToneManager } from './GeoToneManager';
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid';
+export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -305,6 +306,7 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 
 const SFX = {
   roundInfo: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.roundInfo(); return; }
@@ -316,6 +318,7 @@ const SFX = {
     SFX.timer10();
   },
   type: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.type(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.type(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.type(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.type(); return; }
@@ -337,6 +340,7 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.timer10(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer10(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer10(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer10(); return; }
@@ -357,6 +361,7 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.timer3(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer3(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer3(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer3(); return; }
@@ -377,6 +382,7 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.timer0(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer0(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer0(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer0(); return; }
@@ -397,6 +403,7 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.delete(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.delete(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.delete(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.delete(); return; }
@@ -418,6 +425,7 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.submit(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.submit(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.submit(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.submit(); return; }
@@ -439,6 +447,7 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.gray(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.gray(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.gray(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.gray(); return; }
@@ -460,6 +469,7 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.yellow(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.yellow(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.yellow(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.yellow(); return; }
@@ -481,6 +491,7 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.green(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.green(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.green(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.green(); return; }
@@ -502,6 +513,7 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.xp(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.xp(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.xp(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.xp(); return; }
@@ -523,6 +535,7 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.win(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.win(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.win(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.win(); return; }
@@ -592,6 +605,7 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.xpbar(); return; }
@@ -613,6 +627,7 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.hintWhoosh(); return; }
@@ -628,6 +643,7 @@ const SFX = {
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.hintReveal(); return; }
@@ -650,6 +666,7 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.bombDrop(); return; }
@@ -665,6 +682,7 @@ const SFX = {
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
+    if(currentTheme === 'streamer-geo') { GeoToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.bombExplode(); return; }
@@ -687,6 +705,7 @@ const SFX = {
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
   },
   lose: () => {
+    if(currentTheme === 'streamer-geo') { GeoToneManager.lose(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.lose(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.lose(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.lose(); return; }
@@ -1419,7 +1438,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid'] as AudioTheme[]).map((theme, index) => (
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
@@ -1429,9 +1448,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'streamer-prominent') { ProminentToneManager.init(); }
                       if (theme === 'streamer-muted') { MutedToneManager.init(); }
                       if (theme === 'streamer-hybrid') { HybridToneManager.init(); }
+                      if (theme === 'streamer-geo') { GeoToneManager.init(); }
                       setActiveAudioTheme(theme);
                   }}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
                   OPT {index + 1}
               </button>
