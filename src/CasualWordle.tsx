@@ -1075,10 +1075,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   return (
     <div className="fixed inset-0 z-[100] touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       
-      {/* DEV CHEAT: Show Answer */}
-      <div className="absolute top-4 right-4 z-[300] bg-black/80 text-[#38bdf8] font-mono text-xs px-2 py-1 rounded opacity-50 hover:opacity-100 cursor-help font-bold tracking-widest uppercase">
-        {answer}
-      </div>
+
       {/* INTRO SEQUENCE OVERLAY */}
       <AnimatePresence>
         {introStage !== 'playing' && (
@@ -1159,40 +1156,54 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         )}
       </AnimatePresence>
 
-      {/* THEME TOGGLER (Absolute top left) */}
-      <div className="absolute top-4 left-4 z-[101] bg-white rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-none">
-        {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure'] as AudioTheme[]).map((theme, index) => (
-             <button
-                key={theme}
-                onClick={() => setActiveAudioTheme(theme)}
-                className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
-             >
-                OPTION {index + 1}
-             </button>
-        ))}
+      {/* TOP LEFT CONTROLS (Theme + Dev States) */}
+      <div className="absolute top-4 left-4 z-[101] flex flex-col gap-2 items-start pointer-events-none">
+        
+        {/* THEME TOGGLER */}
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure'] as AudioTheme[]).map((theme, index) => (
+              <button
+                  key={theme}
+                  onClick={() => setActiveAudioTheme(theme)}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+              >
+                  OPT {index + 1}
+              </button>
+          ))}
+        </div>
+
+        {/* DEV STATE CONTROLS */}
+        {!onClose && (
+          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-wrap gap-1 items-center justify-center border-dashed">
+            <span className="text-[10px] font-black text-orange-400 px-1">DEV</span>
+            <button onClick={() => forceState('win')} className="px-2 py-1 text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
+            <button onClick={() => forceState('tries')} className="px-2 py-1 text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
+            <button onClick={() => forceState('timeout')} className="px-2 py-1 text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
+          </div>
+        )}
       </div>
 
-      {/* DEV STATE CONTROLS */}
-      {!onClose && (
-        <div className="absolute top-16 left-4 z-[101] bg-white rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-none border-dashed mb-2">
-           <span className="text-[10px] font-black text-orange-400 px-1">DEV</span>
-           <button onClick={() => forceState('win')} className="px-2 py-1 text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
-           <button onClick={() => forceState('tries')} className="px-2 py-1 text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
-           <button onClick={() => forceState('timeout')} className="px-2 py-1 text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
-        </div>
-      )}
+      {/* TOP RIGHT CONTROLS (Close/Reset + Cheat Answer) */}
+      <div className="absolute top-4 right-4 z-[300] flex flex-col gap-2 items-end pointer-events-none">
+        
+        {onClose && (
+          <button onClick={onClose} className="p-2 pointer-events-auto text-black/40 hover:text-black transition-colors rounded-full bg-black/5 shadow-sm">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        )}
+        
+        {!onClose && (
+          <button onClick={fastReset} className="bg-[#111827] pointer-events-auto text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
+            RESET ROUND
+          </button>
+        )}
 
-      {onClose && (
-        <button onClick={onClose} className="absolute top-4 right-4 z-50 p-2 text-black/40 hover:text-black transition-colors rounded-full bg-black/5">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      )}
-      
-      {!onClose && (
-        <button onClick={fastReset} className="absolute top-4 right-4 z-50 bg-[#111827] text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
-          RESET ROUND
-        </button>
-      )}
+        {/* DEV CHEAT: Show Answer */}
+        <div className="bg-black/80 pointer-events-auto text-[#38bdf8] font-mono text-xs px-2 py-1 rounded opacity-50 hover:opacity-100 cursor-help font-bold tracking-widest uppercase shadow-sm">
+          {answer}
+        </div>
+
+      </div>
 
       {/* FLYING ELEMENTS LAYER */}
       <div className="absolute inset-0 pointer-events-none z-[110]">
