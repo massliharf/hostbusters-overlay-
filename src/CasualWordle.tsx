@@ -248,7 +248,7 @@ function playAsset(name: string) {
 
 const SFX = {
   type: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'triangle', 0.05, 0.03); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.02, 0.02); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.02, 0.03); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.03, 0.05); return; }
     if(currentTheme === 'asmr-click') { playSoftADSR(800, 'triangle', 0.02, 0.04); return; }
@@ -285,7 +285,7 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'triangle', 0.05, 0.05); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.02, 0.03); return; }
     if(currentTheme === 'asmr-glass') { playSoftNoise(0.04, 0.05); return; }
     if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.05, 0.05); return; }
     if(currentTheme === 'asmr-click') { playSoftADSR(400, 'triangle', 0.02, 0.04); return; }
