@@ -492,6 +492,17 @@ interface CasualWordleProps {
 }
 
 export default function CasualWordle({ onClose }: CasualWordleProps) {
+  const [globalScale, setGlobalScale] = useState(1);
+  useEffect(() => {
+    const calc = () => {
+      const sy = Math.min(1, window.innerHeight / 750);
+      const sx = Math.min(1, window.innerWidth / 400);
+      setGlobalScale(Math.min(sy, sx));
+    };
+    calc();
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
+  }, []);
   // Game State
   const [answer, setAnswer] = useState(() => WORDS[Math.floor(Math.random() * WORDS.length)]);
   const [grid, setGrid] = useState<{ char: string, state: KeyState }[][]>(
@@ -1073,7 +1084,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   const opponentPercent = Math.min(50, (opponentXP / MAX_XP) * 50);
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-between touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       
       {/* DEV CHEAT: Show Answer */}
       <div className="absolute top-4 right-4 z-[300] bg-black/80 text-[#38bdf8] font-mono text-xs px-2 py-1 rounded opacity-50 hover:opacity-100 cursor-help font-bold tracking-widest uppercase">
@@ -1223,6 +1234,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         </AnimatePresence>
       </div>
 
+      <div 
+         style={{ transform: `scale(${globalScale})`, width: '100%', maxWidth: 400, height: 750, maxHeight: 750 }}
+         className="relative flex flex-col justify-between items-center shrink-0 origin-center space-y-auto"
+      >
       {/* TOP HEADER - HOST AVATAR */}
       <div className="w-full flex flex-col items-center pt-8 pb-1 relative shrink-0 z-10 mt-2 lg:mt-0">
         <div className="relative">
@@ -1615,6 +1630,8 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
           </button>
         </div>
       </motion.div>
+      
+      </div>
     </div>
   );
 }
