@@ -345,40 +345,57 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
-    const maj9 = [261.63, 329.63, 392.00, 493.88, 587.33, 523.25];
     if(currentTheme === 'asmr-wood') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.3, 0.9), i*60)); 
-        setTimeout(() => playSoftADSR(261.63, 'sine', 0.4, 1.7), 360);
+        [
+          { f: 261.63, t: 0 }, { f: 329.63, t: 150 }, { f: 392.00, t: 300 }, { f: 523.25, t: 450 },
+          { f: 392.00, t: 750 }, { f: 659.25, t: 900, d: 1.5 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'triangle', 0.15, n.d || 0.4), n.t));
         return; 
     }
     if(currentTheme === 'asmr-glass') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f * 2, 'sine', 0.2, 1.0), i*50)); 
-        setTimeout(() => playSoftNoise(0.025, 1.3), 300);
+        [
+          { f: 523.25, t: 0 }, { f: 659.25, t: 100 }, { f: 783.99, t: 200 }, { f: 987.77, t: 300 },
+          { f: 1046.50, t: 450 }, { f: 783.99, t: 600 }, { f: 1318.51, t: 800, d: 2.0 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'sine', 0.08, n.d || 0.5), n.t));
+        setTimeout(() => playSoftNoise(0.015, 2.0), 800);
         return; 
     }
     if(currentTheme === 'asmr-synth') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.2, 0.9), i*70)); 
-        setTimeout(() => playSoftSweep(800, 200, 0.1, 1.5), 300); 
+        [
+          { f: 392.00, t: 0 }, { f: 523.25, t: 150 }, { f: 659.25, t: 300 }, { f: 783.99, t: 450, d: 0.8 },
+          { f: 659.25, t: 850 }, { f: 1046.50, t: 1050, d: 1.5 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'square', 0.05, n.d || 0.3), n.t));
+        setTimeout(() => playSoftSweep(800, 400, 0.04, 1.5), 1050);
         return; 
     }
     if(currentTheme === 'asmr-click') { 
-        [400, 500, 600, 800, 1000, 1200].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'square', 0.05, 0.7), i*40)); 
-        setTimeout(() => playSoftADSR(1600, 'sine', 0.15, 1.3), 240);
+        [
+          { f: 523.25, t: 0 }, { f: 783.99, t: 150 }, { f: 659.25, t: 300 }, { f: 1046.50, t: 450 },
+          { f: 783.99, t: 600 }, { f: 1567.98, t: 900, d: 1.5 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'sine', 0.08, n.d || 0.5), n.t));
         return; 
     }
     if(currentTheme === 'asmr-minimal') { 
-        [300, 400, 600, 800, 1000].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.25, 0.9), i*80)); 
-        setTimeout(() => playSoftADSR(1200, 'sine', 0.2, 1.5), 400);
+        [
+          { f: 523.25, t: 0, d: 0.8 }, { f: 783.99, t: 400, d: 0.8 }, 
+          { f: 1046.50, t: 1000, d: 2.0 }, { f: 1318.51, t: 1000, d: 2.0 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'sine', 0.08, n.d), n.t));
         return; 
     }
     if(currentTheme === 'premium') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.25, 1.1), i*60)); 
-        setTimeout(() => { playSoftNoise(0.015, 1.5); playSoftADSR(523.25, 'triangle', 0.3, 1.7); }, 360);
+        [
+          { f: 261.63, t: 0 }, { f: 329.63, t: 0 },
+          { f: 349.23, t: 400 }, { f: 440.00, t: 400 },
+          { f: 392.00, t: 800 }, { f: 493.88, t: 800 },
+          { f: 261.63, t: 1200, d: 2.0 }, { f: 329.63, t: 1200, d: 2.0 }, { f: 392.00, t: 1200, d: 2.0 }, { f: 523.25, t: 1200, d: 2.0 }
+        ].forEach(n => setTimeout(() => playSoftADSR(n.f, 'sine', 0.06, n.d || 0.6), n.t));
+        setTimeout(() => playSoftNoise(0.015, 2.0), 1200);
         return; 
     }
     if(currentTheme === 'assets') { playAsset('win'); return; }
-    maj9.forEach((freq, idx) => setTimeout(() => playAdvancedTone(freq, 0.2, 1.0), idx * 80));
-    setTimeout(() => playAdvancedTone(523.25, 0.25, 1.5), 480);
+    [
+      { f: 523.25, t: 0 }, { f: 659.25, t: 300 }, { f: 783.99, t: 600, d: 1.5 }
+    ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.1, 0.1); return; }
@@ -438,7 +455,7 @@ const KB_LAYOUT = [
 ];
 
 type KeyState = 'correct' | 'present' | 'absent' | 'orange' | 'destroyed' | null;
-type IntroStage = 'init' | 'round1' | '20sec' | '3' | '2' | '1' | 'playing';
+type IntroStage = 'waiting' | 'init' | 'round1' | '20sec' | '3' | '2' | '1' | 'playing';
 
 interface FlightItem {
   id: number;
@@ -461,7 +478,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   );
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
-  const [introStage, setIntroStage] = useState<IntroStage>('init');
+  const [introStage, setIntroStage] = useState<IntroStage>('waiting');
   const [typedLetters, setTypedLetters] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [keyboardState, setKeyboardState] = useState<Record<string, KeyState>>({});
@@ -1051,7 +1068,24 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
             className="absolute inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-b from-[#1b6bfa] to-[#041235] text-white overflow-hidden"
           >
             <AnimatePresence mode="wait">
-              {(introStage === 'round1' || introStage === '120sec') && (
+              {introStage === 'waiting' && (
+                <motion.div
+                  key="waiting"
+                  initial={{ opacity: 0, scale: 0.9 }} 
+                  animate={{ opacity: 1, scale: 1 }} 
+                  exit={{ opacity: 0, scale: 1.1 }}
+                  className="flex flex-col items-center justify-center z-50 p-8"
+                >
+                  <button 
+                    onClick={() => { initAudio(); setIntroStage('init'); }}
+                    className="bg-white text-[#1b6bfa] font-black text-3xl tracking-widest px-12 py-6 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-transform"
+                  >
+                    BAŞLA
+                  </button>
+                  <p className="mt-6 text-white/50 font-bold text-sm tracking-wide text-center">Seslerin yüklenmesi için dokunun</p>
+                </motion.div>
+              )}
+              {(introStage === 'round1' || introStage === '20sec') && (
                 <motion.div 
                   key="details"
                   initial={{ opacity: 0, scale: 0.9 }} 
