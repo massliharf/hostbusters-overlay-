@@ -5,11 +5,10 @@ class ToneManagerClass {
   
   // Synths
   private uiSynth!: Tone.Synth;
+  private thudSynth!: Tone.Synth;
   private chimeSynth!: Tone.PolySynth;
   private bassSynth!: Tone.MembraneSynth;
   private noiseSynth!: Tone.NoiseSynth;
-  private filter!: Tone.Filter;
-  private clickFilter!: Tone.Filter;
 
   // Master Gain
   private masterGain!: Tone.Gain;
@@ -21,38 +20,40 @@ class ToneManagerClass {
 
     this.masterGain = new Tone.Gain(0.8).toDestination();
 
-    // Filters for "muffled" / "soft" sound design
-    this.filter = new Tone.Filter(2000, "lowpass").connect(this.masterGain);
-    this.clickFilter = new Tone.Filter(8000, "lowpass").connect(this.masterGain);
-
-    // 1. CORE UI SYNTH (Short, muted, non-melodic)
+    // 1. Çok kısa, tiz ve yumuşak arayüz tıklamaları için (Harf yazma vb.)
     this.uiSynth = new Tone.Synth({
-      oscillator: { type: "triangle" },
-      envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.01 }
-    }).connect(this.clickFilter);
+        oscillator: { type: "sine" },
+        envelope: { attack: 0.01, decay: 0.05, sustain: 0, release: 0.01 }
+    }).connect(this.masterGain);
 
-    // 2. CHIME SYNTH (Harmonic, warm)
+    // 2. Tok ve kısa arayüz sesleri için (Submit, Gri harf)
+    this.thudSynth = new Tone.Synth({
+        oscillator: { type: "triangle" },
+        envelope: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.1 }
+    }).connect(this.masterGain);
+
+    // 3. Melodik, yumuşak zil sesleri için (Sarı, Yeşil harf)
     this.chimeSynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "sine" },
-      envelope: { attack: 0.01, decay: 0.15, sustain: 0, release: 0.5 }
-    }).connect(this.filter);
+        oscillator: { type: "triangle" },
+        envelope: { attack: 0.02, decay: 0.3, sustain: 0.1, release: 1 }
+    }).connect(this.masterGain);
 
-    // 3. MEMBRANE SYNTH (Tension, Sub-bass pulse)
+    // 4. Derin basslar ve kalp atışı/bomba sesleri için
     this.bassSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.05,
-      octaves: 2,
-      oscillator: { type: "sine" },
-      envelope: { attack: 0.02, decay: 0.5, sustain: 0, release: 0.2 }
-    }).connect(this.filter);
+        pitchDecay: 0.05,
+        octaves: 4,
+        oscillator: { type: "sine" },
+        envelope: { attack: 0.01, decay: 0.4, sustain: 0.01, release: 1.2 }
+    }).connect(this.masterGain);
 
-    // 4. NOISE SYNTH (Whoosh, sweeps, deletes)
+    // 5. Silme işlemi için rüzgar/fısıltı benzeri ses (Noise)
     this.noiseSynth = new Tone.NoiseSynth({
-      noise: { type: "pink" },
-      envelope: { attack: 0.01, decay: 0.1, sustain: 0 }
-    }).connect(this.filter);
+        noise: { type: "pink" },
+        envelope: { attack: 0.01, decay: 0.1, sustain: 0 }
+    }).connect(this.masterGain);
     
     this.initialized = true;
-    console.log("Tone.js Initialized!");
+    console.log("Tone.js Yüklendi ve Hazır!");
   }
 
   public setVolume(val: number) {
@@ -62,130 +63,109 @@ class ToneManagerClass {
   private t() { return Tone.now(); }
 
   // ============================================
-  // TRIGGERS
+  // TRIGGERS (Oyun Statelerine Göre)
   // ============================================
 
-  // 1. Core
+  // Core
   type() {
     if(!this.initialized) return;
-    this.uiSynth.triggerAttackRelease("C5", "32n", this.t(), 0.3);
+    this.uiSynth.triggerAttackRelease("C6", "32n", this.t());
   }
   
   delete() {
     if(!this.initialized) return;
-    this.noiseSynth.triggerAttackRelease("16n", this.t(), 0.2);
-    this.bassSynth.triggerAttackRelease("C2", "16n", this.t(), 0.1);
+    this.noiseSynth.triggerAttackRelease("32n", this.t());
   }
   
   submit() {
     if(!this.initialized) return;
-    this.bassSynth.triggerAttackRelease("G2", "8n", this.t(), 0.3);
-    this.uiSynth.triggerAttackRelease("C3", "16n", this.t(), 0.4);
+    this.thudSynth.triggerAttackRelease("G2", "16n", this.t());
   }
 
-  // 2. Feedback
+  // Feedback
   gray() {
     if(!this.initialized) return;
-    this.bassSynth.triggerAttackRelease("C2", "8n", this.t(), 0.4);
+    this.thudSynth.triggerAttackRelease("C2", "16n", this.t());
   }
 
   yellow() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.chimeSynth.triggerAttackRelease("G4", "8n", time, 0.5);
-    this.chimeSynth.triggerAttackRelease("B4", "8n", time + 0.05, 0.4);
+    this.chimeSynth.triggerAttackRelease("E4", "8n", this.t());
   }
 
   green() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.chimeSynth.triggerAttackRelease(["C5", "E5", "G5"], "8n", time, 0.5);
+    this.chimeSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n", this.t());
   }
 
-  // 3. Rewards
+  // Rewards
   win() {
     if(!this.initialized) return;
-    const time = this.t();
-    ["C5", "E5", "G5", "C6"].forEach((note, i) => {
-      this.chimeSynth.triggerAttackRelease(note, "8n", time + i * 0.06, 0.4);
-    });
-    this.chimeSynth.triggerAttackRelease(["C5", "E5", "G5", "C6"], "2n", time + 0.24, 0.6);
+    this.chimeSynth.triggerAttackRelease(["C4", "E4", "G4", "C5"], "2n", this.t());
   }
 
   xp() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.uiSynth.triggerAttackRelease("E5", "32n", time, 0.2);
-    this.uiSynth.triggerAttackRelease("G5", "32n", time + 0.05, 0.2);
-    this.uiSynth.triggerAttackRelease("C6", "32n", time + 0.1, 0.2);
+    this.uiSynth.triggerAttackRelease("G5", "32n", this.t());
   }
 
   xpbar() {
     if(!this.initialized) return;
-    this.uiSynth.triggerAttackRelease("C6", "32n", this.t(), 0.1);
-    this.noiseSynth.triggerAttackRelease("32n", this.t(), 0.05);
+    const time = this.t();
+    this.uiSynth.triggerAttackRelease("C5", "16n", time);
+    this.uiSynth.triggerAttackRelease("E5", "16n", time + 0.1);
+    this.uiSynth.triggerAttackRelease("G5", "16n", time + 0.2);
   }
 
-  // 4. Time & Tension
+  // Time & Tension & End
   roundInfo() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.bassSynth.triggerAttackRelease("C1", "2n", time, 0.5);
-    this.bassSynth.triggerAttackRelease("C1", "2n", time + 0.2, 0.5);
-    this.bassSynth.triggerAttackRelease("C1", "2n", time + 0.4, 0.5);
-    this.chimeSynth.triggerAttackRelease("C6", "8n", time + 0.6, 0.3);
+    this.bassSynth.triggerAttackRelease("C1", "4n", this.t());
   }
 
   timer10() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.bassSynth.triggerAttackRelease("C1", "16n", time, 0.4);
-    this.bassSynth.triggerAttackRelease("C1", "16n", time + 0.15, 0.3);
+    this.bassSynth.triggerAttackRelease("C1", "32n", this.t());
   }
 
   timer3() {
     if(!this.initialized) return;
-    this.bassSynth.triggerAttackRelease("C1", "2n", this.t(), 0.6);
+    this.bassSynth.triggerAttackRelease("C1", "4n", this.t());
   }
 
   timer0() {
     if(!this.initialized) return;
-    this.bassSynth.triggerAttackRelease("C1", "1m", this.t(), 0.8);
-    this.chimeSynth.triggerAttackRelease("C6", "8n", this.t(), 0.4);
+    this.uiSynth.triggerAttackRelease("C6", "8n", this.t());
   }
 
   lose() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.uiSynth.triggerAttackRelease("C4", "8n", time, 0.4);
-    this.bassSynth.triggerAttackRelease("C2", "2n", time + 0.2, 0.6);
-    this.noiseSynth.triggerAttackRelease("4n", time + 0.2, 0.2);
+    // Out of tries
+    this.thudSynth.triggerAttackRelease("C2", "2n", this.t());
+    // Round end
+    this.chimeSynth.triggerAttackRelease(["A3", "C4", "E4"], "1n", this.t() + 0.2);
   }
 
+  // Power-Uplar
   hintWhoosh() {
     if(!this.initialized) return;
-    const time = this.t();
-    this.uiSynth.triggerAttackRelease("C5", "16n", time, 0.2);
-    this.noiseSynth.triggerAttackRelease("16n", time + 0.05, 0.1);
+    this.uiSynth.triggerAttackRelease("C5", "16n", this.t());
   }
 
   hintReveal() {
     if(!this.initialized) return;
-    const time = this.t();
-    ["C5", "D5", "E5", "G5", "C6"].forEach((note, i) => {
-      this.chimeSynth.triggerAttackRelease(note, "16n", time + i * 0.05, 0.3);
-    });
+    this.chimeSynth.triggerAttackRelease(["G4", "B4", "D5"], "4n", this.t());
   }
 
   bombDrop() {
     if(!this.initialized) return;
-    this.uiSynth.triggerAttackRelease("G4", "16n", this.t(), 0.2);
+    this.uiSynth.triggerAttackRelease("C5", "16n", this.t());
   }
 
   bombExplode() {
     if(!this.initialized) return;
-    this.bassSynth.triggerAttackRelease("C1", "1m", this.t(), 0.8);
-    this.noiseSynth.triggerAttackRelease("2n", this.t(), 0.4);
+    this.bassSynth.triggerAttackRelease("C0", "2n", this.t());
+    this.noiseSynth.triggerAttackRelease("8n", this.t());
   }
 }
 
