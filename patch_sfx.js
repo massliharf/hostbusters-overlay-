@@ -1,177 +1,77 @@
 const fs = require('fs');
+let content = fs.readFileSync('src/CasualWordle.tsx', 'utf8');
 
-const file = '/Users/tahoe/hostbusters-overlay/src/CasualWordle.tsx';
-let content = fs.readFileSync(file, 'utf8');
+// 1. replace AudioTheme
+content = content.replace(
+  /export type AudioTheme = .*?;/,
+  "export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest';"
+);
 
-// The new SFX definition
-const newSFX = `const SFX = {
-  type: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'triangle', 0.05, 0.03); return; }
-    if(currentTheme === 'asmr-glass') { playSoftNoise(0.02, 0.03); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.03, 0.05); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(800, 'triangle', 0.02, 0.04); return; }
-    if(currentTheme === 'asmr-minimal') { return; }
-    if(currentTheme === 'premium') { playSoftNoise(0.01, 0.03); return; }
-    if(currentTheme === 'assets') { playAsset('click_type'); return; }
-    playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
-  },
-  timer10: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.3); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(300, 200, 0.15, 0.3); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(600, 'triangle', 0.1, 0.15); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftNoise(0.05, 0.05); return; }
-    if(currentTheme === 'premium') { playSoftADSR(100, 'triangle', 0.15, 0.2); return; }
-    playAdvancedTone(200, 2.0, 0.2);
-  },
-  timer3: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.3); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.1, 0.1); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(300, 200, 0.15, 0.3); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(600, 'triangle', 0.1, 0.15); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftNoise(0.05, 0.05); triggerHaptic(50); return; }
-    if(currentTheme === 'premium') { playSoftADSR(100, 'triangle', 0.15, 0.2); triggerHaptic(50); return; }
-    playAdvancedTone(800, 0.1, 0.1);
-  },
-  timer0: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(250, 'triangle', 0.5, 0.4); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(3000, 'sine', 0.5, 0.3); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(400, 100, 0.6, 0.5); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(400, 'triangle', 0.4, 0.3); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(200, 'sine', 0.5, 0.2); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'premium') { playSoftADSR(349.23, 'triangle', 0.4, 0.15); triggerHaptic([200, 100, 200]); return; }
-    playAdvancedTone(100, 0.5, 0.4);
-  },
-  delete: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'triangle', 0.05, 0.05); return; }
-    if(currentTheme === 'asmr-glass') { playSoftNoise(0.04, 0.05); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.05, 0.05); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(400, 'triangle', 0.02, 0.04); return; }
-    if(currentTheme === 'asmr-minimal') { return; }
-    if(currentTheme === 'premium') { playSoftADSR(100, 'sine', 0.1, 0.2); return; }
-    if(currentTheme === 'assets') { playAsset('delete'); return; }
-    playAdvancedTone(250, 0.1, 0.2); 
-  },
-  submit: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(80, 'triangle', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-glass') { playSoftNoise(0.05, 0.08); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(200, 100, 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(300, 'triangle', 0.05, 0.05); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftNoise(0.05, 0.05); return; }
-    if(currentTheme === 'premium') { playSoftADSR(180, 'sine', 0.1, 0.1); setTimeout(() => playSoftADSR(250, 'sine', 0.15, 0.1), 30); return; }
-    if(currentTheme === 'assets') { playAsset('submit'); return; }
-    setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
-  },
-  gray: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.08); return; }
-    if(currentTheme === 'asmr-glass') { playSoftNoise(0.06, 0.06); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.1, 0.08); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(200, 'triangle', 0.05, 0.08); return; }
-    if(currentTheme === 'asmr-minimal') { return; } // completely silent
-    if(currentTheme === 'premium') { playSoftNoise(0.04, 0.06); return; }
-    if(currentTheme === 'assets') { playAsset('gray'); return; }
-    playAdvancedTone(150, 0.2, 0.3); 
-  },
-  yellow: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'triangle', 0.3, 0.2); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(1200, 'sine', 0.3, 0.15); return; }
-    if(currentTheme === 'asmr-synth') { playSoftADSR(300, 'sine', 0.3, 0.2); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(800, 'triangle', 0.1, 0.15); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(400, 'sine', 0.2, 0.1); return; }
-    if(currentTheme === 'premium') { playSoftADSR(349.23, 'triangle', 0.4, 0.15); return; }
-    if(currentTheme === 'assets') { playAsset('yellow'); return; }
-    playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
-  },
-  green: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(600, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'triangle', 0.6, 0.2), 40); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.5, 0.2); setTimeout(() => playSoftADSR(2500, 'sine', 0.6, 0.2), 40); return; }
-    if(currentTheme === 'asmr-synth') { playSoftADSR(500, 'sine', 0.5, 0.3); setTimeout(() => playSoftADSR(750, 'sine', 0.6, 0.3), 40); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(1200, 'triangle', 0.2, 0.2); setTimeout(() => playSoftADSR(1600, 'triangle', 0.3, 0.2), 40); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(600, 'sine', 0.4, 0.1); return; }
-    if(currentTheme === 'premium') { playSoftADSR(523.25, 'triangle', 0.6, 0.2); playSoftADSR(659.25, 'triangle', 0.6, 0.15); return; }
-    if(currentTheme === 'assets') { playAsset('green'); return; }
-    playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
-  },
-  xp: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(1000, 'triangle', 0.4, 0.1); setTimeout(() => playSoftADSR(1300, 'triangle', 0.5, 0.1), 40); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(3000, 'sine', 0.3, 0.1); setTimeout(() => playSoftADSR(3500, 'sine', 0.4, 0.1), 40); return; }
-    if(currentTheme === 'asmr-synth') { playSoftADSR(800, 'sine', 0.4, 0.15); setTimeout(() => playSoftADSR(1000, 'sine', 0.5, 0.15), 40); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(1500, 'triangle', 0.2, 0.1); setTimeout(() => playSoftADSR(2000, 'triangle', 0.2, 0.1), 40); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(800, 'sine', 0.3, 0.1); return; }
-    if(currentTheme === 'premium') { playSoftADSR(1046.5, 'sine', 0.4, 0.05); setTimeout(() => playSoftADSR(1567.98, 'sine', 0.6, 0.05), 40); return; }
-    if(currentTheme === 'assets') { playAsset('xp'); return; }
-    playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
-  },
-  win: () => {
-    if(currentTheme === 'asmr-wood') { [300, 400, 500, 600].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.8, 0.2), i*80)); return; }
-    if(currentTheme === 'asmr-glass') { [1500, 2000, 2500, 3000].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.6, 0.2), i*80)); return; }
-    if(currentTheme === 'asmr-synth') { [400, 500, 600, 800].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.8, 0.3), i*80)); return; }
-    if(currentTheme === 'asmr-click') { [800, 1000, 1200, 1600].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.5, 0.15), i*80)); return; }
-    if(currentTheme === 'asmr-minimal') { [400, 600].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.5, 0.2), i*100)); return; }
-    if(currentTheme === 'premium') { [261.63, 329.63, 392.00, 523.25].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.8, 0.15), i*80)); return; }
-    if(currentTheme === 'assets') { playAsset('win'); return; }
-    const chord = [261.63, 329.63, 392.00, 523.25];
-    chord.forEach((freq, idx) => setTimeout(() => playAdvancedTone(freq, 0.4, 0.2), idx * 100));
-  },
-  xpbar: () => {
-    if(currentTheme === 'asmr-wood') { playSoftSweep(400, 100, 0.3, 0.2); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.4, 0.2); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(800, 400, 0.4, 0.2); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(500, 'triangle', 0.2, 0.1); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(300, 'sine', 0.4, 0.2); return; }
-    if(currentTheme === 'premium') { playSoftNoise(0.05, 0.08); return; }
-    if(currentTheme === 'assets') { playAsset('green'); return; }
-    playSoftSweep(300, 800, 0.4, 0.2);
-  },
-  hintWhoosh: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(300, 'triangle', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(1500, 'sine', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(400, 200, 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(600, 'triangle', 0.05, 0.1); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(200, 'sine', 0.1, 0.1); return; }
-    if(currentTheme === 'premium') { playSoftADSR(400, 'triangle', 0.05, 0.1); return; } 
-    if(currentTheme === 'assets') { playAsset('hint'); return; }
-    playSoftSweep(600, 200, 0.3, 0.1);
-  },
-  hintReveal: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(1000, 'triangle', 0.6, 0.2), 50); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2500, 'sine', 0.4, 0.3); setTimeout(() => playSoftADSR(3000, 'sine', 0.3, 0.2), 50); return; }
-    if(currentTheme === 'asmr-synth') { playSoftADSR(600, 'sine', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'sine', 0.6, 0.2), 50); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(1200, 'triangle', 0.2, 0.2); setTimeout(() => playSoftADSR(1600, 'triangle', 0.3, 0.2), 50); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(1000, 'sine', 0.3, 0.2); return; }
-    if(currentTheme === 'premium') { playSoftADSR(1500, 'sine', 0.4, 0.3); setTimeout(() => playSoftADSR(2000, 'sine', 0.3, 0.2), 50); return; }
-    if(currentTheme === 'assets') { playAsset('green'); return; }
-    playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
-  },
-  bombDrop: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(300, 'triangle', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(1500, 'sine', 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(400, 200, 0.1, 0.1); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(600, 'triangle', 0.05, 0.1); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(200, 'sine', 0.1, 0.1); return; }
-    if(currentTheme === 'premium') { playSoftADSR(400, 'triangle', 0.05, 0.1); return; } 
-    if(currentTheme === 'assets') { playAsset('bomb_drop'); return; }
-    playSoftSweep(800, 200, 0.3, 0.15);
-  },
-  bombExplode: () => { 
-    if(currentTheme === 'asmr-wood') { playSoftSweep(200, 50, 0.3, 0.4); return; }
-    if(currentTheme === 'asmr-glass') { playSoftNoise(0.1, 0.2); playSoftADSR(1500, 'sine', 0.2, 0.2); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(150, 50, 0.4, 0.4); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(200, 'square', 0.2, 0.2); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(100, 'sine', 0.3, 0.2); return; }
-    if(currentTheme === 'premium') { playSoftADSR(80, 'square', 0.2, 0.2); playSoftNoise(0.1, 0.15); return; }
-    if(currentTheme === 'assets') { playAsset('bomb_explode'); return; }
-    playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
-  }
-};`
+const newAudioFunctions = `
+function fCtx() { initAudio(); return audioCtx ? audioCtx.currentTime : 0; }
+function gOsc(freq, type, start, dur, vol, opts = {}) {
+  initAudio(); if (!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.connect(g); g.connect(audioCtx.destination);
+  o.type = type; o.frequency.setValueAtTime(freq, start);
+  if (opts.freqEnd) o.frequency.exponentialRampToValueAtTime(opts.freqEnd, start + dur);
+  g.gain.setValueAtTime(0, start);
+  g.gain.linearRampToValueAtTime(vol, Math.max(start, start + (opts.attack || 0.01)));
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  o.start(start); o.stop(start + dur + 0.08);
+}
+function gNoise(start, dur, vol, opts = {}) {
+  initAudio(); if (!audioCtx) return;
+  const n = Math.ceil(audioCtx.sampleRate * dur);
+  const buf = audioCtx.createBuffer(1, n, audioCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1);
+  const src = audioCtx.createBufferSource(); src.buffer = buf;
+  const filt = audioCtx.createBiquadFilter();
+  filt.type = opts.type || 'bandpass';
+  filt.frequency.setValueAtTime(opts.freq || 800, start);
+  filt.Q.setValueAtTime(opts.Q || 2, start);
+  const g = audioCtx.createGain();
+  src.connect(filt); filt.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(0, start);
+  g.gain.linearRampToValueAtTime(vol, Math.max(start, start + (opts.attack || 0.02)));
+  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  src.start(start); src.stop(start + dur + 0.08);
+}
 
-const startIdx = content.indexOf('const SFX = {');
-const endIdx = content.indexOf('const playSFX = (name: keyof typeof SFX) =>');
+const SFX = {`;
 
-// Just to be safe, find the exact bounds
-const head = content.substring(0, startIdx);
-const tail = content.substring(endIdx);
+content = content.replace('const SFX = {', newAudioFunctions);
 
-content = head + newSFX + '\n\n' + tail;
+const additions = {
+  type: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .06, .20, { attack:.002, freqEnd:180 }); gNoise(t, .03, .20, { type:'bandpass', freq:800, Q:2, attack:.001 }); } return; }",
+  timer10: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .25, .12, { attack:.05, freqEnd:200 }); gNoise(t, .30, .22, { type:'bandpass', freq:600, Q:2, attack:.08 }); } return; }",
+  timer3: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .15, .15, { attack:.02, freqEnd:300 }); gNoise(t, .15, .2, { type:'bandpass', freq:800, Q:2, attack:.02 }); } return; }",
+  timer0: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .4, .25, { attack:.02, freqEnd:100 }); gNoise(t, .3, .25, { type:'bandpass', freq:400, Q:1.5, attack:.01 }); } return; }",
+  delete: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .20, .18, { type:'bandpass', freq:400, Q:1.5, attack:.06 }); } return; }",
+  submit: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .1, .25, { attack:.005, freqEnd:100 }); gNoise(t, .05, .25, { type:'bandpass', freq:600, Q:1.5, attack:.002 }); } return; }",
+  gray: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(100, 'sine', t, .18, .28, { attack:.003, freqEnd:60 }); gNoise(t, .05, .25, { type:'lowpass', freq:200, Q:1, attack:.002 }); } return; }",
+  yellow: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .35, .18, { attack:.008 }); gNoise(t, .08, .12, { type:'bandpass', freq:1200, Q:2, attack:.01 }); } return; }",
+  green: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, .45, .22, { attack:.006 }); gOsc(660, 'sine', t+.02, .35, .14, { attack:.006 }); gOsc(880, 'sine', t+.04, .25, .07, { attack:.006 }); gNoise(t, .03, .20, { type:'highpass', freq:2000, Q:.8, attack:.001 }); } return; }",
+  xp: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .40, .18, { attack:.005 }); gOsc(1100, 'sine', t+.04, .30, .10, { attack:.005 }); gNoise(t, .03, .15, { type:'highpass', freq:4000, Q:1, attack:.001 }); } return; }",
+  win: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ [220, 330, 440, 550, 660, 880].forEach((f, i) => { gOsc(f, 'sine', t+i*.1, .6, .18, { attack:.02 }); gNoise(t+i*.1, .04, .15, { type:'highpass', freq:2000, Q:1, attack:.002 }); }); } return; }",
+  xpbar: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .05, .15, { attack:.002, freqEnd:350 }); gNoise(t, .02, .1, { type:'bandpass', freq:1000, Q:2, attack:.001 }); } return; }",
+  hintWhoosh: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .30, .2, { type:'bandpass', freq:400, Q:1, attack:.1 }); } return; }",
+  hintReveal: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .3, .18, { attack:.01 }); gOsc(880, 'sine', t+.05, .4, .15, { attack:.01 }); } return; }",
+  bombDrop: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(150, 'sine', t, .4, .2, { attack:.05, freqEnd:50 }); } return; }",
+  bombExplode: "if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .3, .35, { type:'lowpass', freq:250, Q:0.5, attack:.01 }); gOsc(100, 'sine', t, .25, .2, { attack:.01, freqEnd:60 }); } return; }",
+};
 
-fs.writeFileSync(file, content);
+for (const [key, code] of Object.entries(additions)) {
+  const regex = new RegExp(key + ": \\(\\) => {");
+  content = content.replace(regex, key + ": () => { " + code + "\\n");
+}
+
+// Add lose
+if (!content.includes('lose: () =>')) {
+  // append lose before the end of SFX
+  content = content.replace("};", "  lose: () => { if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .25, .30, { type:'lowpass', freq:300, Q:1, attack:.01 }); gOsc(140, 'sine', t, .20, .18, { attack:.01, freqEnd:80 }); } return; } }\\n};");
+}
+
+fs.writeFileSync('src/CasualWordle.tsx', content);

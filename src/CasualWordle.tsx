@@ -1266,11 +1266,13 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui'] as AudioTheme[]).map((theme, index) => (
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui'] as AudioTheme[])
+            .filter(theme => theme === 'soft-ui')
+            .map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => setActiveAudioTheme(theme)}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${theme !== 'soft-ui' ? 'hidden' : ''} ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
                   {theme === 'soft-ui' ? 'SOFT UI' : `OPT ${index + 1}`}
               </button>
