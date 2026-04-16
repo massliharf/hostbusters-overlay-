@@ -1489,10 +1489,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                 const isDance = animatingTiles[`${rIdx}-${cIdx}`] === 'dance';
                 
                 // Base CSS
-                let tileClass = "w-[min(12vw,50px)] h-[min(12vw,50px)] sm:w-[48px] sm:h-[48px] flex flex-none items-center justify-center text-[28px] font-black rounded-[8px] uppercase select-none ";
-                if (tState === 'correct') tileClass += "bg-[#4ade80] text-[#111827] border-none ";
-                else if (tState === 'present') tileClass += "bg-[#fbbf24] text-[#111827] border-none ";
-                else if (tState === 'absent') tileClass += "bg-[#cbd5e1] text-[#111827] border-none ";
+                let tileClass = "w-[min(12vw,50px)] h-[min(12vw,50px)] sm:w-[48px] sm:h-[48px] flex flex-none items-center justify-center text-[28px] font-black rounded-[8px] uppercase select-none overflow-hidden ";
+                if (tState === 'correct') tileClass += "bg-[#4ade80] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.15)] ";
+                else if (tState === 'present') tileClass += "bg-[#fbbf24] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.15)] ";
+                else if (tState === 'absent') tileClass += "bg-[#cbd5e1] text-[#111827] border-none shadow-[inset_0_-3px_0_rgba(0,0,0,0.1)] ";
                 else if (tState === 'question') tileClass += "bg-white text-[#111827] border-[2px] border-[#cbd5e1] "; 
                 else if (isFilled) tileClass += "bg-[#f8fafc] text-[#111827] border-[2px] border-[#cbd5e1] "; 
                 else tileClass += "bg-white border-[2px] border-[#cbd5e1] text-transparent ";
@@ -1503,20 +1503,32 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                     id={`wb-tile-${rIdx}-${cIdx}`} 
                     className={`${tileClass} relative z-10 origin-center`}
                     animate={{
-                      y: isDance ? [0, -15, 0] : 0,
+                      y: isDance ? [0, -15, 0] : isFlip ? [0, -10, 0] : 0,
                       rotateX: isFlip ? [0, 90, 0] : 0,
                       x: isShake ? [0, -4, 4, -4, 4, 0] : 0,
                       scale: isFlip ? [1, 1.15, 1] : 1,
                     }}
                     transition={{ 
-                      duration: isDance ? 0.5 : isFlip ? 0.2 : isShake ? 0.3 : 0.1,
-                      ease: isDance ? "easeInOut" : "linear"
+                      duration: isDance ? 0.5 : isFlip ? 0.4 : isShake ? 0.3 : 0.1,
+                      ease: isDance ? "easeInOut" : isFlip ? "easeOut" : "linear"
                     }}
                   >
-                    {isPop ? <motion.span animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.1 }}>{char}</motion.span>
-                     : <span>{char}</span>
+                    {isPop ? <motion.span animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 0.1 }} className="relative z-10">{char}</motion.span>
+                     : <span className="relative z-10">{char}</span>
                     }
+
+                    {/* SHINY REVEAL SWEEP */}
                     <AnimatePresence>
+                      {tState && tState !== 'question' && (
+                        <motion.div 
+                           initial={{ left: '-150%', opacity: 0 }}
+                           animate={{ left: '150%', opacity: [0, 1, 0] }}
+                           transition={{ duration: 0.7, ease: "easeInOut" }}
+                           className="absolute top-0 bottom-0 w-[150%] bg-gradient-to-r from-transparent via-white/80 to-transparent -skew-x-12 z-20 pointer-events-none"
+                        />
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
                       {floatXPText.filter(f => f.row === rIdx && f.col === cIdx).map(f => (
                         <motion.div
                           key={f.id}
