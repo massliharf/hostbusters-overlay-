@@ -1101,9 +1101,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                     onClick={() => { initAudio(); setIntroStage('init'); }}
                     className="bg-white text-[#1b6bfa] font-black text-3xl tracking-widest px-12 py-6 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-transform"
                   >
-                    BAŞLA
+                    START
                   </button>
-                  <p className="mt-6 text-white/50 font-bold text-sm tracking-wide text-center">Seslerin yüklenmesi için dokunun</p>
+                  <p className="mt-6 text-white/50 font-bold text-sm tracking-wide text-center">Tap to unlock audio</p>
                 </motion.div>
               )}
               {(introStage === 'round1' || introStage === '20sec') && (
