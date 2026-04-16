@@ -267,21 +267,21 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.3); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.1, 0.1); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(300, 200, 0.15, 0.3); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(600, 'triangle', 0.1, 0.15); triggerHaptic(50); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftNoise(0.05, 0.05); triggerHaptic(50); return; }
-    if(currentTheme === 'premium') { playSoftADSR(100, 'triangle', 0.15, 0.2); triggerHaptic(50); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
+    if(currentTheme === 'asmr-glass') { playSoftADSR(600, 'sine', 0.1, 0.2); triggerHaptic(50); return; }
+    if(currentTheme === 'asmr-synth') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
+    if(currentTheme === 'asmr-click') { playSoftADSR(400, 'triangle', 0.1, 0.15); triggerHaptic(50); return; }
+    if(currentTheme === 'asmr-minimal') { playSoftADSR(500, 'sine', 0.1, 0.2); triggerHaptic(50); return; }
+    if(currentTheme === 'premium') { playSoftADSR(523.25, 'sine', 0.15, 0.2); triggerHaptic(50); return; }
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
-    if(currentTheme === 'asmr-wood') { playSoftADSR(250, 'triangle', 0.5, 0.4); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-glass') { playSoftADSR(3000, 'sine', 0.5, 0.3); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-synth') { playSoftSweep(400, 100, 0.6, 0.5); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-click') { playSoftADSR(400, 'triangle', 0.4, 0.3); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'asmr-minimal') { playSoftADSR(200, 'sine', 0.5, 0.2); triggerHaptic([200, 100, 200]); return; }
-    if(currentTheme === 'premium') { playSoftADSR(349.23, 'triangle', 0.4, 0.15); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'sine', 0.2, 0.4); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'asmr-glass') { playSoftADSR(1200, 'sine', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'asmr-synth') { playSoftADSR(800, 'sine', 0.3, 0.5); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'asmr-click') { playSoftADSR(800, 'triangle', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'asmr-minimal') { playSoftADSR(1000, 'sine', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
+    if(currentTheme === 'premium') { playSoftADSR(1046.50, 'sine', 0.2, 0.3); triggerHaptic([200, 100, 200]); return; }
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
