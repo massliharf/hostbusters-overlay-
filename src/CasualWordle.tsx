@@ -298,6 +298,10 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 // ======================================================
 
 const SFX = {
+  roundInfo: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(80, 'sine', t, .6, .4, { freqEnd: 40 }); gOsc(600, 'square', t, .3, .15); gOsc(600, 'square', t+.15, .2, .1); gOsc(600, 'square', t+.3, .15, .05); } return; }
+    SFX.timer10();
+  },
   type: () => { 
     if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(600, 'triangle', t, .04, .3, { attack:.005 }); gOsc(800, 'sine', t, .04, .2, { attack:.005 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(Math.random()*20+300, 'sine', t, .03, .2, { attack:.005 }); gNoise(t, .015, .05, { type:'bandpass', freq:1200, Q:1 }); } return; }
@@ -326,7 +330,7 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
-    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1000, 'square', t, .1, .2); } return; }
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(60, 'sine', t, .5, .3); gOsc(1000, 'square', t, .1, .2); gOsc(1000, 'square', t+.15, .1, .08); gOsc(1000, 'square', t+.3, .1, .03); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .3, .15, { attack:.02 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .15, .15, { attack:.02, freqEnd:300 }); gNoise(t, .15, .2, { type:'bandpass', freq:800, Q:2, attack:.02 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
@@ -339,7 +343,7 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
-    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1500, 'square', t, .4, .2); gOsc(2000, 'square', t, .4, .2); } return; }
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(60, 'sine', t, .8, .4, { freqEnd: 40 }); gOsc(1500, 'square', t, .4, .2); gOsc(2000, 'square', t, .4, .2); gOsc(1500, 'square', t+.2, .3, .1); gOsc(2000, 'square', t+.2, .3, .1); gOsc(1500, 'square', t+.4, .2, .05); gOsc(2000, 'square', t+.4, .2, .05); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .5, .2, { attack:.05 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .4, .25, { attack:.02, freqEnd:100 }); gNoise(t, .3, .25, { type:'bandpass', freq:400, Q:1.5, attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'sine', 0.2, 0.4); triggerHaptic([200, 100, 200]); return; }
@@ -648,10 +652,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
     if (introStage === 'init') {
       setTimeout(() => setIntroStage('round1'), 500);
     } else if (introStage === 'round1') {
-      playSFX('type'); triggerHaptic(50);
+      playSFX('roundInfo'); triggerHaptic(50);
       setTimeout(() => setIntroStage('20sec'), 800);
     } else if (introStage === '20sec') {
-      playSFX('type'); triggerHaptic(50);
+      playSFX('roundInfo'); triggerHaptic(50);
       setTimeout(() => setIntroStage('3'), 1500);
     } else if (introStage === '3') {
       playSFX('timer3'); triggerHaptic(100);
