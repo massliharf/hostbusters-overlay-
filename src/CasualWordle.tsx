@@ -347,38 +347,38 @@ const SFX = {
   win: () => {
     const maj9 = [261.63, 329.63, 392.00, 493.88, 587.33, 523.25];
     if(currentTheme === 'asmr-wood') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.6, 0.4), i*60)); 
-        setTimeout(() => playSoftADSR(261.63, 'sine', 0.8, 1.2), 360);
+        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.3, 0.9), i*60)); 
+        setTimeout(() => playSoftADSR(261.63, 'sine', 0.4, 1.7), 360);
         return; 
     }
     if(currentTheme === 'asmr-glass') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f * 2, 'sine', 0.4, 0.5), i*50)); 
-        setTimeout(() => playSoftNoise(0.05, 0.8), 300);
+        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f * 2, 'sine', 0.2, 1.0), i*50)); 
+        setTimeout(() => playSoftNoise(0.025, 1.3), 300);
         return; 
     }
     if(currentTheme === 'asmr-synth') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.4, 0.4), i*70)); 
-        setTimeout(() => playSoftSweep(800, 200, 0.2, 1.0), 300); 
+        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'triangle', 0.2, 0.9), i*70)); 
+        setTimeout(() => playSoftSweep(800, 200, 0.1, 1.5), 300); 
         return; 
     }
     if(currentTheme === 'asmr-click') { 
-        [400, 500, 600, 800, 1000, 1200].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'square', 0.1, 0.2), i*40)); 
-        setTimeout(() => playSoftADSR(1600, 'sine', 0.3, 0.8), 240);
+        [400, 500, 600, 800, 1000, 1200].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'square', 0.05, 0.7), i*40)); 
+        setTimeout(() => playSoftADSR(1600, 'sine', 0.15, 1.3), 240);
         return; 
     }
     if(currentTheme === 'asmr-minimal') { 
-        [300, 400, 600, 800, 1000].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.5, 0.4), i*80)); 
-        setTimeout(() => playSoftADSR(1200, 'sine', 0.4, 1.0), 400);
+        [300, 400, 600, 800, 1000].forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.25, 0.9), i*80)); 
+        setTimeout(() => playSoftADSR(1200, 'sine', 0.2, 1.5), 400);
         return; 
     }
     if(currentTheme === 'premium') { 
-        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.5, 0.6), i*60)); 
-        setTimeout(() => { playSoftNoise(0.03, 1.0); playSoftADSR(523.25, 'triangle', 0.6, 1.2); }, 360);
+        maj9.forEach((f, i) => setTimeout(() => playSoftADSR(f, 'sine', 0.25, 1.1), i*60)); 
+        setTimeout(() => { playSoftNoise(0.015, 1.5); playSoftADSR(523.25, 'triangle', 0.3, 1.7); }, 360);
         return; 
     }
     if(currentTheme === 'assets') { playAsset('win'); return; }
-    maj9.forEach((freq, idx) => setTimeout(() => playAdvancedTone(freq, 0.4, 0.5), idx * 80));
-    setTimeout(() => playAdvancedTone(523.25, 0.5, 1.0), 480);
+    maj9.forEach((freq, idx) => setTimeout(() => playAdvancedTone(freq, 0.2, 1.0), idx * 80));
+    setTimeout(() => playAdvancedTone(523.25, 0.25, 1.5), 480);
   },
   xpbar: () => {
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.1, 0.1); return; }
