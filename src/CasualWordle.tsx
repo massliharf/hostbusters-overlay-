@@ -1239,9 +1239,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
          className="relative flex flex-col justify-between items-center shrink-0 origin-center space-y-auto"
       >
       {/* TOP HEADER - HOST AVATAR */}
-      <div className="w-full flex flex-col items-center pt-8 pb-1 relative shrink-0 z-10 mt-2 lg:mt-0">
-        <div className="relative">
-          <div className="w-[190px] h-[210px] rounded-[70px] rounded-b-[60px] overflow-hidden bg-[#2188ff] relative">
+      <div className="w-full flex flex-col items-center pt-6 pb-2 relative shrink-0 z-10 mt-2 lg:mt-0">
+        <div className="relative flex justify-center w-full">
+          <div className="w-[35%] min-w-[120px] max-w-[150px] aspect-[19/21] rounded-[35%] rounded-b-[30%] overflow-hidden bg-[#2188ff] relative shadow-lg">
             <img src="https://picsum.photos/seed/scott_wordle/300/300" alt="Host" className="w-full h-full object-cover scale-105 select-none" />
           </div>
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center bg-white shadow-sm rounded-full px-2 py-1 z-10 whitespace-nowrap border border-gray-100">
