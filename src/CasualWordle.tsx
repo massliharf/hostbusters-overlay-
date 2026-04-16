@@ -492,17 +492,6 @@ interface CasualWordleProps {
 }
 
 export default function CasualWordle({ onClose }: CasualWordleProps) {
-  const [globalScale, setGlobalScale] = useState(1);
-  useEffect(() => {
-    const calc = () => {
-      const sy = Math.min(1, window.innerHeight / 750);
-      const sx = Math.min(1, window.innerWidth / 400);
-      setGlobalScale(Math.min(sy, sx));
-    };
-    calc();
-    window.addEventListener('resize', calc);
-    return () => window.removeEventListener('resize', calc);
-  }, []);
   // Game State
   const [answer, setAnswer] = useState(() => WORDS[Math.floor(Math.random() * WORDS.length)]);
   const [grid, setGrid] = useState<{ char: string, state: KeyState }[][]>(
@@ -1084,7 +1073,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   const opponentPercent = Math.min(50, (opponentXP / MAX_XP) * 50);
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <div className="fixed inset-0 z-[100] touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       
       {/* DEV CHEAT: Show Answer */}
       <div className="absolute top-4 right-4 z-[300] bg-black/80 text-[#38bdf8] font-mono text-xs px-2 py-1 rounded opacity-50 hover:opacity-100 cursor-help font-bold tracking-widest uppercase">
@@ -1234,12 +1223,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         </AnimatePresence>
       </div>
 
-      <div 
-         style={{ transform: `scale(${globalScale})`, width: '100%', maxWidth: 400, height: 750, maxHeight: 750 }}
-         className="relative flex flex-col justify-between items-center shrink-0 origin-center space-y-auto"
-      >
+      <div className="w-full max-w-[420px] h-[100dvh] mx-auto flex flex-col justify-between relative px-2">
       {/* TOP HEADER - HOST AVATAR */}
-      <div className="w-full flex flex-col items-center pt-6 pb-2 relative shrink-0 z-10 mt-2 lg:mt-0">
+      <div className="w-full flex flex-col items-center flex-none pt-4 pb-2 relative z-10 shrink-0">
         <div className="relative flex justify-center w-full">
           <div className="w-[35%] min-w-[120px] max-w-[150px] aspect-[19/21] rounded-[35%] rounded-b-[30%] overflow-hidden bg-[#2188ff] relative shadow-lg">
             <img src="https://picsum.photos/seed/scott_wordle/300/300" alt="Host" className="w-full h-full object-cover scale-105 select-none" />
@@ -1259,7 +1245,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       )}
 
       {/* OPPOSING XP BAR */}
-      <div id="wb-xp-bar" className="w-full max-w-[375px] px-6 shrink-0 flex flex-col items-center mt-6 z-10 relative origin-top max-[400px]:scale-[0.90] max-[360px]:scale-[0.80] transition-transform">
+      <div id="wb-xp-bar" className="w-full max-w-[375px] px-6 shrink-0 flex-none flex flex-col items-center mt-2 z-10 relative">
         
         {/* AVATARS OVERLAP */}
         <div className="absolute top-[12px] -translate-y-1/2 left-[20px] w-[28px] h-[28px] bg-[#a3e635] rounded-full border-[2px] border-[#38bdf8] z-20 flex items-center justify-center pointer-events-none shadow-sm">
@@ -1348,7 +1334,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
       {/* GAME GRID */}
       <motion.div 
-         className="grow w-full flex flex-col items-center justify-center mb-8 mt-4 z-0 relative origin-top max-[400px]:scale-[0.85] max-[360px]:scale-[0.75] [@media(max-height:750px)]:scale-[0.85] [@media(max-height:650px)]:scale-[0.75] transition-transform"
+         className="flex-1 min-h-[0] w-full flex flex-col items-center justify-center my-4 z-0 relative"
          animate={{ y: showVictoryCard ? Math.max(0, (2 - currentRow) * 55 + 60) : 0 }}
          transition={{ duration: 0.8, ease: "circOut" }}
       >
@@ -1399,7 +1385,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                transition={{ duration: 0.8, ease: "easeOut" }}
              >
                 {/* INNER WRAPPER for correct relative bounding of absolutely positioned elements */}
-                <div className="relative flex gap-[7px]">
+                <div className="relative flex gap-1.5 sm:gap-[7px]">
                    <AnimatePresence>
                       {showVictoryCard && rIdx === currentRow && (
                         <>
@@ -1492,7 +1478,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                 const isDance = animatingTiles[`${rIdx}-${cIdx}`] === 'dance';
                 
                 // Base CSS
-                let tileClass = "w-[48px] h-[48px] flex items-center justify-center text-[28px] font-black rounded-[8px] uppercase select-none ";
+                let tileClass = "w-[min(12vw,50px)] h-[min(12vw,50px)] sm:w-[48px] sm:h-[48px] flex flex-none items-center justify-center text-[28px] font-black rounded-[8px] uppercase select-none ";
                 if (tState === 'correct') tileClass += "bg-[#4ade80] text-[#111827] border-none ";
                 else if (tState === 'present') tileClass += "bg-[#fbbf24] text-[#111827] border-none ";
                 else if (tState === 'absent') tileClass += "bg-[#cbd5e1] text-[#111827] border-none ";
@@ -1553,7 +1539,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       {/* KEYBOARD */}
       <motion.div 
          animate={{ opacity: showVictoryCard || endState === 'timeout' ? 0 : 1 }}
-         className="w-full shrink-0 flex flex-col items-center pb-6 px-1.5 z-10 space-y-4 origin-bottom max-[400px]:scale-[0.90] max-[360px]:scale-[0.85] [@media(max-height:750px)]:scale-[0.90] [@media(max-height:650px)]:scale-[0.80] [@media(max-height:650px)]:pb-2 transition-transform"
+         className="w-full flex-none shrink-0 flex flex-col items-center pb-8 px-1 mt-auto z-10 space-y-2 sm:space-y-4"
       >
         {/* QWERTY Cluster (Strict 136px height bound limit) */}
         <div className="flex flex-col gap-[6px] w-full max-w-[400px]">
@@ -1630,7 +1616,6 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
           </button>
         </div>
       </motion.div>
-      
       </div>
     </div>
   );
