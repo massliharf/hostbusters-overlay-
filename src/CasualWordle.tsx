@@ -1576,8 +1576,12 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                   <button 
                     id={`wb-key-${k}`}
                     key={k} 
-                    onMouseDown={(e) => { e.preventDefault(); handleKey(k); }}
-                    onTouchStart={(e) => { e.preventDefault(); handleKey(k); }}
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      // Only allow left-clicks for mouse devices (button 0), or touch inputs
+                      if (e.pointerType === 'mouse' && e.button !== 0) return;
+                      handleKey(k);
+                    }}
                     className={keyClass}
                   >
                      {/* Destroyd Cross out effect for Extra visual polish */}
