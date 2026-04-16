@@ -1385,9 +1385,11 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
           playSFX('win');
           setTimeout(() => setShowVictoryCard(true), 500); 
       } else if (state === 'tries') {
+          playSFX('lose');
           setTimeout(() => setShowVictoryCard(true), 100);
       } else if (state === 'timeout') {
           setTimeLeft(0);
+          playSFX('timer0');
           setTimeout(() => setShowVictoryCard(true), 100);
       }
   };
