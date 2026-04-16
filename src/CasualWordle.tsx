@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui';
+export type AudioTheme = 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -299,6 +299,7 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 
 const SFX = {
   type: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(600, 'triangle', t, .04, .3, { attack:.005 }); gOsc(800, 'sine', t, .04, .2, { attack:.005 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(Math.random()*20+300, 'sine', t, .03, .2, { attack:.005 }); gNoise(t, .015, .05, { type:'bandpass', freq:1200, Q:1 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .06, .20, { attack:.002, freqEnd:180 }); gNoise(t, .03, .20, { type:'bandpass', freq:800, Q:2, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.02, 0.02); return; }
@@ -312,6 +313,7 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(800, 'square', t, .05, .15); gOsc(800, 'square', t+.1, .05, .15); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(150, 'sine', t, .4, .2, { attack:.05, freqEnd:100 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .25, .12, { attack:.05, freqEnd:200 }); gNoise(t, .30, .22, { type:'bandpass', freq:600, Q:2, attack:.08 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(120, 'triangle', 0.15, 0.3); return; }
@@ -324,6 +326,7 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1000, 'square', t, .1, .2); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .3, .15, { attack:.02 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .15, .15, { attack:.02, freqEnd:300 }); gNoise(t, .15, .2, { type:'bandpass', freq:800, Q:2, attack:.02 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'sine', 0.15, 0.3); triggerHaptic(50); return; }
@@ -336,6 +339,7 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1500, 'square', t, .4, .2); gOsc(2000, 'square', t, .4, .2); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .5, .2, { attack:.05 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .4, .25, { attack:.02, freqEnd:100 }); gNoise(t, .3, .25, { type:'bandpass', freq:400, Q:1.5, attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'sine', 0.2, 0.4); triggerHaptic([200, 100, 200]); return; }
@@ -348,6 +352,7 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   delete: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(200, 'square', t, .1, .15, { attack:.01, freqEnd:100 }); gNoise(t, .08, .1, { type:'highpass', freq:1000, Q:2 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .08, .04, { type:'bandpass', freq:400, Q:0.5, attack:.02 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .20, .18, { type:'bandpass', freq:400, Q:1.5, attack:.06 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.02, 0.03); return; }
@@ -361,6 +366,7 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(400, 'square', t, .1, .15); gOsc(600, 'square', t+.05, .1, .15); gOsc(800, 'square', t+.1, .2, .15); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .2, .1, { attack:.05 }); gOsc(600, 'sine', t+.08, .3, .15, { attack:.05 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(200, 'sine', t, .1, .25, { attack:.005, freqEnd:100 }); gNoise(t, .05, .25, { type:'bandpass', freq:600, Q:1.5, attack:.002 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(80, 'sine', 0.04, 0.08); return; }
@@ -374,6 +380,7 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(150, 'triangle', t, .1, .3, { attack:.01, freqEnd:80 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(100, 'sine', t, .05, .3, { attack:.005, freqEnd:80 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(100, 'sine', t, .18, .28, { attack:.003, freqEnd:60 }); gNoise(t, .05, .25, { type:'lowpass', freq:200, Q:1, attack:.002 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(100, 'sine', 0.03, 0.05); return; }
@@ -387,6 +394,7 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(600, 'sine', t, .15, .3); gOsc(900, 'sine', t+.05, .3, .2); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(350, 'sine', t, .4, .15, { attack:.01 }); gOsc(700, 'triangle', t, .2, .05, { attack:.01 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .35, .18, { attack:.008 }); gNoise(t, .08, .12, { type:'bandpass', freq:1200, Q:2, attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(400, 'triangle', 0.3, 0.2); return; }
@@ -400,6 +408,7 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(880, 'square', t, .2, .2); gOsc(1320, 'square', t+.05, .2, .15); gOsc(1760, 'sine', t+.1, .6, .3); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .5, .15, { attack:.01 }); gOsc(1760, 'sine', t, .6, .05, { attack:.01 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, .45, .22, { attack:.006 }); gOsc(660, 'sine', t+.02, .35, .14, { attack:.006 }); gOsc(880, 'sine', t+.04, .25, .07, { attack:.006 }); gNoise(t, .03, .20, { type:'highpass', freq:2000, Q:.8, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(600, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'triangle', 0.6, 0.2), 40); return; }
@@ -413,6 +422,7 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1200, 'square', t, .05, .2); gOsc(1600, 'square', t+.05, .15, .2); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(1200, 'sine', t, .1, .05); gOsc(1500, 'sine', t+.05, .1, .05); gOsc(2000, 'sine', t+.1, .2, .05); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .40, .18, { attack:.005 }); gOsc(1100, 'sine', t+.04, .30, .10, { attack:.005 }); gNoise(t, .03, .15, { type:'highpass', freq:4000, Q:1, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(1000, 'triangle', 0.4, 0.1); setTimeout(() => playSoftADSR(1300, 'triangle', 0.5, 0.1), 40); return; }
@@ -426,6 +436,7 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((f,i) => gOsc(f, 'square', t+i*.08, .2, .15)); gOsc(1046.5, 'sine', t+.4, 2.0, .2); gOsc(1567.98, 'sine', t+.4, 2.0, .2); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, 1.5, .1, { attack:.2 }); gOsc(550, 'sine', t+.1, 1.5, .08, { attack:.2 }); gOsc(660, 'sine', t+.2, 1.5, .08, { attack:.2 }); gOsc(880, 'sine', t+.3, 2.0, .05, { attack:.3 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ [220, 330, 440, 550, 660, 880].forEach((f, i) => { gOsc(f, 'sine', t+i*.1, .6, .18, { attack:.02 }); gNoise(t+i*.1, .04, .15, { type:'highpass', freq:2000, Q:1, attack:.002 }); }); } return; }
     if(currentTheme === 'asmr-wood') { 
@@ -487,6 +498,7 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1000, 'square', t, .05, .1, { freqEnd: 1500 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .1, .05, { type:'highpass', freq:2000, Q:1 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(400, 'sine', t, .05, .15, { attack:.002, freqEnd:350 }); gNoise(t, .02, .1, { type:'bandpass', freq:1000, Q:2, attack:.001 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.1, 0.1); return; }
@@ -500,6 +512,7 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .3, .2, { freqEnd: 2000 }); gNoise(t, .3, .2, { type:'highpass', freq:1000, Q:1 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, 1.0, .1, { type:'bandpass', freq:1500, Q:0.5, attack:.3 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t) gNoise(t, .30, .2, { type:'bandpass', freq:400, Q:1, attack:.1 }); return; }
     if(['asmr-wood', 'asmr-glass', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'premium'].includes(currentTheme)) { playSoftNoise(0.03, 0.05); return; }
@@ -507,6 +520,7 @@ const SFX = {
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1500, 'square', t, .2, .2); gOsc(2000, 'sine', t+.1, .6, .3); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(800, 'sine', t, .5, .1, { attack:.1 }); gOsc(1200, 'sine', t+.2, .8, .1, { attack:.1 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(550, 'sine', t, .3, .18, { attack:.01 }); gOsc(880, 'sine', t+.05, .4, .15, { attack:.01 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(800, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(1000, 'triangle', 0.6, 0.2), 50); return; }
@@ -521,6 +535,7 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(1000, 'square', t, .3, .2, { freqEnd: 100 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .6, .1, { type:'bandpass', freq:600, Q:1, attack:.2 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(150, 'sine', t, .4, .2, { attack:.05, freqEnd:50 }); } return; }
     if(['asmr-wood', 'asmr-glass', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'premium'].includes(currentTheme)) { playSoftNoise(0.03, 0.05); return; }
@@ -528,6 +543,7 @@ const SFX = {
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gNoise(t, .6, .4, { type:'lowpass', freq:800, Q:0.5 }); gOsc(100, 'sawtooth', t, .4, .3, { freqEnd:40 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gNoise(t, .8, .15, { type:'lowpass', freq:400, Q:0.5, attack:.02 }); gOsc(80, 'sine', t, .4, .1, { attack:.02, freqEnd:50 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .3, .35, { type:'lowpass', freq:250, Q:0.5, attack:.01 }); gOsc(100, 'sine', t, .25, .2, { attack:.01, freqEnd:60 }); } return; }
     if(currentTheme === 'asmr-wood') { playSoftADSR(150, 'sine', 0.3, 0.1); playSoftNoise(0.02, 0.05); return; }
@@ -542,6 +558,7 @@ const SFX = {
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
   },
   lose: () => {
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(300, 'sawtooth', t, .4, .2, { freqEnd:150 }); gOsc(200, 'sawtooth', t+.4, .6, .2, { freqEnd:100 }); } return; }
     if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(300, 'sine', t, .4, .15, { attack:.1 }); gOsc(250, 'sine', t+.3, .6, .15, { attack:.1, freqEnd:220 }); } return; }
     if(currentTheme === 'forest') { const t=fCtx(); if(t){ gNoise(t, .25, .30, { type:'lowpass', freq:300, Q:1, attack:.01 }); gOsc(140, 'sine', t, .20, .18, { attack:.01, freqEnd:80 }); } return; }
   }
@@ -1266,11 +1283,11 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui'] as AudioTheme[]).map((theme, index) => (
+          {(['asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => setActiveAudioTheme(theme)}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${theme !== 'soft-ui' ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['soft-ui', 'wordle-dopamine'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
                   OPT {index + 1}
               </button>
