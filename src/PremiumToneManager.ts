@@ -130,26 +130,23 @@ class PremiumToneManagerClass {
   // POWER-UPS
   hintWhoosh() {
     this.ctx();
-    this.pluckingSynth.triggerAttackRelease("C5", "16n", this.t(), 1.0);
+    this.pluckingSynth.triggerAttackRelease("C4", "16n", this.t(), 0.4);
   }
 
   hintReveal() {
     this.ctx();
-    this.successSynth.triggerAttackRelease(["G4", "B4", "D5"], "4n", this.t());
+    this.successSynth.triggerAttackRelease(["E4", "G4", "B4"], "8n", this.t(), 0.5);
   }
 
   bombDrop() {
     this.ctx();
-    this.pluckingSynth.triggerAttackRelease("C3", "16n", this.t(), 1.0);
+    this.pluckingSynth.triggerAttackRelease("A2", "16n", this.t(), 0.4);
   }
 
   bombExplode() {
     this.ctx();
-    this.impactSynth.triggerAttackRelease("C2", "2n", this.t(), 1.5);
-    try {
-        const noise = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.05, decay: 0.5, sustain: 0 } }).toDestination();
-        noise.triggerAttackRelease("4n", this.t());
-    } catch(e) {}
+    // Tok ve soft bir dip vuruşu, ekstra gürültü (noise) yok
+    this.impactSynth.triggerAttackRelease("C2", "4n", this.t(), 0.6);
   }
 }
 
