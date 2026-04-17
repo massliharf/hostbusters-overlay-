@@ -1543,9 +1543,21 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       <AnimatePresence>
         {introStage !== 'playing' && (
           <motion.div 
-            initial={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 1, '--dot-size': '30px' } as any} 
+            exit={{ opacity: 0, '--dot-size': '0px' } as any} 
+            transition={{ 
+              duration: 0.7,
+              opacity: { delay: 0.5, duration: 0.2 },
+              '--dot-size': { duration: 0.6, ease: "easeIn" }
+            } as any}
+            style={{
+              WebkitMaskImage: 'radial-gradient(circle, black var(--dot-size), transparent calc(var(--dot-size) + 0.5px))',
+              WebkitMaskSize: '36px 36px',
+              WebkitMaskPosition: 'center',
+              maskImage: 'radial-gradient(circle, black var(--dot-size), transparent calc(var(--dot-size) + 0.5px))',
+              maskSize: '36px 36px',
+              maskPosition: 'center',
+            } as any}
             className="absolute inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-b from-[#1b6bfa] to-[#041235] text-white overflow-hidden"
           >
             <AnimatePresence mode="wait">
