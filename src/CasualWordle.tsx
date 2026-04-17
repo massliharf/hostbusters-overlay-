@@ -1677,10 +1677,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       </AnimatePresence>
 
       {/* TOP LEFT CONTROLS (Theme + Dev States) */}
-      <div className="absolute top-4 left-4 z-[101] flex flex-col gap-2 items-start pointer-events-none">
+      <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-[101] flex flex-col gap-2 items-start pointer-events-none max-w-[calc(100vw-16px)]">
         
         {/* THEME TOGGLER */}
-        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[600px] justify-center text-center">
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center max-w-[calc(100vw-16px)] sm:max-w-[600px] justify-start sm:justify-center text-center overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
           {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-wood', 'theme-duo', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
@@ -1698,7 +1698,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'streamer-sweet') { SweetVictoryToneManager.init(); }
                       setActiveAudioTheme(theme);
                   }}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`shrink-0 px-2 py-1 text-[8px] sm:text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
                   {theme.replace('main-', 'MAIN ').replace('theme-', '').replace('streamer-', 'OPT ')}
               </button>
@@ -1707,17 +1707,17 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
         {/* DEV STATE CONTROLS */}
         {!onClose && (
-          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-wrap gap-1 items-center justify-center border-dashed">
-            <span className="text-[10px] font-black text-orange-400 px-1">DEV</span>
-            <button onClick={() => forceState('win')} className="px-2 py-1 text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
-            <button onClick={() => forceState('tries')} className="px-2 py-1 text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
-            <button onClick={() => forceState('timeout')} className="px-2 py-1 text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
+          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center justify-start sm:justify-center border-dashed overflow-x-auto hide-scrollbar max-w-[calc(100vw-16px)]" style={{ scrollbarWidth: 'none' }}>
+            <span className="shrink-0 text-[8px] sm:text-[10px] font-black text-orange-400 px-1">DEV</span>
+            <button onClick={() => forceState('win')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
+            <button onClick={() => forceState('tries')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
+            <button onClick={() => forceState('timeout')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
           </div>
         )}
       </div>
 
       {/* TOP RIGHT CONTROLS (Close/Reset + Cheat Answer) */}
-      <div className="absolute top-4 right-4 z-[300] flex flex-col gap-2 items-end pointer-events-none">
+      <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-[300] flex flex-col gap-2 items-end pointer-events-none">
         
         {onClose && (
           <button onClick={onClose} className="p-2 pointer-events-auto text-black/40 hover:text-black transition-colors rounded-full bg-black/5 shadow-sm">
@@ -1726,11 +1726,11 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         )}
         
         {!onClose && (
-          <div className="flex gap-2 pointer-events-auto">
-            <button onClick={resetBoard} className="bg-orange-500 text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-transparent hover:bg-orange-600 active:scale-95 transition-all">
+          <div className="flex gap-1 sm:gap-2 pointer-events-auto">
+            <button onClick={resetBoard} className="shrink-0 bg-orange-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black tracking-wider shadow-sm border border-transparent hover:bg-orange-600 active:scale-95 transition-all">
               RESET BOARD
             </button>
-            <button onClick={fastReset} className="bg-[#111827] text-white px-3 py-1.5 rounded-full text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
+            <button onClick={fastReset} className="shrink-0 bg-[#111827] text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black tracking-wider shadow-sm border border-white/20 hover:bg-[#334155] active:scale-95 transition-all">
               RESET ROUND
             </button>
           </div>
@@ -1774,9 +1774,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
       <div className="w-full max-w-[420px] h-[100dvh] mx-auto flex flex-col justify-between relative px-2">
       {/* TOP HEADER - HOST AVATAR */}
-      <div className="w-full flex flex-col items-center flex-none pt-4 pb-2 relative z-10 shrink-0">
+      <div className="w-full flex flex-col items-center flex-none pt-2 sm:pt-4 pb-1 sm:pb-2 relative z-10 shrink-0">
         <div className="relative flex justify-center w-full">
-          <div className="w-[35%] min-w-[120px] max-w-[150px] aspect-[19/21] rounded-[35%] rounded-b-[30%] overflow-hidden bg-[#2188ff] relative shadow-lg">
+          <div className="w-[30%] sm:w-[35%] min-w-[90px] sm:min-w-[120px] max-w-[120px] sm:max-w-[150px] aspect-[19/21] rounded-[35%] rounded-b-[30%] overflow-hidden bg-[#2188ff] relative shadow-lg">
             <img src="https://picsum.photos/seed/scott_wordle/300/300" alt="Host" className="w-full h-full object-cover scale-105 select-none" />
           </div>
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center bg-white shadow-sm rounded-full px-2 py-1 z-10 whitespace-nowrap border border-gray-100">
@@ -1794,7 +1794,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       )}
 
       {/* OPPOSING XP BAR */}
-      <div id="wb-xp-bar" className="w-full max-w-[375px] px-6 shrink-0 flex-none flex flex-col items-center mt-2 z-10 relative">
+      <div id="wb-xp-bar" className="w-full max-w-[375px] px-4 sm:px-6 shrink-0 flex-none flex flex-col items-center mt-1 sm:mt-2 z-10 relative">
         
         {/* AVATARS OVERLAP */}
         <div className="absolute top-[12px] -translate-y-1/2 left-[20px] w-[28px] h-[28px] bg-[#a3e635] rounded-full border-[2px] border-[#38bdf8] z-20 flex items-center justify-center pointer-events-none shadow-sm">
