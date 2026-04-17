@@ -1654,11 +1654,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
   return (
     <div className="fixed inset-0 z-[100] touch-manipulation font-sans bg-white overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-      {/* YouTube Lofi Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vh] min-w-[800px] min-h-[800px]">
-          <div id="youtube-lofi-bg" className="w-full h-full pointer-events-none"></div>
-        </div>
+      {/* YouTube Lofi Background (Görünmez ama pause yememesi için 1px ve 0.01 opacity) */}
+      <div className="absolute -z-[999] opacity-[0.01] pointer-events-none overflow-hidden" aria-hidden="true">
+        <div id="youtube-lofi-bg" className="w-[10px] h-[10px] pointer-events-none"></div>
       </div>
 
       
