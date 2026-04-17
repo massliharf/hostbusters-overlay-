@@ -92,17 +92,25 @@ class ThemeDuoToneManagerClass {
   }
 
   // --- POWER-UPS ---
-  hintWhoosh() { this.ctx(); this.bloopSynth.triggerAttackRelease("G4", "32n", this.t(), 0.3); }
-  hintReveal() { this.ctx(); this.marimba.triggerAttackRelease("C6", "16n", this.t(), 0.6); }
-  bombDrop() { this.ctx(); this.bonkSynth.triggerAttackRelease("Eb3", "8n", this.t()); }
-  bombExplode() { 
+  hintWhoosh() { 
       this.ctx(); 
-      this.bonkSynth.triggerAttackRelease("Db2", "4n", this.t()); 
-      /* Eksta noise efekti */
-      try {
-        const noise = new Tone.NoiseSynth({ noise: { type: "pink" }, envelope: { attack: 0.1, decay: 0.8, sustain: 0 } }).connect(this.appBus);
-        noise.triggerAttackRelease("2n", this.t());
-      } catch (e) {}
+      this.bloopSynth.triggerAttackRelease("C5", "32n", this.t(), 0.2);
+      this.bloopSynth.triggerAttackRelease("E5", "32n", this.t() + 0.08, 0.2);
+  }
+  hintReveal() { 
+      this.ctx(); 
+      this.marimba.triggerAttackRelease("G5", "16n", this.t(), 0.3); 
+  }
+  
+  bombDrop() { 
+      this.ctx(); 
+      this.bloopSynth.triggerAttackRelease("G3", "16n", this.t(), 0.2); 
+  }
+  bombExplode() { 
+      this.ctx(); const now = this.t();
+      // Absürt gürültü yerine şirin bir "pıp-pop" baloncuk patlaması
+      this.bloopSynth.triggerAttackRelease("D3", "32n", now, 0.4); 
+      this.bloopSynth.triggerAttackRelease("F3", "16n", now + 0.1, 0.5);
   }
 }
 
