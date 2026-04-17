@@ -26,10 +26,10 @@ class ThemeDuoToneManagerClass {
   }).connect(this.appBus);
 
   // C) "Bonk" Sesi (Hata, Gri Harf, Out of Tries)
-  // Tatlı ama üzgün bir "Güm" sesi.
-  private bonkSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.05, octaves: 1.5, oscillator: { type: "triangle" },
-      envelope: { attack: 0.01, decay: 0.3, sustain: 0, release: 0.2 }
+  // Arcade "bounce" yerine çok daha soft, mat ve akustik vokalsi bir thud.
+  private bonkSynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "sine" },
+      envelope: { attack: 0.03, decay: 0.3, sustain: 0.05, release: 0.2 }
   }).connect(this.appBus);
 
   public async init() { await Tone.start(); console.log("Theme: DUOLINGO STYLE Loaded 🦉"); }
@@ -85,7 +85,10 @@ class ThemeDuoToneManagerClass {
   timer0() { this.ctx(); this.marimba.triggerAttackRelease("G5", "8n", this.t()); }
 
   error() {
-      this.ctx(); this.bonkSynth.triggerAttackRelease("D3", "8n", this.t());
+      this.ctx(); const now = this.t();
+      // Duolingo tarzı ikonik "uh-oh" (minor third aşağı)
+      this.bonkSynth.triggerAttackRelease("F3", "16n", now, 0.6);
+      this.bonkSynth.triggerAttackRelease("D3", "8n", now + 0.16, 0.8);
   }
 
   // --- POWER-UPS ---
