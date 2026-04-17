@@ -17,9 +17,20 @@ import { MainThreeToneManager } from './MainThreeToneManager';
 import { MainFourToneManager } from './MainFourToneManager';
 import { MainFiveToneManager } from './MainFiveToneManager';
 import { MainSixToneManager } from './MainSixToneManager';
+import { ThemeWoodToneManager } from './ThemeWoodToneManager';
+import { ThemeCrystalToneManager } from './ThemeCrystalToneManager';
+import { ThemeChillhopToneManager } from './ThemeChillhopToneManager';
+import { ThemeScifiToneManager } from './ThemeScifiToneManager';
+import { ThemeWaterToneManager } from './ThemeWaterToneManager';
+import { ThemeRetroToneManager } from './ThemeRetroToneManager';
+import { ThemeOrchestralToneManager } from './ThemeOrchestralToneManager';
+import { ThemeSynthwaveToneManager } from './ThemeSynthwaveToneManager';
+import { ThemeASMRToneManager } from './ThemeASMRToneManager';
+import { ThemeZenToneManager } from './ThemeZenToneManager';
+
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
+export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'theme-wood' | 'theme-crystal' | 'theme-chillhop' | 'theme-scifi' | 'theme-water' | 'theme-retro' | 'theme-orchestral' | 'theme-synthwave' | 'theme-asmr' | 'theme-zen' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -316,6 +327,16 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 
 const SFX = {
   roundInfo: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.roundInfo(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.roundInfo(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.roundInfo(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.roundInfo(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.roundInfo(); return; }
@@ -338,6 +359,16 @@ const SFX = {
     SFX.timer10();
   },
   type: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.type(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.type(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.type(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.type(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.type(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.type(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.type(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.type(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.type(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.type(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.type(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.type(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.type(); return; }
@@ -370,6 +401,16 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer10(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer10(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer10(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer10(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer10(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer10(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer10(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer10(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer10(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer10(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer10(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer10(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer10(); return; }
@@ -401,6 +442,16 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer3(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer3(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer3(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer3(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer3(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer3(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer3(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer3(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer3(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer3(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer3(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer3(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer3(); return; }
@@ -432,6 +483,16 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer0(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer0(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer0(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer0(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer0(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer0(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer0(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer0(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer0(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer0(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer0(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer0(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer0(); return; }
@@ -463,6 +524,16 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   error: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.error(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.error(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.error(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.error(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.error(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.error(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.error(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.error(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.error(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.error(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.error(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.error(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.error(); return; }
@@ -473,6 +544,16 @@ const SFX = {
     setTimeout(() => playAdvancedTone(80, 0.1, 0.2), 100);
   },
   delete: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.delete(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.delete(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.delete(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.delete(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.delete(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.delete(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.delete(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.delete(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.delete(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.delete(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.delete(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.delete(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.delete(); return; }
@@ -505,6 +586,16 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.submit(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.submit(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.submit(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.submit(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.submit(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.submit(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.submit(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.submit(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.submit(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.submit(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.submit(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.submit(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.submit(); return; }
@@ -537,6 +628,16 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.gray(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.gray(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.gray(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.gray(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.gray(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.gray(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.gray(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.gray(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.gray(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.gray(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.gray(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.gray(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.gray(); return; }
@@ -569,6 +670,16 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.yellow(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.yellow(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.yellow(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.yellow(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.yellow(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.yellow(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.yellow(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.yellow(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.yellow(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.yellow(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.yellow(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.yellow(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.yellow(); return; }
@@ -601,6 +712,16 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.green(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.green(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.green(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.green(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.green(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.green(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.green(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.green(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.green(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.green(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.green(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.green(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.green(); return; }
@@ -633,6 +754,16 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xp(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.xp(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.xp(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.xp(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.xp(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.xp(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.xp(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.xp(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.xp(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.xp(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xp(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xp(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xp(); return; }
@@ -665,6 +796,16 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.win(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.win(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.win(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.win(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.win(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.win(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.win(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.win(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.win(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.win(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.win(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.win(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.win(); return; }
@@ -745,6 +886,16 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.xpbar(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.xpbar(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xpbar(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xpbar(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xpbar(); return; }
@@ -777,6 +928,16 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintWhoosh(); return; }
@@ -803,6 +964,16 @@ const SFX = {
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.hintReveal(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.hintReveal(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintReveal(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintReveal(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintReveal(); return; }
@@ -836,6 +1007,16 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.bombDrop(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.bombDrop(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombDrop(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombDrop(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombDrop(); return; }
@@ -862,6 +1043,16 @@ const SFX = {
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.bombExplode(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.bombExplode(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombExplode(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombExplode(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombExplode(); return; }
@@ -895,6 +1086,16 @@ const SFX = {
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
   },
   lose: () => {
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.lose(); return; }
+    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.lose(); return; }
+    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.lose(); return; }
+    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.lose(); return; }
+    if(currentTheme === 'theme-water') { ThemeWaterToneManager.lose(); return; }
+    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.lose(); return; }
+    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.lose(); return; }
+    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.lose(); return; }
+    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.lose(); return; }
+    if(currentTheme === 'theme-zen') { ThemeZenToneManager.lose(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.lose(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.lose(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.lose(); return; }
@@ -1640,8 +1841,8 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       <div className="absolute top-4 left-4 z-[101] flex flex-col gap-2 items-start pointer-events-none">
         
         {/* THEME TOGGLER */}
-        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[600px] justify-center text-center">
+          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'theme-wood', 'theme-crystal', 'theme-chillhop', 'theme-scifi', 'theme-water', 'theme-retro', 'theme-orchestral', 'theme-synthwave', 'theme-asmr', 'theme-zen', 'streamer-premium', 'streamer-royal', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
@@ -1651,22 +1852,24 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'main-4') { MainFourToneManager.init(); }
                       if (theme === 'main-5') { MainFiveToneManager.init(); }
                       if (theme === 'main-6') { MainSixToneManager.init(); }
-                      if (theme === 'streamer-tone') { ToneManager.init(); }
+                      if (theme === 'theme-wood') { ThemeWoodToneManager.init(); }
+                      if (theme === 'theme-crystal') { ThemeCrystalToneManager.init(); }
+                      if (theme === 'theme-chillhop') { ThemeChillhopToneManager.init(); }
+                      if (theme === 'theme-scifi') { ThemeScifiToneManager.init(); }
+                      if (theme === 'theme-water') { ThemeWaterToneManager.init(); }
+                      if (theme === 'theme-retro') { ThemeRetroToneManager.init(); }
+                      if (theme === 'theme-orchestral') { ThemeOrchestralToneManager.init(); }
+                      if (theme === 'theme-synthwave') { ThemeSynthwaveToneManager.init(); }
+                      if (theme === 'theme-asmr') { ThemeASMRToneManager.init(); }
+                      if (theme === 'theme-zen') { ThemeZenToneManager.init(); }
                       if (theme === 'streamer-premium') { PremiumToneManager.init(); }
                       if (theme === 'streamer-royal') { RoyalToneManager.init(); }
-                      if (theme === 'streamer-prominent') { ProminentToneManager.init(); }
-                      if (theme === 'streamer-muted') { MutedToneManager.init(); }
-                      if (theme === 'streamer-hybrid') { HybridToneManager.init(); }
-                      if (theme === 'streamer-geo') { GeoToneManager.init(); }
-                      if (theme === 'streamer-geo-v2') { GeoEnergeticToneManager.init(); }
-                      if (theme === 'streamer-geo-v3') { PerfectGeoToneManager.init(); }
-                      if (theme === 'streamer-geo-v4') { PremiumGeoToneManager.init(); }
                       if (theme === 'streamer-sweet') { SweetVictoryToneManager.init(); }
                       setActiveAudioTheme(theme);
                   }}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'streamer-premium', 'streamer-royal', 'streamer-sweet'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
-                  {theme === 'main-geo' ? 'MAIN GEO' : theme === 'main-2' ? 'MAIN 2' : theme === 'main-3' ? 'MAIN 3' : theme === 'main-4' ? 'MAIN 4' : theme === 'main-5' ? 'MAIN 5' : theme === 'main-6' ? 'MAIN 6' : `OPT ${index - 5}`}
+                  {theme.replace('main-', 'MAIN ').replace('theme-', '').replace('streamer-', 'OPT ')}
               </button>
           ))}
         </div>
