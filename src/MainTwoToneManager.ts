@@ -111,6 +111,11 @@ class MainTwoToneManagerClass {
     this.glassKeys.triggerAttackRelease(["G4", "C5", "E5"], "8n", now + 0.1); // Tam bir başarı, parlak vuruş
   }
 
+  greenKnown() {
+    this.ctx();
+    this.glassKeys.triggerAttackRelease(["E4", "B4"], "8n", this.t()); // Umut verici, yarım akor
+  }
+
   // --- BAŞARILAR VE XP ---
   xp() {
     this.ctx();

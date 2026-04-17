@@ -109,6 +109,13 @@ class PremiumGeoToneManagerClass {
     this.neatBell.triggerAttackRelease("G5", "16n", now + 0.2); // extra sparkle
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.luxChime.triggerAttackRelease("C4", "8n", now);
+    this.neatBell.triggerAttackRelease("E4", "16n", now + 0.1); 
+  }
+
   // 7. XP_Add
   xp() {
     this.ctx();

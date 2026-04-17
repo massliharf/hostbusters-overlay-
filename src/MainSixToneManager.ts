@@ -109,6 +109,13 @@ class MainSixToneManagerClass {
     this.sweetMallet.triggerAttackRelease("C5", "4n", now + 0.1, 0.7);
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.sweetMallet.triggerAttackRelease("C4", "16n", now, 0.4);
+    this.sweetMallet.triggerAttackRelease("E4", "8n", now + 0.1, 0.5);
+  }
+
   // 8. Word_Success: AŞIRI ÖNEMLİ (Success, Dopamin - Abartısız Tatlı Bell Chord)
   win() {
     this.ctx();

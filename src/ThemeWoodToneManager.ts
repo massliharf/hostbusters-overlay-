@@ -44,6 +44,14 @@ class ThemeWoodToneManagerClass {
     this.marimba.triggerAttackRelease(["C4", "E4", "G4", "C5"], "4n", now, 1.0);
     setTimeout(() => { this.marimba.triggerAttackRelease("E5", "2n", this.t(), 0.6); }, 400);
   }
+
+  greenKnown() { this.ctx(); this.marimba.triggerAttackRelease("E4", "16n", this.t(), 0.6); this.marimba.triggerAttackRelease("G4", "8n", this.t() + 0.1, 0.7); }
+  green() { this.ctx(); this.marimba.triggerAttackRelease(["C4", "E4", "G4"], "8n", this.t(), 0.8); this.marimba.triggerAttackRelease("C5", "4n", this.t() + 0.12, 0.9); }
+  win() {
+    this.ctx(); const now = this.t();
+    this.marimba.triggerAttackRelease(["C4", "E4", "G4", "C5"], "4n", now, 1.0);
+    setTimeout(() => { this.marimba.triggerAttackRelease("E5", "2n", this.t(), 0.6); }, 400);
+  }
   xp() { this.ctx(); this.marimba.triggerAttackRelease("G4", "8n", this.t(), 0.7); this.marimba.triggerAttackRelease("E5", "8n", this.t() + 0.1, 0.8); }
   xpbar() { this.ctx(); this.windSweep.triggerAttackRelease("32n", this.t(), 0.2); this.marimba.triggerAttackRelease("E4", "16n", this.t(), 0.4); }
   roundInfo() { this.ctx(); const now = this.t(); this.marimba.triggerAttackRelease("C4", "8n", now, 0.6); this.marimba.triggerAttackRelease("D4", "8n", now+1, 0.7); this.marimba.triggerAttackRelease("E4", "4n", now+2, 0.8); }

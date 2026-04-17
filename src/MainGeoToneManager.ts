@@ -98,6 +98,11 @@ class MainGeoToneManagerClass {
     this.compassChime.triggerAttackRelease("G4", "8n", now + 0.1);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.compassChime.triggerAttackRelease("E4", "8n", this.t()); // Sarı (Biraz olumlu, tek çınlama)
+  }
+
   // --- C. ÖDÜL VE BAŞARI (Canlı ve Coşkulu) ---
   xp() {
     this.ctx();

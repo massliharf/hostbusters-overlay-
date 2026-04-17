@@ -110,6 +110,13 @@ class PerfectGeoToneManagerClass {
     this.brightDing.triggerAttackRelease("E5", "8n", now + 0.16);
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.magicChime.triggerAttackRelease("C4", "16n", now);
+    this.magicChime.triggerAttackRelease("E4", "8n", now + 0.08);
+  }
+
   // 7. XP_Add (cheerful energetic melodic ding, coin-like)
   xp() {
     this.ctx();

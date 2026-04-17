@@ -73,6 +73,11 @@ class PremiumToneManagerClass {
     this.successSynth.triggerAttackRelease("G4", "16n", now + 0.05);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.successSynth.triggerAttackRelease("E4", "8n", this.t());
+  }
+
   // REWARDS
   win() {
     this.ctx();

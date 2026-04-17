@@ -87,6 +87,13 @@ class MainFiveToneManagerClass {
     this.pianoSampler.triggerAttackRelease(["C4", "E4", "G4"], 0.65, now, 0.78);
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.pianoSampler.triggerAttackRelease("E4", 0.40, now, 0.62);
+    this.pianoSampler.triggerAttackRelease("G4", 0.45, now + 0.10, 0.55);
+  }
+
   // 8. Word_Success: The dopamin hit, tasteful and short piano chord
   win() {
     this.ctx();

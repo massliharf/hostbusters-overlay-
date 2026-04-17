@@ -82,6 +82,11 @@ class HybridToneManagerClass {
     this.rewardChime.triggerAttackRelease("G4", "8n", now + 0.1);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.rewardChime.triggerAttackRelease("E4", "8n", this.t());
+  }
+
   // 🌟 "YAAAY!" ANI (KELİMEYİ BULMA) 🌟
   win() {
     this.ctx();

@@ -82,6 +82,11 @@ class ProminentToneManagerClass {
     this.bellSynth.triggerAttackRelease("G4", "16n", now + 0.08);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.bellSynth.triggerAttackRelease("E4", "16n", this.t());
+  }
+
   // === 3. ÖDÜL VE BAŞARI ===
   win() {
     this.ctx();

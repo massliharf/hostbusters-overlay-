@@ -136,6 +136,13 @@ class MainFourToneManagerClass {
     this.sparkleNoise.triggerAttackRelease("16n", now, 0.3);
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.crystalChime.triggerAttackRelease("C4", "16n", now, 0.4);
+    this.crystalChime.triggerAttackRelease("E4", "8n", now + 0.08, 0.5);
+  }
+
   // 8. Word_Success: Fatsawtooth Sweet Fanfare (Option 4)
   win() {
     this.ctx();

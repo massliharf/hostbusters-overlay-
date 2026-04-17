@@ -85,14 +85,18 @@ class RoyalToneManagerClass {
     this.treasuryBells.triggerAttackRelease(["G5", "B5"], "8n", this.t());
   }
 
+  greenKnown() {
+    this.ctx();
+    this.treasuryBells.triggerAttackRelease("E5", "8n", this.t());
+  }
+
   // ZAFER VE XP
   win() {
     this.ctx();
     const now = this.t();
-    // Kraliyet Zafer Trompeti (Majör Fanfar Akoru)
-    this.brassFanfare.triggerAttackRelease(["C4", "E4", "G4"], "4n", now);
-    this.brassFanfare.triggerAttackRelease(["F4", "A4", "C5"], "4n", now + 0.3);
-    this.brassFanfare.triggerAttackRelease(["C4", "E4", "G4", "C5"], "1n", now + 0.6);
+    // Normalleştirilmiş temiz ve tatlı başarı sesi
+    this.brassFanfare.triggerAttackRelease(["C4", "E4", "G4", "C5"], "1n", now);
+    this.treasuryBells.triggerAttackRelease(["C5", "E5", "G5"], "1n", now);
   }
 
   xp() {

@@ -97,6 +97,12 @@ class ToneManagerClass {
     this.marimbaSynth.triggerAttackRelease(["C4", "E4", "G4"], "8n", this.t());
   }
 
+  greenKnown() {
+    this.ctx();
+    // Ilık ve biraz pozitif (Minörden majöre geçiş hissi - Marimba)
+    this.marimbaSynth.triggerAttackRelease("E4", "8n", this.t());
+  }
+
   // Rewards
   win() {
     this.ctx();

@@ -85,6 +85,11 @@ class MutedToneManagerClass {
     this.mutedKeys.triggerAttackRelease("E4", "8n", now + 0.1);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.mutedKeys.triggerAttackRelease("E4", "8n", this.t());
+  }
+
   // === 3. ÖDÜL VE BAŞARI ===
   win() {
     this.ctx();

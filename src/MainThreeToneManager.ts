@@ -123,6 +123,13 @@ class MainThreeToneManagerClass {
     this.sparkleNoise.triggerAttackRelease("16n", now, 0.3);
   }
 
+  greenKnown() {
+    this.ctx();
+    const now = this.t();
+    this.crystalChime.triggerAttackRelease("C4", "16n", now, 0.4);
+    this.crystalChime.triggerAttackRelease("E4", "8n", now + 0.08, 0.5);
+  }
+
   // 8. Word_Success: Fanfare ve Lingering Glow
   win() {
     this.ctx();

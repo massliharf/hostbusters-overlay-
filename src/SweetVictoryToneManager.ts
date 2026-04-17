@@ -84,6 +84,11 @@ class SweetVictoryToneManagerClass {
     this.sparkleChime.triggerAttackRelease("C5", "8n", now + 0.1);
   }
 
+  greenKnown() {
+    this.ctx();
+    this.sparkleChime.triggerAttackRelease("E4", "8n", this.t()); 
+  }
+
   xp() {
     this.ctx();
     this.sparkleChime.triggerAttackRelease("E5", "32n", this.t()); 

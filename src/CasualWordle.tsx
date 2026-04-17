@@ -623,6 +623,37 @@ const SFX = {
     if(currentTheme === 'assets') { playAsset('green'); return; }
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
+  greenKnown: () => { 
+    if(currentTheme === 'theme-wood') { ThemeWoodToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-6') { MainSixToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-5') { MainFiveToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-4') { MainFourToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-3') { MainThreeToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-2') { MainTwoToneManager.greenKnown(); return; }
+    if(currentTheme === 'main-geo') { MainGeoToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-hybrid') { HybridToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-muted') { MutedToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-prominent') { ProminentToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-royal') { RoyalToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-premium') { PremiumToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-tone') { ToneManager.greenKnown(); return; }
+    if(currentTheme === 'streamer-pro') { const t=fCtx(); if(t){ gOsc(523.25, 'sine', t, .3, .15, { attack:.005 }); gOsc(659.25, 'sine', t, .3, .15, { attack:.005 }); gOsc(783.99, 'sine', t, .4, .1, { attack:.005 }); } return; }
+    if(currentTheme === 'wordle-dopamine') { const t=fCtx(); if(t){ gOsc(880, 'square', t, .2, .2); gOsc(1320, 'square', t+.05, .2, .15); gOsc(1760, 'sine', t+.1, .6, .3); } return; }
+    if(currentTheme === 'soft-ui') { const t=fCtx(); if(t){ gOsc(880, 'sine', t, .5, .15, { attack:.01 }); gOsc(1760, 'sine', t, .6, .05, { attack:.01 }); } return; }
+    if(currentTheme === 'forest') { const t=fCtx(); if(t){ gOsc(440, 'sine', t, .45, .22, { attack:.006 }); gOsc(660, 'sine', t+.02, .35, .14, { attack:.006 }); gOsc(880, 'sine', t+.04, .25, .07, { attack:.006 }); gNoise(t, .03, .20, { type:'highpass', freq:2000, Q:.8, attack:.001 }); } return; }
+    if(currentTheme === 'asmr-wood') { playSoftADSR(600, 'triangle', 0.5, 0.3); setTimeout(() => playSoftADSR(800, 'triangle', 0.6, 0.2), 40); return; }
+    if(currentTheme === 'asmr-glass') { playSoftADSR(2000, 'sine', 0.5, 0.2); setTimeout(() => playSoftADSR(2500, 'sine', 0.6, 0.2), 40); return; }
+    if(currentTheme === 'asmr-synth') { playSoftADSR(500, 'sine', 0.5, 0.3); setTimeout(() => playSoftADSR(750, 'sine', 0.6, 0.3), 40); return; }
+    if(currentTheme === 'asmr-click') { playSoftADSR(1200, 'triangle', 0.2, 0.2); setTimeout(() => playSoftADSR(1600, 'triangle', 0.3, 0.2), 40); return; }
+    if(currentTheme === 'asmr-minimal') { playSoftADSR(600, 'sine', 0.4, 0.1); return; }
+    if(currentTheme === 'asmr-pure') { playSoftADSR(880, 'sine', 0.2, 1.0); setTimeout(() => playSoftADSR(1760, 'sine', 0.1, 1.5), 100); return; }
+    if(currentTheme === 'premium') { playSoftADSR(523.25, 'triangle', 0.6, 0.2); playSoftADSR(659.25, 'triangle', 0.6, 0.15); return; }
+    if(currentTheme === 'assets') { playAsset('green'); return; }
+    playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
+  },
   xp: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xp(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xp(); return; }
@@ -1253,8 +1284,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         triggerHaptic(50); // Small bump for reveal
         
-        if (state === 'correct') playSFX('green');
-        else if (state === 'present') playSFX('yellow');
+        if (state === 'correct') {
+          if (newlyGreenCols.has(i)) playSFX('green');
+          else playSFX('greenKnown');
+        } else if (state === 'present') playSFX('yellow');
         else playSFX('gray');
         
         if (state === 'correct' && newlyGreenCols.has(i)) {
@@ -1636,7 +1669,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[600px] justify-center text-center">
-          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'theme-wood', 'streamer-premium', 'streamer-royal', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
+          {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-wood', 'streamer-premium', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
