@@ -16,14 +16,9 @@ import { MainTwoToneManager } from './MainTwoToneManager';
 import { MainThreeToneManager } from './MainThreeToneManager';
 import { MainFourToneManager } from './MainFourToneManager';
 import { MainFiveToneManager } from './MainFiveToneManager';
-import { GeoSoftToneManager } from './GeoSoftToneManager';
-import { GeoSynthwaveToneManager } from './GeoSynthwaveToneManager';
-import { GeoOrganicToneManager } from './GeoOrganicToneManager';
-import { GeoCrystalToneManager } from './GeoCrystalToneManager';
-import { GeoDeepToneManager } from './GeoDeepToneManager';
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'main-geo' | 'geo-soft' | 'geo-synthwave' | 'geo-organic' | 'geo-crystal' | 'geo-deep' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
+export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -320,11 +315,6 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 
 const SFX = {
   roundInfo: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.roundInfo(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.roundInfo(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.roundInfo(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.roundInfo(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.roundInfo(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.roundInfo(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.roundInfo(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.roundInfo(); return; }
@@ -346,11 +336,6 @@ const SFX = {
     SFX.timer10();
   },
   type: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.type(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.type(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.type(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.type(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.type(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.type(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.type(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.type(); return; }
@@ -382,11 +367,6 @@ const SFX = {
     playAdvancedTone(600, 0.1, 0.05); setTimeout(() => playAdvancedTone(800, 0.2, 0.05), 50);
   },
   timer10: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.timer10(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.timer10(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.timer10(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.timer10(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.timer10(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer10(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer10(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.timer10(); return; }
@@ -417,11 +397,6 @@ const SFX = {
     playAdvancedTone(200, 2.0, 0.2);
   },
   timer3: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.timer3(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.timer3(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.timer3(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.timer3(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.timer3(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer3(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer3(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.timer3(); return; }
@@ -452,11 +427,6 @@ const SFX = {
     playAdvancedTone(800, 0.1, 0.1);
   },
   timer0: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.timer0(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.timer0(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.timer0(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.timer0(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.timer0(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer0(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer0(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.timer0(); return; }
@@ -487,11 +457,6 @@ const SFX = {
     playAdvancedTone(100, 0.5, 0.4);
   },
   error: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.error(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.error(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.error(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.error(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.error(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.error(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.error(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.error(); return; }
@@ -501,11 +466,6 @@ const SFX = {
     setTimeout(() => playAdvancedTone(80, 0.1, 0.2), 100);
   },
   delete: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.delete(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.delete(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.delete(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.delete(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.delete(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.delete(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.delete(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.delete(); return; }
@@ -537,11 +497,6 @@ const SFX = {
     playAdvancedTone(250, 0.1, 0.2); 
   },
   submit: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.submit(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.submit(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.submit(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.submit(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.submit(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.submit(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.submit(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.submit(); return; }
@@ -573,11 +528,6 @@ const SFX = {
     setTimeout(() => playAdvancedTone(300, 0.15, 0.1), 0);
   },
   gray: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.gray(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.gray(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.gray(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.gray(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.gray(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.gray(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.gray(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.gray(); return; }
@@ -609,11 +559,6 @@ const SFX = {
     playAdvancedTone(150, 0.2, 0.3); 
   },
   yellow: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.yellow(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.yellow(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.yellow(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.yellow(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.yellow(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.yellow(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.yellow(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.yellow(); return; }
@@ -645,11 +590,6 @@ const SFX = {
     playAdvancedTone(440, 0.4, 0.2); playAdvancedTone(660, 0.3, 0.05); 
   },
   green: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.green(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.green(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.green(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.green(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.green(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.green(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.green(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.green(); return; }
@@ -681,11 +621,6 @@ const SFX = {
     playAdvancedTone(523.25, 0.5, 0.25); playAdvancedTone(1046.5, 0.4, 0.08); 
   },
   xp: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.xp(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.xp(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.xp(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.xp(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.xp(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xp(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xp(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.xp(); return; }
@@ -717,11 +652,6 @@ const SFX = {
     playAdvancedTone(1200, 0.2, 0.05); setTimeout(() => playAdvancedTone(1500, 0.3, 0.05), 50); 
   },
   win: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.win(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.win(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.win(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.win(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.win(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.win(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.win(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.win(); return; }
@@ -801,11 +731,6 @@ const SFX = {
     ].forEach(n => setTimeout(() => playAdvancedTone(n.f, 0.08, n.d || 0.6), n.t)); 
   },
   xpbar: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.xpbar(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.xpbar(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.xpbar(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.xpbar(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.xpbar(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xpbar(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xpbar(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.xpbar(); return; }
@@ -837,11 +762,6 @@ const SFX = {
     playSoftSweep(300, 800, 0.1, 0.1);
   },
   hintWhoosh: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.hintWhoosh(); return; }
@@ -867,11 +787,6 @@ const SFX = {
     playSoftSweep(600, 200, 0.3, 0.1);
   },
   hintReveal: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.hintReveal(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.hintReveal(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.hintReveal(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.hintReveal(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.hintReveal(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintReveal(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintReveal(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.hintReveal(); return; }
@@ -904,11 +819,6 @@ const SFX = {
     playAdvancedTone(800, 0.6, 0.2); playAdvancedTone(1200, 0.4, 0.1); 
   },
   bombDrop: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.bombDrop(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.bombDrop(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.bombDrop(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.bombDrop(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.bombDrop(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombDrop(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombDrop(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.bombDrop(); return; }
@@ -934,11 +844,6 @@ const SFX = {
     playSoftSweep(800, 200, 0.3, 0.15);
   },
   bombExplode: () => { 
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.bombExplode(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.bombExplode(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.bombExplode(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.bombExplode(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.bombExplode(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombExplode(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombExplode(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.bombExplode(); return; }
@@ -971,11 +876,6 @@ const SFX = {
     playSoftNoise(0.3, 0.5); playAdvancedTone(80, 0.3, 0.5); 
   },
   lose: () => {
-    if(currentTheme === 'geo-soft') { GeoSoftToneManager.lose(); return; }
-    if(currentTheme === 'geo-synthwave') { GeoSynthwaveToneManager.lose(); return; }
-    if(currentTheme === 'geo-organic') { GeoOrganicToneManager.lose(); return; }
-    if(currentTheme === 'geo-crystal') { GeoCrystalToneManager.lose(); return; }
-    if(currentTheme === 'geo-deep') { GeoDeepToneManager.lose(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.lose(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.lose(); return; }
     if(currentTheme === 'main-3') { MainThreeToneManager.lose(); return; }
@@ -1721,16 +1621,11 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[200px] justify-center md:max-w-[400px]">
-          {(['main-geo', 'geo-crystal', 'geo-organic', 'geo-deep', 'geo-soft', 'geo-synthwave', 'main-2', 'main-3', 'main-4', 'main-5', 'asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
+          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'asmr-wood', 'asmr-synth', 'asmr-click', 'asmr-minimal', 'asmr-pure', 'forest', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
                       if (theme === 'main-geo') { MainGeoToneManager.init(); }
-                      if (theme === 'geo-soft') { GeoSoftToneManager.init(); }
-                      if (theme === 'geo-synthwave') { GeoSynthwaveToneManager.init(); }
-                      if (theme === 'geo-organic') { GeoOrganicToneManager.init(); }
-                      if (theme === 'geo-crystal') { GeoCrystalToneManager.init(); }
-                      if (theme === 'geo-deep') { GeoDeepToneManager.init(); }
                       if (theme === 'main-2') { MainTwoToneManager.init(); }
                       if (theme === 'main-3') { MainThreeToneManager.init(); }
                       if (theme === 'main-4') { MainFourToneManager.init(); }
@@ -1748,9 +1643,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'streamer-sweet') { SweetVictoryToneManager.init(); }
                       setActiveAudioTheme(theme);
                   }}
-                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['main-geo', 'geo-crystal', 'geo-organic', 'geo-deep', 'geo-soft', 'geo-synthwave', 'main-2', 'main-3', 'main-4', 'main-5', 'soft-ui', 'wordle-dopamine', 'streamer-pro', 'streamer-tone', 'streamer-premium', 'streamer-royal', 'streamer-prominent', 'streamer-muted', 'streamer-hybrid', 'streamer-geo', 'streamer-geo-v2', 'streamer-geo-v3', 'streamer-geo-v4', 'streamer-sweet'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
+                  className={`px-2 py-1 text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${!['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'streamer-premium', 'streamer-royal', 'streamer-sweet'].includes(theme) ? 'hidden ' : ''}${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
               >
-                  {theme === 'main-geo' ? 'MAIN GEO' : theme === 'geo-soft' ? 'GEO SOFT' : theme === 'geo-synthwave' ? 'GEO WAVE' : theme === 'geo-organic' ? 'GEO ORGN' : theme === 'geo-crystal' ? 'GEO CRYS' : theme === 'geo-deep' ? 'GEO DEEP' : theme === 'main-2' ? 'MAIN 2' : theme === 'main-3' ? 'MAIN 3' : theme === 'main-4' ? 'MAIN 4' : theme === 'main-5' ? 'MAIN 5' : `OPT ${index - 9}`}
+                  {theme === 'main-geo' ? 'MAIN GEO' : theme === 'main-2' ? 'MAIN 2' : theme === 'main-3' ? 'MAIN 3' : theme === 'main-4' ? 'MAIN 4' : theme === 'main-5' ? 'MAIN 5' : `OPT ${index - 4}`}
               </button>
           ))}
         </div>
