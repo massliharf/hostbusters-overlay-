@@ -13,7 +13,7 @@ function Router() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  if (hash === '#/wordle') {
+  if (hash === '#/savvy') {
     return <CasualWordle />;
   }
 

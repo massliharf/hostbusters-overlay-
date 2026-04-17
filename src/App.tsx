@@ -108,13 +108,13 @@ export default function App() {
           </button>
           <button
             onClick={() => setAdminTab('wordle')}
-            className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all ${
+            className={`px-3 py-1.5 flex gap-1 items-center rounded-xl transition-all ${
               adminTab === 'wordle'
-                ? 'bg-white text-gray-900'
-                : 'text-gray-400 hover:text-white'
+                ? 'bg-[#1e293b] text-white shadow-inner font-black'
+                : 'bg-white/50 text-[#64748b] hover:bg-white/80 font-bold'
             }`}
           >
-            Wordle
+            Savvy Wordle
           </button>
         </div>
 
@@ -244,18 +244,19 @@ export default function App() {
 
         {/* Wordle controls */}
         {adminTab === 'wordle' && (
-          <div className="flex flex-col items-center gap-2.5">
-            <div className="flex items-center gap-2">
-              <a
-                href="#/wordle"
+          <div className="flex flex-col gap-4">
+            <h2 className="text-[20px] font-black text-white drop-shadow-md">Savvy (Wordle)</h2>
+            <div className="bg-[#1e293b] rounded-2xl p-6 shadow-xl border border-white/10 flex flex-col items-center justify-center min-h-[300px]">
+              <a 
+                href="#/savvy"
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/40 transition-all font-sans no-underline"
+                className="bg-[#38bdf8] text-white px-8 py-4 rounded-xl font-black tracking-widest text-[16px] hover:scale-105 active:scale-95 transition-all shadow-lg shadow-blue-500/20"
               >
-                🔗 Open Wordle Subpage
+                🔗 Open Savvy Subpage
               </a>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mt-4">Savvy now has its own routing.</p>
             </div>
-            <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Wordle now has its own routing.</p>
           </div>
         )}
       </div>

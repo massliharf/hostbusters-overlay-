@@ -130,7 +130,7 @@ class PremiumToneManagerClass {
   // POWER-UPS
   hintWhoosh() {
     this.ctx();
-    this.pluckingSynth.triggerAttackRelease("C5", "16n", this.t());
+    this.pluckingSynth.triggerAttackRelease("C5", "16n", this.t(), 1.0);
   }
 
   hintReveal() {
@@ -140,14 +140,16 @@ class PremiumToneManagerClass {
 
   bombDrop() {
     this.ctx();
-    this.pluckingSynth.triggerAttackRelease("C3", "16n", this.t());
+    this.pluckingSynth.triggerAttackRelease("C3", "16n", this.t(), 1.0);
   }
 
   bombExplode() {
     this.ctx();
-    this.impactSynth.triggerAttackRelease("C1", "2n", this.t());
-    const noise = new Tone.NoiseSynth({ noise: { type: "pink" }, envelope: { attack: 0.1, decay: 0.8, sustain: 0 } }).connect(this.masterBus);
-    noise.triggerAttackRelease("2n", this.t());
+    this.impactSynth.triggerAttackRelease("C2", "2n", this.t(), 1.5);
+    try {
+        const noise = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.05, decay: 0.5, sustain: 0 } }).toDestination();
+        noise.triggerAttackRelease("4n", this.t());
+    } catch(e) {}
   }
 }
 

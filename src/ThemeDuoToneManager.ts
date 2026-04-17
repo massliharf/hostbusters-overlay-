@@ -73,30 +73,34 @@ class ThemeDuoToneManagerClass {
     this.bonkSynth.triggerAttackRelease("D3", "8n", now + 0.15);
     this.bonkSynth.triggerAttackRelease("Db3", "2n", now + 0.3);
   }
-  error() {
-      this.ctx(); this.bonkSynth.triggerAttackRelease("D3", "8n", this.t());
-  }
   
-  // Game sequence
+  // --- TIME & TENSION ---
   roundInfo() { 
-    this.ctx(); const now = this.t();
-    // Start countdown sound mapping based on prompt
-    this.bloopSynth.triggerAttackRelease("C4", "8n", now);
-    this.bloopSynth.triggerAttackRelease("C4", "8n", now + 1);
-    this.bloopSynth.triggerAttackRelease("C4", "8n", now + 2);
-    this.marimba.triggerAttackRelease("G5", "4n", now + 3);
+    this.ctx(); 
+    this.bloopSynth.triggerAttackRelease("C4", "8n", this.t());
   }
 
   timer10() { this.ctx(); this.bloopSynth.triggerAttackRelease("C4", "32n", this.t(), 0.4); }
   timer3() { this.ctx(); this.bloopSynth.triggerAttackRelease("C4", "16n", this.t(), 0.8); }
   timer0() { this.ctx(); this.marimba.triggerAttackRelease("G5", "8n", this.t()); }
 
-  // --- POWER UPS ---
-  powerUpClick() { this.ctx(); this.marimba.triggerAttackRelease("C6", "16n", this.t()); }
-  hintWhoosh() { this.ctx(); this.bloopSynth.triggerAttackRelease("A3", "32n", this.t()); }
-  hintReveal() { this.ctx(); this.marimba.triggerAttackRelease(["E5", "G5"], "16n", this.t()); }
-  bombDrop() { this.ctx(); this.bloopSynth.triggerAttackRelease("F2", "16n", this.t()); }
-  bombExplode() { this.ctx(); this.bonkSynth.triggerAttackRelease("C2", "8n", this.t()); }
+  error() {
+      this.ctx(); this.bonkSynth.triggerAttackRelease("D3", "8n", this.t());
+  }
+
+  // --- POWER-UPS ---
+  hintWhoosh() { this.ctx(); this.bloopSynth.triggerAttackRelease("G4", "32n", this.t(), 0.3); }
+  hintReveal() { this.ctx(); this.marimba.triggerAttackRelease("C6", "16n", this.t(), 0.6); }
+  bombDrop() { this.ctx(); this.bonkSynth.triggerAttackRelease("Eb3", "8n", this.t()); }
+  bombExplode() { 
+      this.ctx(); 
+      this.bonkSynth.triggerAttackRelease("Db2", "4n", this.t()); 
+      /* Eksta noise efekti */
+      try {
+        const noise = new Tone.NoiseSynth({ noise: { type: "pink" }, envelope: { attack: 0.1, decay: 0.8, sustain: 0 } }).connect(this.appBus);
+        noise.triggerAttackRelease("2n", this.t());
+      } catch (e) {}
+  }
 }
 
 export const ThemeDuoToneManager = new ThemeDuoToneManagerClass();
