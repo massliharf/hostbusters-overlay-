@@ -5,7 +5,7 @@ class MainFourToneManagerClass {
   // MASTER BUS & AKUSTİK MİMARİ (Sound Bible)
   // ==========================================
   private masterChannel = new Tone.Channel({ volume: -4 }).toDestination();
-  private bgmReverb = new Tone.Reverb({ decay: 2.5, wet: 0.2 }).connect(this.masterChannel);
+  private bgmReverb = new Tone.Reverb({ decay: 2.5, wet: 0 }).connect(this.masterChannel);
   private subCompressor = new Tone.Compressor({ threshold: -20, ratio: 4 }).connect(this.masterChannel);
 
   // Frekans Ayrışması (Frequency Separation)
@@ -23,7 +23,7 @@ class MainFourToneManagerClass {
   private glowSynth = new Tone.Synth({
     oscillator: { type: "sine" },
     envelope: { attack: 0.4, decay: 0.8, sustain: 0.3, release: 2.2 }
-  }).connect(new Tone.Reverb({ decay: 3.2, wet: 0.48 }).connect(this.masterChannel));
+  }).connect(new Tone.Reverb({ decay: 3.2, wet: 0 }).connect(this.masterChannel));
 
   private winBass = new Tone.MembraneSynth({ octaves: 4, pitchDecay: 0.12 }).connect(this.subCompressor);
 

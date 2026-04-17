@@ -1669,7 +1669,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[600px] justify-center text-center">
-          {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-wood', 'streamer-premium', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
+          {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-wood', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {

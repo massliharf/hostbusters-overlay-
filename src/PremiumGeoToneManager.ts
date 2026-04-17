@@ -8,7 +8,7 @@ class PremiumGeoToneManagerClass {
 
   // Magic exploration bus (Wide, lush Reverb + Chorus)
   private lushChorus = new Tone.Chorus(4, 2.5, 0.5).toDestination();
-  private magicReverb = new Tone.Reverb({ decay: 3.5, wet: 0.35 }).connect(this.lushChorus);
+  private magicReverb = new Tone.Reverb({ decay: 3.5, wet: 0 }).connect(this.lushChorus);
   private magicGain = new Tone.Volume(-4).connect(this.magicReverb);
 
   // Deep Premium Impact Bus

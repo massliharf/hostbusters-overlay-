@@ -2,7 +2,7 @@ import * as Tone from 'tone';
 
 class PremiumToneManagerClass {
   // 1. MASTER ZİNCİR: Seslerin 'pahalı' duyulmasını sağlayan ana kanal
-  private reverb = new Tone.Reverb({ decay: 1.5, wet: 0.2 }).toDestination();
+  private reverb = new Tone.Reverb({ decay: 1.5, wet: 0 }).toDestination();
   private lowpass = new Tone.Filter(3000, "lowpass").connect(this.reverb);
   private masterBus = new Tone.Volume(-5).connect(this.lowpass);
 
@@ -41,13 +41,13 @@ class PremiumToneManagerClass {
   // KLAVYE
   type() {
     this.ctx();
-    this.pluckingSynth.triggerAttackRelease("C5", "32n", this.t());
+    this.pluckingSynth.triggerAttackRelease("C5", "64n", this.t(), 0.1);
   }
 
   delete() {
     this.ctx();
     const noise = new Tone.NoiseSynth({ envelope: { attack: 0.001, decay: 0.05, sustain: 0 } }).connect(this.masterBus);
-    noise.triggerAttackRelease("32n", this.t());
+    noise.triggerAttackRelease("64n", this.t(), 0.1);
   }
 
   submit() {

@@ -6,14 +6,14 @@ class MainFiveToneManagerClass {
   // ==========================================
   private masterReverb = new Tone.Reverb({
     decay: 2.5,
-    wet: 0.38,
+    wet: 0,
     preDelay: 0.02
   }).toDestination();
 
   private masterDelay = new Tone.FeedbackDelay({
     delayTime: "12n",
     feedback: 0.20,
-    wet: 0.14
+    wet: 0
   }).connect(this.masterReverb);
 
   private masterGain = new Tone.Gain(0.90).connect(this.masterDelay);

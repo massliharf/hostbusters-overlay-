@@ -6,7 +6,7 @@ class MainTwoToneManagerClass {
   // ==========================================
 
   // Modern Oyun Şovu Ambiyansı (Yankı ve Derinlik)
-  private studioReverb = new Tone.Reverb({ decay: 1.8, wet: 0.25 }).toDestination();
+  private studioReverb = new Tone.Reverb({ decay: 1.8, wet: 0 }).toDestination();
   private studioDelay = new Tone.FeedbackDelay("8n", 0.15).connect(this.studioReverb);
   private melodicBus = new Tone.Volume(-4).connect(this.studioDelay);
 
@@ -72,12 +72,12 @@ class MainTwoToneManagerClass {
   // --- KLAVYE İŞLEMLERİ ---
   type() {
     this.ctx();
-    this.slickClick.triggerAttackRelease("C4", "16n", this.t()); // Pürüzsüz Kalimba Click
+    this.slickClick.triggerAttackRelease("C4", "64n", this.t(), 0.1); // Pürüzsüz Kalimba Click
   }
 
   delete() {
     this.ctx();
-    this.reverseWhoosh.triggerAttackRelease("32n", this.t()); // Geriye doğu hızlı kayış
+    this.reverseWhoosh.triggerAttackRelease("64n", this.t(), 0.1); // Geriye doğu hızlı kayış
   }
 
   submit() {

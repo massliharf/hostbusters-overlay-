@@ -9,7 +9,7 @@ class MainGeoToneManagerClass {
   private mutedBus = new Tone.Filter(800, "lowpass").toDestination();
 
   // CANLI KANAL (Primary): Başarı, power-up, yeşil harf gibi ödül sesleri için
-  private brightBus = new Tone.Reverb({ decay: 2.5, wet: 0.3 }).toDestination();
+  private brightBus = new Tone.Reverb({ decay: 2.5, wet: 0 }).toDestination();
 
 
   // ==========================================
@@ -61,12 +61,12 @@ class MainGeoToneManagerClass {
   // --- A. İKİNCİL (SECONDARY) ETKİLEŞİMLER (Çok Az Belirgin) ---
   type() {
     this.ctx();
-    this.pinDrop.triggerAttackRelease("C3", "32n", this.t()); // Harf Yazma (Haritaya iğne batırma)
+    this.pinDrop.triggerAttackRelease("C3", "64n", this.t(), 0.1); // Harf Yazma (Haritaya iğne batırma)
   }
 
   delete() {
     this.ctx();
-    this.paperSwoosh.triggerAttackRelease("16n", this.t()); // Harf Silme (Kağıt kaydırma)
+    this.paperSwoosh.triggerAttackRelease("32n", this.t(), 0.1); // Harf Silme (Kağıt kaydırma)
   }
 
   submit() {

@@ -6,7 +6,7 @@ class MutedToneManagerClass {
   private softFilter = new Tone.Filter(1200, "lowpass").toDestination();
 
   // Çok hafif, sıcak bir oda yankısı. Sesin kuru (dry) kalmasını engeller, "güzel" yapar.
-  private warmRoom = new Tone.Reverb({ decay: 1.5, wet: 0.15 }).connect(this.softFilter);
+  private warmRoom = new Tone.Reverb({ decay: 1.5, wet: 0 }).connect(this.softFilter);
   private masterBus = new Tone.Volume(-2).connect(this.warmRoom);
 
   // === 2. YUMUŞAK ENSTRÜMANLAR ===

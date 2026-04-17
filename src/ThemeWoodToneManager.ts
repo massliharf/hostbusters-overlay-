@@ -1,7 +1,7 @@
 import * as Tone from 'tone';
 
 class ThemeWoodToneManagerClass {
-  private masterReverb = new Tone.Reverb({ decay: 1.5, wet: 0.15 }).toDestination();
+  private masterReverb = new Tone.Reverb({ decay: 1.5, wet: 0 }).toDestination();
   private masterCompressor = new Tone.Compressor(-12, 3).connect(this.masterReverb);
   private masterVolume = new Tone.Volume(-2).connect(this.masterCompressor);
 
@@ -33,8 +33,8 @@ class ThemeWoodToneManagerClass {
   private t() { return Tone.now(); }
   private ctx() { if (Tone.context.state !== 'running') Tone.start(); }
 
-  type() { this.ctx(); this.woodTap.triggerAttackRelease(180, "32n", this.t(), 0.5); }
-  delete() { this.ctx(); this.windSweep.triggerAttackRelease("32n", this.t(), 0.3); this.woodTap.triggerAttackRelease(140, "32n", this.t()+0.02, 0.4); }
+  type() { this.ctx(); this.woodTap.triggerAttackRelease(180, "64n", this.t(), 0.1); }
+  delete() { this.ctx(); this.windSweep.triggerAttackRelease("64n", this.t(), 0.1); this.woodTap.triggerAttackRelease(140, "64n", this.t()+0.02, 0.1); }
   submit() { this.ctx(); this.windSweep.triggerAttackRelease("16n", this.t(), 0.5); }
   gray() { this.ctx(); this.woodTap.triggerAttackRelease(120, "16n", this.t(), 0.4); }
   yellow() { this.ctx(); this.marimba.triggerAttackRelease("E4", "16n", this.t(), 0.6); this.marimba.triggerAttackRelease("G4", "8n", this.t() + 0.1, 0.7); }

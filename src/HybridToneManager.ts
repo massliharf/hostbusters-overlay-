@@ -6,7 +6,7 @@ class HybridToneManagerClass {
   private mutedBus = new Tone.Filter(800, "lowpass").toDestination();
 
   // Kanal B: CANLI KANAL (Prominent/Ödül Sesleri İçin)
-  private brightBus = new Tone.Reverb({ decay: 1.5, wet: 0.2 }).toDestination();
+  private brightBus = new Tone.Reverb({ decay: 1.5, wet: 0 }).toDestination();
 
   // === 2. ENSTRÜMANLAR ===
   // İKİNCİL (SECONDARY) ENSTRÜMANLAR -> mutedBus'a bağlı

@@ -7,7 +7,7 @@ class PerfectGeoToneManagerClass {
   private subtleGain = new Tone.Volume(-15).connect(this.subtleBus);
 
   // Bright magic bus for positive outcomes
-  private sparkleReverb = new Tone.Reverb({ decay: 2.5, wet: 0.3 }).toDestination();
+  private sparkleReverb = new Tone.Reverb({ decay: 2.5, wet: 0 }).toDestination();
   private sparkleGain = new Tone.Volume(-4).connect(this.sparkleReverb);
 
   // Deep impact bus

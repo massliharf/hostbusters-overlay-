@@ -7,7 +7,7 @@ class SweetVictoryToneManagerClass {
   private gentleGain = new Tone.Volume(-12).connect(this.gentleBus);
 
   // Sweet lush reverb for success and melodic sparkles
-  private sweetReverb = new Tone.Reverb({ decay: 2.0, wet: 0.4 }).toDestination();
+  private sweetReverb = new Tone.Reverb({ decay: 2.0, wet: 0 }).toDestination();
   private sweetDrop = new Tone.PingPongDelay("16n", 0.2).connect(this.sweetReverb);
   private sweetGain = new Tone.Volume(-5).connect(this.sweetDrop);
 

@@ -2,7 +2,7 @@ import * as Tone from 'tone';
 
 class RoyalToneManagerClass {
   // 1. TAHT ODASI AKUSTİĞİ (Geniş Yankı ve Filtre)
-  private castleReverb = new Tone.Reverb({ decay: 3, wet: 0.35 }).toDestination();
+  private castleReverb = new Tone.Reverb({ decay: 3, wet: 0 }).toDestination();
   private masterBus = new Tone.Volume(-6).connect(this.castleReverb);
 
   // 2. KRALİYET ENSTRÜMANLARI

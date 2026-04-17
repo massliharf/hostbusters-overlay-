@@ -4,7 +4,7 @@ class MainSixToneManagerClass {
   // ==========================================
   // MASTER BUS & EFEKTLER (Soft, Sweet Vibe)
   // ==========================================
-  private masterReverb = new Tone.Reverb({ decay: 2.2, wet: 0.25 }).toDestination();
+  private masterReverb = new Tone.Reverb({ decay: 2.2, wet: 0 }).toDestination();
   private masterCompressor = new Tone.Compressor(-15, 3).connect(this.masterReverb);
   private masterVolume = new Tone.Volume(-2).connect(this.masterCompressor);
 
@@ -70,14 +70,14 @@ class MainSixToneManagerClass {
   // 2. Letter_Typing: Notasız, zarif, rahatsız etmeyen tık
   type() {
     this.ctx();
-    this.playWithVariation(this.tinyPop, 220, "32n", this.t(), 0.6);
+    this.playWithVariation(this.tinyPop, 220, "64n", this.t(), 0.1);
   }
 
   // 3. Letter_Deleting: Çok soft ve kısa sweep
   delete() {
     this.ctx();
-    this.softSweep.triggerAttackRelease("32n", this.t(), 0.4); 
-    this.playWithVariation(this.tinyPop, 150, "32n", this.t() + 0.02, 0.4);
+    this.softSweep.triggerAttackRelease("64n", this.t(), 0.1); 
+    this.playWithVariation(this.tinyPop, 150, "64n", this.t() + 0.02, 0.1);
   }
 
   // 4. Word_Submit: Nötr

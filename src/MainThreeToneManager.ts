@@ -5,7 +5,7 @@ class MainThreeToneManagerClass {
   // MASTER BUS & AKUSTİK MİMARİ (Sound Bible)
   // ==========================================
   private masterChannel = new Tone.Channel({ volume: -4 }).toDestination();
-  private bgmReverb = new Tone.Reverb({ decay: 2.5, wet: 0.2 }).connect(this.masterChannel);
+  private bgmReverb = new Tone.Reverb({ decay: 2.5, wet: 0 }).connect(this.masterChannel);
   private subCompressor = new Tone.Compressor({ threshold: -20, ratio: 4 }).connect(this.masterChannel);
 
   // Frekans Ayrışması (Frequency Separation)
@@ -80,15 +80,15 @@ class MainThreeToneManagerClass {
     this.ctx();
     const baseFreqs = [200, 220, 250, 280]; // Klavye harfleri gibi farklı notalar
     const randomFreq = baseFreqs[Math.floor(Math.random() * baseFreqs.length)];
-    this.playWithVariation(this.tinyPop, randomFreq, "32n", this.t(), 0.6);
+    this.playWithVariation(this.tinyPop, randomFreq, "64n", this.t(), 0.1);
   }
 
   // 3. Letter_Deleting: Ters whoosh + çok düşük pop
   delete() {
     this.ctx();
     const now = this.t();
-    this.sweepNoise.triggerAttackRelease("32n", now, 0.4); 
-    this.playWithVariation(this.tinyPop, 150, "32n", now + 0.02, 0.5);
+    this.sweepNoise.triggerAttackRelease("64n", now, 0.1); 
+    this.playWithVariation(this.tinyPop, 150, "64n", now + 0.02, 0.1);
   }
 
   // 4. Word_Submit: Neutral but confirmed
