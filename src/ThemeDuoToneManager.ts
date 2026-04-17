@@ -11,18 +11,18 @@ class ThemeDuoToneManagerClass {
     envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.1 }
   }).connect(this.masterVolume);
 
-  // 2. Doğru ve Yanlış (Marimba / Xylophone style bright plucks)
+  // 2. Doğru ve Yanlış (Çok daha "tok" Marimba / Ahşap hissiyatı)
   private malletSynth = new Tone.PolySynth(Tone.FMSynth, {
-    harmonicity: 3.0, modulationIndex: 1.2, oscillator: { type: "triangle" },
-    envelope: { attack: 0.005, decay: 0.15, sustain: 0, release: 0.1 },
-    modulation: { type: "sine" }
+    harmonicity: 3.0, modulationIndex: 0.5, oscillator: { type: "sine" },
+    envelope: { attack: 0.005, decay: 0.2, sustain: 0, release: 0.2 },
+    modulation: { type: "triangle" }
   }).connect(this.masterVolume);
 
-  // 3. Win / Lose Fanfares (Bright Brass / Synth)
+  // 3. Win / Lose Fanfares (Lead synth yerine daha tok ve kapalı bir ahşap/horn karışımı)
   private synthBrass = new Tone.PolySynth(Tone.Synth, {
-    oscillator: { type: "square" },
-    envelope: { attack: 0.02, decay: 0.1, sustain: 0.5, release: 0.5 }
-  }).connect(this.masterVolume);
+    oscillator: { type: "triangle4" },
+    envelope: { attack: 0.05, decay: 0.3, sustain: 0.2, release: 0.5 }
+  }).connect(new Tone.Filter(1500, "lowpass").connect(this.masterVolume));
 
   // 4. Timer / Ui Ticks
   private tickSynth = new Tone.NoiseSynth({
