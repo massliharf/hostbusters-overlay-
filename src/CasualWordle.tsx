@@ -2075,9 +2075,16 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                              </>
                            )}
 
-                           <div className="bg-[#1e293b] text-white text-[11px] sm:text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-4 sm:mt-6 relative z-10 translate-y-[1px]">
-                              {endState === 'win' ? 'THE WORD' : 'THE WORD WAS'}
-                           </div>
+                           {endState === 'win' ? (
+                              <div className="bg-[#1e293b] text-white text-[11px] sm:text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-4 sm:mt-6 relative z-10 translate-y-[1px]">
+                                THE WORD
+                              </div>
+                           ) : (
+                              <div className="bg-[#1e293b] text-white font-black tracking-[0.1em] px-4 py-2 rounded-[8px] border-b-[3px] border-[#0f172a] shadow-lg mt-4 sm:mt-6 mb-2 relative z-10 flex items-center justify-center gap-2">
+                                  <span className="text-[10px] sm:text-[11px] text-[#cbd5e1] mt-[1px]">THE WORD WAS</span>
+                                  <span className="text-[16px] sm:text-[18px] text-[#4ade80] uppercase tracking-[0.15em] leading-none mb-[-1px]">{answer}</span>
+                              </div>
+                           )}
                         </motion.div>
                         
                         {/* Bottom Timer */}
@@ -2106,18 +2113,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                    if (endState === 'win') {
                       char = answer[cIdx];
                       tState = 'correct';
-                   } else if (endState === 'tries') {
-                      if (timeLeft > 0) {
-                         char = '?';
-                         tState = 'question';
-                      } else {
-                         char = answer[cIdx];
-                         tState = 'correct';
-                      }
-                   } else if (endState === 'timeout') {
-                      char = answer[cIdx];
-                      tState = 'correct';
                    }
+                   // Eger endState === 'tries' veya 'timeout' ise, 
+                   // oyuncunun son grid'indeki orijinal yazıları ve hesaplanmış renkleri koruyoruz!
                 }
                 
                 const isFilled = char !== '';
