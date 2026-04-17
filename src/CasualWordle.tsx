@@ -6,8 +6,6 @@ import { RoyalToneManager } from './RoyalToneManager';
 import { ProminentToneManager } from './ProminentToneManager';
 import { MutedToneManager } from './MutedToneManager';
 import { HybridToneManager } from './HybridToneManager';
-import { GeoToneManager } from './GeoToneManager';
-import { GeoEnergeticToneManager } from './GeoEnergeticToneManager';
 import { PerfectGeoToneManager } from './PerfectGeoToneManager';
 import { PremiumGeoToneManager } from './PremiumGeoToneManager';
 import { SweetVictoryToneManager } from './SweetVictoryToneManager';
@@ -18,19 +16,10 @@ import { MainFourToneManager } from './MainFourToneManager';
 import { MainFiveToneManager } from './MainFiveToneManager';
 import { MainSixToneManager } from './MainSixToneManager';
 import { ThemeWoodToneManager } from './ThemeWoodToneManager';
-import { ThemeCrystalToneManager } from './ThemeCrystalToneManager';
-import { ThemeChillhopToneManager } from './ThemeChillhopToneManager';
-import { ThemeScifiToneManager } from './ThemeScifiToneManager';
-import { ThemeWaterToneManager } from './ThemeWaterToneManager';
-import { ThemeRetroToneManager } from './ThemeRetroToneManager';
-import { ThemeOrchestralToneManager } from './ThemeOrchestralToneManager';
-import { ThemeSynthwaveToneManager } from './ThemeSynthwaveToneManager';
-import { ThemeASMRToneManager } from './ThemeASMRToneManager';
-import { ThemeZenToneManager } from './ThemeZenToneManager';
 
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'theme-wood' | 'theme-crystal' | 'theme-chillhop' | 'theme-scifi' | 'theme-water' | 'theme-retro' | 'theme-orchestral' | 'theme-synthwave' | 'theme-asmr' | 'theme-zen' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
+export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'theme-wood' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -328,15 +317,6 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 const SFX = {
   roundInfo: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.roundInfo(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.roundInfo(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.roundInfo(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.roundInfo(); return; }
@@ -346,8 +326,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.roundInfo(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.roundInfo(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.roundInfo(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.roundInfo(); return; }
@@ -360,15 +338,6 @@ const SFX = {
   },
   type: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.type(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.type(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.type(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.type(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.type(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.type(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.type(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.type(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.type(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.type(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.type(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.type(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.type(); return; }
@@ -378,8 +347,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.type(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.type(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.type(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.type(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.type(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.type(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.type(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.type(); return; }
@@ -402,15 +369,6 @@ const SFX = {
   },
   timer10: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer10(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer10(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer10(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer10(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer10(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer10(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer10(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer10(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer10(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer10(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer10(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer10(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer10(); return; }
@@ -420,8 +378,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.timer10(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer10(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer10(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer10(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.timer10(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer10(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer10(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer10(); return; }
@@ -443,15 +399,6 @@ const SFX = {
   },
   timer3: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer3(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer3(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer3(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer3(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer3(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer3(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer3(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer3(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer3(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer3(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer3(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer3(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer3(); return; }
@@ -461,8 +408,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.timer3(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer3(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer3(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer3(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.timer3(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer3(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer3(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer3(); return; }
@@ -484,15 +429,6 @@ const SFX = {
   },
   timer0: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer0(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.timer0(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.timer0(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.timer0(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.timer0(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.timer0(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.timer0(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.timer0(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.timer0(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.timer0(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer0(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer0(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer0(); return; }
@@ -502,8 +438,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.timer0(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.timer0(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.timer0(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.timer0(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.timer0(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.timer0(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.timer0(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.timer0(); return; }
@@ -525,15 +459,6 @@ const SFX = {
   },
   error: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.error(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.error(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.error(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.error(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.error(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.error(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.error(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.error(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.error(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.error(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.error(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.error(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.error(); return; }
@@ -545,15 +470,6 @@ const SFX = {
   },
   delete: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.delete(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.delete(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.delete(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.delete(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.delete(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.delete(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.delete(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.delete(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.delete(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.delete(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.delete(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.delete(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.delete(); return; }
@@ -563,8 +479,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.delete(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.delete(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.delete(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.delete(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.delete(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.delete(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.delete(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.delete(); return; }
@@ -587,15 +501,6 @@ const SFX = {
   },
   submit: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.submit(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.submit(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.submit(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.submit(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.submit(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.submit(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.submit(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.submit(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.submit(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.submit(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.submit(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.submit(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.submit(); return; }
@@ -605,8 +510,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.submit(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.submit(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.submit(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.submit(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.submit(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.submit(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.submit(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.submit(); return; }
@@ -629,15 +532,6 @@ const SFX = {
   },
   gray: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.gray(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.gray(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.gray(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.gray(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.gray(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.gray(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.gray(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.gray(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.gray(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.gray(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.gray(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.gray(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.gray(); return; }
@@ -647,8 +541,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.gray(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.gray(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.gray(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.gray(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.gray(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.gray(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.gray(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.gray(); return; }
@@ -671,15 +563,6 @@ const SFX = {
   },
   yellow: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.yellow(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.yellow(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.yellow(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.yellow(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.yellow(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.yellow(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.yellow(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.yellow(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.yellow(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.yellow(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.yellow(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.yellow(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.yellow(); return; }
@@ -689,8 +572,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.yellow(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.yellow(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.yellow(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.yellow(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.yellow(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.yellow(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.yellow(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.yellow(); return; }
@@ -713,15 +594,6 @@ const SFX = {
   },
   green: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.green(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.green(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.green(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.green(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.green(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.green(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.green(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.green(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.green(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.green(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.green(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.green(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.green(); return; }
@@ -731,8 +603,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.green(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.green(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.green(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.green(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.green(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.green(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.green(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.green(); return; }
@@ -755,15 +625,6 @@ const SFX = {
   },
   xp: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xp(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.xp(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.xp(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.xp(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.xp(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.xp(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.xp(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.xp(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.xp(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.xp(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xp(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xp(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xp(); return; }
@@ -773,8 +634,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.xp(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.xp(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.xp(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.xp(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.xp(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.xp(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.xp(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.xp(); return; }
@@ -797,15 +656,6 @@ const SFX = {
   },
   win: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.win(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.win(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.win(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.win(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.win(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.win(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.win(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.win(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.win(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.win(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.win(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.win(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.win(); return; }
@@ -815,8 +665,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.win(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.win(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.win(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.win(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.win(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.win(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.win(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.win(); return; }
@@ -887,15 +735,6 @@ const SFX = {
   },
   xpbar: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.xpbar(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xpbar(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xpbar(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xpbar(); return; }
@@ -905,8 +744,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.xpbar(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.xpbar(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.xpbar(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.xpbar(); return; }
@@ -929,15 +766,6 @@ const SFX = {
   },
   hintWhoosh: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintWhoosh(); return; }
@@ -947,8 +775,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.hintWhoosh(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.hintWhoosh(); return; }
@@ -965,15 +791,6 @@ const SFX = {
   },
   hintReveal: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.hintReveal(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintReveal(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintReveal(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintReveal(); return; }
@@ -983,8 +800,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.hintReveal(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.hintReveal(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.hintReveal(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.hintReveal(); return; }
@@ -1008,15 +823,6 @@ const SFX = {
   },
   bombDrop: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.bombDrop(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombDrop(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombDrop(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombDrop(); return; }
@@ -1026,8 +832,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.bombDrop(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.bombDrop(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.bombDrop(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.bombDrop(); return; }
@@ -1044,15 +848,6 @@ const SFX = {
   },
   bombExplode: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.bombExplode(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombExplode(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombExplode(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombExplode(); return; }
@@ -1062,8 +857,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.bombExplode(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.bombExplode(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.bombExplode(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.bombExplode(); return; }
@@ -1087,15 +880,6 @@ const SFX = {
   },
   lose: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.lose(); return; }
-    if(currentTheme === 'theme-crystal') { ThemeCrystalToneManager.lose(); return; }
-    if(currentTheme === 'theme-chillhop') { ThemeChillhopToneManager.lose(); return; }
-    if(currentTheme === 'theme-scifi') { ThemeScifiToneManager.lose(); return; }
-    if(currentTheme === 'theme-water') { ThemeWaterToneManager.lose(); return; }
-    if(currentTheme === 'theme-retro') { ThemeRetroToneManager.lose(); return; }
-    if(currentTheme === 'theme-orchestral') { ThemeOrchestralToneManager.lose(); return; }
-    if(currentTheme === 'theme-synthwave') { ThemeSynthwaveToneManager.lose(); return; }
-    if(currentTheme === 'theme-asmr') { ThemeASMRToneManager.lose(); return; }
-    if(currentTheme === 'theme-zen') { ThemeZenToneManager.lose(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.lose(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.lose(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.lose(); return; }
@@ -1105,8 +889,6 @@ const SFX = {
     if(currentTheme === 'streamer-sweet') { SweetVictoryToneManager.lose(); return; }
     if(currentTheme === 'streamer-geo-v4') { PremiumGeoToneManager.lose(); return; }
     if(currentTheme === 'streamer-geo-v3') { PerfectGeoToneManager.lose(); return; }
-    if(currentTheme === 'streamer-geo-v2') { GeoEnergeticToneManager.lose(); return; }
-    if(currentTheme === 'streamer-geo') { GeoToneManager.lose(); return; }
     if(currentTheme === 'streamer-hybrid') { HybridToneManager.lose(); return; }
     if(currentTheme === 'streamer-muted') { MutedToneManager.lose(); return; }
     if(currentTheme === 'streamer-prominent') { ProminentToneManager.lose(); return; }
@@ -1842,7 +1624,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-wrap gap-1 items-center max-w-[600px] justify-center text-center">
-          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'theme-wood', 'theme-crystal', 'theme-chillhop', 'theme-scifi', 'theme-water', 'theme-retro', 'theme-orchestral', 'theme-synthwave', 'theme-asmr', 'theme-zen', 'streamer-premium', 'streamer-royal', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
+          {(['main-geo', 'main-2', 'main-3', 'main-4', 'main-5', 'main-6', 'theme-wood', 'streamer-premium', 'streamer-royal', 'streamer-sweet'] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
@@ -1853,15 +1635,6 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'main-5') { MainFiveToneManager.init(); }
                       if (theme === 'main-6') { MainSixToneManager.init(); }
                       if (theme === 'theme-wood') { ThemeWoodToneManager.init(); }
-                      if (theme === 'theme-crystal') { ThemeCrystalToneManager.init(); }
-                      if (theme === 'theme-chillhop') { ThemeChillhopToneManager.init(); }
-                      if (theme === 'theme-scifi') { ThemeScifiToneManager.init(); }
-                      if (theme === 'theme-water') { ThemeWaterToneManager.init(); }
-                      if (theme === 'theme-retro') { ThemeRetroToneManager.init(); }
-                      if (theme === 'theme-orchestral') { ThemeOrchestralToneManager.init(); }
-                      if (theme === 'theme-synthwave') { ThemeSynthwaveToneManager.init(); }
-                      if (theme === 'theme-asmr') { ThemeASMRToneManager.init(); }
-                      if (theme === 'theme-zen') { ThemeZenToneManager.init(); }
                       if (theme === 'streamer-premium') { PremiumToneManager.init(); }
                       if (theme === 'streamer-royal') { RoyalToneManager.init(); }
                       if (theme === 'streamer-sweet') { SweetVictoryToneManager.init(); }
