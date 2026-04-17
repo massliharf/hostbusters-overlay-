@@ -1204,6 +1204,24 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         events: {
           onReady: (event: any) => {
             event.target.setVolume(12);
+            
+            // Tarayıcı autoplay engelini (mute olmadığı için) aşmak adına
+            // kullanıcı sayfaya ilk tıkladığında veya tuşa bastığında oynatmayı zorla
+            const unlockPlay = () => {
+              try {
+                if (event.target.getPlayerState() !== 1) {
+                  event.target.playVideo();
+                }
+              } catch(e) {}
+              window.removeEventListener('click', unlockPlay);
+              window.removeEventListener('keydown', unlockPlay);
+              window.removeEventListener('touchstart', unlockPlay);
+            };
+            window.addEventListener('click', unlockPlay);
+            window.addEventListener('keydown', unlockPlay);
+            window.addEventListener('touchstart', unlockPlay);
+            
+            // Yine de şansımızı deneyelim
             event.target.playVideo();
           }
         }
