@@ -114,7 +114,7 @@ export default function App() {
                 : 'bg-white/50 text-[#64748b] hover:bg-white/80 font-bold'
             }`}
           >
-            Savvy Wordle
+            Savvy
           </button>
         </div>
 
@@ -245,7 +245,7 @@ export default function App() {
         {/* Wordle controls */}
         {adminTab === 'wordle' && (
           <div className="flex flex-col gap-4">
-            <h2 className="text-[20px] font-black text-white drop-shadow-md">Savvy (Wordle)</h2>
+            <h2 className="text-[20px] font-black text-white drop-shadow-md">Savvy</h2>
             <div className="bg-[#1e293b] rounded-2xl p-6 shadow-xl border border-white/10 flex flex-col items-center justify-center min-h-[300px]">
               <a 
                 href="#/savvy"
