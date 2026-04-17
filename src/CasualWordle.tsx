@@ -54,7 +54,29 @@ function initAudio() {
 
 function triggerHaptic(pattern: number | number[]) {
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
-    try { navigator.vibrate(pattern); } catch(e) {}
+    try { 
+      // Çok temel bir eski cihaz tahmini: RAM'i 6GB'dan, Çekirdeği 8'den az olanlar
+      let isOldDevice = false;
+      const nav: any = navigator;
+      if (nav.deviceMemory && nav.deviceMemory < 6) isOldDevice = true;
+      if (nav.hardwareConcurrency && nav.hardwareConcurrency < 8) isOldDevice = true;
+
+      let finalPattern = pattern;
+      
+      // Eğer cihaz güçsüz/eski görünüyorsa motoru uyandırabilmek için titreşimleri zorla büyüt
+      if (isOldDevice) {
+        if (typeof pattern === 'number') {
+          finalPattern = Math.max(pattern, 40); // Minimum 40ms tık
+        } else if (Array.isArray(pattern)) {
+          finalPattern = pattern.map((val, idx) => {
+             // Çift index: Titreşim süresi, Tek index: Duraklama
+             if (idx % 2 === 0) return Math.max(val, 40);
+             return Math.max(val, 40);
+          });
+        }
+      }
+      navigator.vibrate(finalPattern); 
+    } catch(e) {}
   }
 }
 
@@ -2075,16 +2097,9 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                              </>
                            )}
 
-                           {endState === 'win' ? (
-                              <div className="bg-[#1e293b] text-white text-[11px] sm:text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-4 sm:mt-6 relative z-10 translate-y-[1px]">
-                                THE WORD
-                              </div>
-                           ) : (
-                              <div className="bg-[#1e293b] text-white font-black tracking-[0.1em] px-4 py-2 rounded-[8px] border-b-[3px] border-[#0f172a] shadow-lg mt-4 sm:mt-6 mb-2 relative z-10 flex items-center justify-center gap-2">
-                                  <span className="text-[10px] sm:text-[11px] text-[#cbd5e1] mt-[1px]">THE WORD WAS</span>
-                                  <span className="text-[16px] sm:text-[18px] text-[#4ade80] uppercase tracking-[0.15em] leading-none mb-[-1px]">{answer}</span>
-                              </div>
-                           )}
+                           <div className="bg-[#1e293b] text-white text-[11px] sm:text-[12px] font-black tracking-[0.1em] px-3 py-1 rounded-[6px] rounded-b-none shadow-md mt-4 sm:mt-6 relative z-10 translate-y-[1px]">
+                              {endState === 'win' ? 'THE WORD' : 'THE WORD WAS'}
+                           </div>
                         </motion.div>
                         
                         {/* Bottom Timer */}
@@ -2113,9 +2128,18 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                    if (endState === 'win') {
                       char = answer[cIdx];
                       tState = 'correct';
+                   } else if (endState === 'tries') {
+                      if (timeLeft > 0) {
+                         char = '?';
+                         tState = 'question';
+                      } else {
+                         char = answer[cIdx];
+                         tState = 'correct';
+                      }
+                   } else if (endState === 'timeout') {
+                      char = answer[cIdx];
+                      tState = 'correct';
                    }
-                   // Eger endState === 'tries' veya 'timeout' ise, 
-                   // oyuncunun son grid'indeki orijinal yazıları ve hesaplanmış renkleri koruyoruz!
                 }
                 
                 const isFilled = char !== '';
