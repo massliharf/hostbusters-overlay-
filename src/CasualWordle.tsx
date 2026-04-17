@@ -17,7 +17,6 @@ import { MainFiveToneManager } from './MainFiveToneManager';
 import { MainSixToneManager } from './MainSixToneManager';
 import { ThemeWoodToneManager } from './ThemeWoodToneManager';
 import { ThemeDuoToneManager } from './ThemeDuoToneManager';
-import { ThemeSecondaryToneManager } from './ThemeSecondaryToneManager';
 
 
 // --- AUDIO SYNTHESIS ENGINE ---
@@ -319,7 +318,6 @@ function gNoise(start: number, dur: number, vol: number, opts: any = {}) {
 const SFX = {
   roundInfo: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.roundInfo(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.roundInfo(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.roundInfo(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.roundInfo(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.roundInfo(); return; }
@@ -342,7 +340,6 @@ const SFX = {
   },
   type: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.type(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.type(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.type(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.type(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.type(); return; }
@@ -375,7 +372,6 @@ const SFX = {
   },
   timer10: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer10(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.timer10(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer10(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer10(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer10(); return; }
@@ -407,7 +403,6 @@ const SFX = {
   },
   timer3: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer3(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.timer3(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer3(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer3(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer3(); return; }
@@ -439,7 +434,6 @@ const SFX = {
   },
   timer0: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer0(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.timer0(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer0(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer0(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer0(); return; }
@@ -471,7 +465,6 @@ const SFX = {
   },
   error: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.error(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.error(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.error(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.error(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.error(); return; }
@@ -484,7 +477,6 @@ const SFX = {
   },
   delete: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.delete(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.delete(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.delete(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.delete(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.delete(); return; }
@@ -517,7 +509,6 @@ const SFX = {
   },
   submit: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.submit(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.submit(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.submit(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.submit(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.submit(); return; }
@@ -550,7 +541,6 @@ const SFX = {
   },
   gray: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.gray(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.gray(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.gray(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.gray(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.gray(); return; }
@@ -583,7 +573,6 @@ const SFX = {
   },
   yellow: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.yellow(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.yellow(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.yellow(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.yellow(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.yellow(); return; }
@@ -616,7 +605,6 @@ const SFX = {
   },
   green: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.green(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.green(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.green(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.green(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.green(); return; }
@@ -649,7 +637,6 @@ const SFX = {
   },
   greenKnown: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.greenKnown(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.greenKnown(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.greenKnown(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.greenKnown(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.greenKnown(); return; }
@@ -682,7 +669,6 @@ const SFX = {
   },
   xp: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xp(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.xp(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.xp(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xp(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xp(); return; }
@@ -715,7 +701,6 @@ const SFX = {
   },
   win: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.win(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.win(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.win(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.win(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.win(); return; }
@@ -796,7 +781,6 @@ const SFX = {
   },
   xpbar: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xpbar(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.xpbar(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.xpbar(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xpbar(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xpbar(); return; }
@@ -829,7 +813,6 @@ const SFX = {
   },
   hintWhoosh: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintWhoosh(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.hintWhoosh(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintWhoosh(); return; }
@@ -856,7 +839,6 @@ const SFX = {
   },
   hintReveal: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintReveal(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.hintReveal(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.hintReveal(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintReveal(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintReveal(); return; }
@@ -890,7 +872,6 @@ const SFX = {
   },
   bombDrop: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombDrop(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.bombDrop(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.bombDrop(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombDrop(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombDrop(); return; }
@@ -917,7 +898,6 @@ const SFX = {
   },
   bombExplode: () => { 
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombExplode(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.bombExplode(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.bombExplode(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombExplode(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombExplode(); return; }
@@ -951,7 +931,6 @@ const SFX = {
   },
   lose: () => {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.lose(); return; }
-    if(currentTheme === 'theme-secondary') { ThemeSecondaryToneManager.lose(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.lose(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.lose(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.lose(); return; }
@@ -1711,7 +1690,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         
         {/* THEME TOGGLER */}
         <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center max-w-full sm:max-w-[600px] justify-start sm:justify-center text-center overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-          {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-secondary', 'theme-duo', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
+          {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-duo', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
                   onClick={() => {
@@ -1722,7 +1701,6 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
                       if (theme === 'main-5') { MainFiveToneManager.init(); }
                       if (theme === 'main-6') { MainSixToneManager.init(); }
                       if (theme === 'theme-wood') { ThemeWoodToneManager.init(); }
-                      if (theme === 'theme-secondary') { ThemeSecondaryToneManager.init(); }
                       if (theme === 'theme-duo') { ThemeDuoToneManager.init(); }
                       if (theme === 'streamer-premium') { PremiumToneManager.init(); }
                       if (theme === 'streamer-royal') { RoyalToneManager.init(); }
