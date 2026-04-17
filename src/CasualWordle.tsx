@@ -1677,10 +1677,10 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       </AnimatePresence>
 
       {/* TOP LEFT CONTROLS (Theme + Dev States) */}
-      <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-[101] flex flex-col gap-2 items-start pointer-events-none max-w-[calc(100vw-16px)]">
+      <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-[200] flex flex-col gap-2 items-start pointer-events-none max-w-[calc(100vw-180px)] sm:max-w-none">
         
         {/* THEME TOGGLER */}
-        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center max-w-[calc(100vw-16px)] sm:max-w-[600px] justify-start sm:justify-center text-center overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center w-full max-w-full sm:max-w-[600px] justify-start sm:justify-center text-center overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
           {(['main-geo', 'main-2', 'main-3', 'main-6', 'theme-wood', 'theme-duo', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
               <button
                   key={theme}
@@ -1707,7 +1707,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
 
         {/* DEV STATE CONTROLS */}
         {!onClose && (
-          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center justify-start sm:justify-center border-dashed overflow-x-auto hide-scrollbar max-w-[calc(100vw-16px)]" style={{ scrollbarWidth: 'none' }}>
+          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center justify-start sm:justify-center border-dashed overflow-x-auto hide-scrollbar w-full max-w-full sm:max-w-[600px]" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
             <span className="shrink-0 text-[8px] sm:text-[10px] font-black text-orange-400 px-1">DEV</span>
             <button onClick={() => forceState('win')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
             <button onClick={() => forceState('tries')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
