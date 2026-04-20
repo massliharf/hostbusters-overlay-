@@ -249,7 +249,7 @@ export const AudioAssetExporter = ({
                 </div>
                 
                 <div className="p-3 bg-blue-50 text-blue-800 text-[11px] font-medium text-center border-t border-blue-100">
-                    Ses kaydedilir → sessizlik otomatik kesilir → temiz WAV olarak indirilir. Başında/sonunda boşluk kalmaz.
+                    Records sound → auto-trims silence → downloads as clean WAV. No padding at start or end.
                 </div>
             </div>
         </div>
