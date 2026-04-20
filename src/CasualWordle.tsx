@@ -18,10 +18,12 @@ import { MainSixToneManager } from './MainSixToneManager';
 import { ThemeWoodToneManager } from './ThemeWoodToneManager';
 import { ThemeDuoToneManager } from './ThemeDuoToneManager';
 import { ThemePrimaryToneManager } from './ThemePrimaryToneManager';
+import { AudioAssetExporter } from './AudioAssetExporter';
+import { SavvyOriginalToneManager } from './SavvyOriginalToneManager';
 
 
 // --- AUDIO SYNTHESIS ENGINE ---
-export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'theme-wood' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet' | 'theme-duo' | 'primary';
+export type AudioTheme = 'main-geo' | 'main-2' | 'main-3' | 'main-4' | 'main-5' | 'main-6' | 'theme-wood' | 'premium' | 'soft' | 'casual' | 'retro' | 'scifi' | 'acoustic' | 'wordle' | 'epic' | 'piano' | 'gamefeel' | 'assets' | 'asmr-wood' | 'asmr-glass' | 'asmr-synth' | 'asmr-click' | 'asmr-minimal' | 'forest' | 'soft-ui' | 'wordle-dopamine' | 'streamer-pro' | 'streamer-tone' | 'streamer-premium' | 'streamer-royal' | 'streamer-prominent' | 'streamer-muted' | 'streamer-hybrid' | 'streamer-geo' | 'streamer-geo-v2' | 'streamer-geo-v3' | 'streamer-geo-v4' | 'streamer-sweet' | 'theme-duo' | 'primary' | 'savvy-original';
 let audioCtx: AudioContext | null = null;
 let masterGain: GainNode | null = null;
 let compressor: DynamicsCompressorNode | null = null;
@@ -343,6 +345,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.roundInfo(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.roundInfo(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.roundInfo(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.roundInfo(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.roundInfo(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.roundInfo(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.roundInfo(); return; }
@@ -366,6 +369,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.type(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.type(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.type(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.type(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.type(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.type(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.type(); return; }
@@ -399,6 +403,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer10(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.timer10(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer10(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.timer10(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer10(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer10(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer10(); return; }
@@ -431,6 +436,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer3(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.timer3(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer3(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.timer3(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer3(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer3(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer3(); return; }
@@ -463,6 +469,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.timer0(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.timer0(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.timer0(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.timer0(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.timer0(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.timer0(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.timer0(); return; }
@@ -495,6 +502,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.error(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.error(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.error(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.error(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.error(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.error(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.error(); return; }
@@ -508,6 +516,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.delete(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.delete(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.delete(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.delete(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.delete(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.delete(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.delete(); return; }
@@ -541,6 +550,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.submit(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.submit(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.submit(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.submit(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.submit(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.submit(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.submit(); return; }
@@ -574,6 +584,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.gray(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.gray(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.gray(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.gray(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.gray(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.gray(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.gray(); return; }
@@ -607,6 +618,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.yellow(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.yellow(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.yellow(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.yellow(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.yellow(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.yellow(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.yellow(); return; }
@@ -640,6 +652,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.green(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.green(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.green(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.green(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.green(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.green(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.green(); return; }
@@ -673,6 +686,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.greenKnown(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.greenKnown(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.greenKnown(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.greenKnown(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.greenKnown(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.greenKnown(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.greenKnown(); return; }
@@ -706,6 +720,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xp(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.xp(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.xp(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.xp(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xp(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xp(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xp(); return; }
@@ -739,6 +754,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.win(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.win(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.win(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.win(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.win(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.win(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.win(); return; }
@@ -820,6 +836,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.xpbar(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.xpbar(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.xpbar(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.xpbar(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.xpbar(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.xpbar(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.xpbar(); return; }
@@ -853,6 +870,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintWhoosh(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.hintWhoosh(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.hintWhoosh(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintWhoosh(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintWhoosh(); return; }
@@ -880,6 +898,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.hintReveal(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.hintReveal(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.hintReveal(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.hintReveal(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.hintReveal(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.hintReveal(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.hintReveal(); return; }
@@ -914,6 +933,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombDrop(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.bombDrop(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.bombDrop(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.bombDrop(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombDrop(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombDrop(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombDrop(); return; }
@@ -941,6 +961,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.bombExplode(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.bombExplode(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.bombExplode(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.bombExplode(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.bombExplode(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.bombExplode(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.bombExplode(); return; }
@@ -975,6 +996,7 @@ const SFX = {
     if(currentTheme === 'theme-wood') { ThemeWoodToneManager.lose(); return; }
     if(currentTheme === 'primary') { ThemePrimaryToneManager.lose(); return; }
     if(currentTheme === 'theme-duo') { ThemeDuoToneManager.lose(); return; }
+    if(currentTheme === 'savvy-original') { SavvyOriginalToneManager.lose(); return; }
     if(currentTheme === 'main-6') { MainSixToneManager.lose(); return; }
     if(currentTheme === 'main-5') { MainFiveToneManager.lose(); return; }
     if(currentTheme === 'main-4') { MainFourToneManager.lose(); return; }
@@ -1030,6 +1052,8 @@ interface CasualWordleProps {
 
 export default function CasualWordle({ onClose }: CasualWordleProps) {
   // Game State
+  const [showAssetsModal, setShowAssetsModal] = useState(false);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
   const [answer, setAnswer] = useState(() => WORDS[Math.floor(Math.random() * WORDS.length)]);
   const [grid, setGrid] = useState<{ char: string, state: KeyState }[][]>(
     Array(6).fill(null).map(() => Array(5).fill({ char: '', state: null }))
@@ -1042,7 +1066,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
   const [keyboardState, setKeyboardState] = useState<Record<string, KeyState>>({});
   
   // HUD
-  const [activeAudioTheme, setActiveAudioTheme] = useState<AudioTheme>('main-geo');
+  const [activeAudioTheme, setActiveAudioTheme] = useState<AudioTheme>('savvy-original');
   const [hintsLeft, setHintsLeft] = useState(1);
   const [bombsLeft, setBombsLeft] = useState(1);
   const [totalXP, setTotalXP] = useState(0); 
@@ -1093,7 +1117,7 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       playSFX('timer3'); triggerHaptic(100);
       setTimeout(() => setIntroStage('1'), 1000);
     } else if (introStage === '1') {
-      playSFX('timer0'); triggerHaptic(100);
+      playSFX('timer3'); triggerHaptic(100);
       setTimeout(() => { triggerHaptic(200); setIntroStage('playing'); }, 1000);
     }
   }, [introStage]);
@@ -1797,43 +1821,61 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
       {/* TOP LEFT CONTROLS (Theme + Dev States) */}
       <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-[200] flex flex-col gap-2 items-start pointer-events-none max-w-[calc(100vw-180px)] sm:max-w-none">
         
-        {/* THEME TOGGLER */}
-        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center max-w-full sm:max-w-[600px] justify-start sm:justify-center text-center overflow-x-auto hide-scrollbar" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-          {(['main-geo', 'main-6', 'theme-duo', 'streamer-premium', ] as AudioTheme[]).map((theme, index) => (
-              <button
+        {/* THEME TOGGLER — SAVVY primary, others in dropdown */}
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-gray-200 p-1 flex items-center gap-1 relative">
+          {/* SAVVY main button */}
+          <button
+            onClick={() => {
+              SavvyOriginalToneManager.init();
+              setActiveAudioTheme('savvy-original');
+              setShowThemeDropdown(false);
+            }}
+            className={`shrink-0 px-3 py-1 text-[9px] sm:text-[11px] font-black uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === 'savvy-original' ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50'}`}
+          >
+            SAVVY
+          </button>
+
+          {/* Dropdown toggle */}
+          <button
+            onClick={() => setShowThemeDropdown(v => !v)}
+            className="shrink-0 w-6 h-6 flex items-center justify-center rounded-[8px] text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+
+          {/* Dropdown menu */}
+          {showThemeDropdown && (
+            <div className="absolute top-full left-0 mt-1 bg-white rounded-[12px] shadow-lg border border-gray-200 p-1 flex flex-col gap-0.5 min-w-[140px] z-50">
+              {(['main-geo', 'main-6', 'theme-duo', 'streamer-premium'] as AudioTheme[]).map(theme => (
+                <button
                   key={theme}
                   onClick={() => {
-                      if (theme === 'main-geo') { MainGeoToneManager.init(); }
-                      if (theme === 'main-2') { MainTwoToneManager.init(); }
-                      if (theme === 'main-3') { MainThreeToneManager.init(); }
-                      if (theme === 'main-4') { MainFourToneManager.init(); }
-                      if (theme === 'main-5') { MainFiveToneManager.init(); }
-                      if (theme === 'main-6') { MainSixToneManager.init(); }
-                      if (theme === 'theme-wood') { ThemeWoodToneManager.init(); }
-                      if (theme === 'theme-duo') { ThemeDuoToneManager.init(); }
-                      if (theme === 'theme-primary') { ThemePrimaryToneManager.init(); }
-                      if (theme === 'primary') { ThemePrimaryToneManager.init(); }
-                      if (theme === 'streamer-premium') { PremiumToneManager.init(); }
-                      if (theme === 'streamer-royal') { RoyalToneManager.init(); }
-                      if (theme === 'streamer-sweet') { SweetVictoryToneManager.init(); }
-                      setActiveAudioTheme(theme);
+                    if (theme === 'main-geo') { MainGeoToneManager.init(); }
+                    if (theme === 'main-6') { MainSixToneManager.init(); }
+                    if (theme === 'theme-duo') { ThemeDuoToneManager.init(); }
+                    if (theme === 'streamer-premium') { PremiumToneManager.init(); }
+                    setActiveAudioTheme(theme);
+                    setShowThemeDropdown(false);
                   }}
-                  className={`shrink-0 px-2 py-1 text-[8px] sm:text-[10px] font-bold uppercase rounded-[10px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white shadow-sm' : 'text-gray-400 hover:bg-gray-50'}`}
-              >
+                  className={`w-full text-left px-3 py-1.5 text-[9px] sm:text-[10px] font-bold uppercase rounded-[8px] tracking-wider transition-all ${activeAudioTheme === theme ? 'bg-[#111827] text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+                >
                   {theme.replace('main-', 'MAIN ').replace('theme-', '').replace('streamer-', 'OPT ')}
-              </button>
-          ))}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* DEV STATE CONTROLS */}
-        {!onClose && (
-          <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center justify-start sm:justify-center border-dashed overflow-x-auto hide-scrollbar max-w-full sm:max-w-[600px]" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
-            <span className="shrink-0 text-[8px] sm:text-[10px] font-black text-orange-400 px-1">DEV</span>
-            <button onClick={() => forceState('win')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
-            <button onClick={() => forceState('tries')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
-            <button onClick={() => forceState('timeout')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
-          </div>
-        )}
+        <div className="bg-white pointer-events-auto rounded-[14px] shadow-sm border border-orange-200 p-1 flex flex-nowrap sm:flex-wrap gap-1 items-center justify-start sm:justify-center border-dashed overflow-x-auto hide-scrollbar max-w-full sm:max-w-[600px]" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+          <span className="shrink-0 text-[8px] sm:text-[10px] font-black text-orange-400 px-1">DEV</span>
+          <button onClick={() => forceState('win')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-green-50 text-green-600 font-bold uppercase rounded-[10px] hover:bg-green-100 transition-colors">WIN</button>
+          <button onClick={() => forceState('tries')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-red-50 text-red-600 font-bold uppercase rounded-[10px] hover:bg-red-100 transition-colors">LOSE</button>
+          <button onClick={() => forceState('timeout')} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-gray-50 text-gray-600 font-bold uppercase rounded-[10px] hover:bg-gray-100 transition-colors">TIME</button>
+          <button onClick={() => setShowAssetsModal(true)} className="shrink-0 px-1.5 py-0.5 sm:px-2 sm:py-1 text-[8px] sm:text-[10px] bg-blue-50 text-blue-600 font-bold uppercase rounded-[10px] hover:bg-blue-100 transition-colors">ASSETS</button>
+        </div>
       </div>
 
       {/* TOP RIGHT CONTROLS (Close/Reset + Cheat Answer) */}
@@ -2313,6 +2355,15 @@ export default function CasualWordle({ onClose }: CasualWordleProps) {
         </div>
       </motion.div>
       </div>
+
+      {showAssetsModal && (
+        <AudioAssetExporter 
+           themeName={currentTheme}
+           playSFX={playSFX}
+           onClose={() => setShowAssetsModal(false)}
+        />
+      )}
+
     </div>
   );
 }
